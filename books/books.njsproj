@@ -42,12 +42,13 @@
     <Compile Include="repository\books.js" />
     <Compile Include="repository\index.js" />
     <Compile Include="repository\users.js" />
-    <Compile Include="seedData.js" />
+    <Compile Include="bin\seedData.js" />
     <Content Include="package.json" />
     <Content Include="public\app\index.html" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\" />
     <Folder Include="models\" />
     <Folder Include="auth\" />
     <Folder Include="config\" />

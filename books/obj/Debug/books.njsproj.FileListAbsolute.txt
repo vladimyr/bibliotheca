@@ -1,2 +1,0 @@
-C:\Users\Dino\Documents\Visual Studio 2013\Projects\books\books\obj\Debug\books.njsprojResolveAssemblyReference.cache
-C:\Users\Dino\Documents\Visual Studio 2013\Projects\books\books\bin\Microsoft.NodejsTools.WebRole.dll
