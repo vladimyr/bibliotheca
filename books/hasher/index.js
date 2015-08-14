@@ -1,5 +1,4 @@
 ﻿var bcrypt = require("bcrypt");
-var repository = require("../repository");
 
 exports.getHash = function (source, next) {
     bcrypt.genSalt(10, function (err, salt) {

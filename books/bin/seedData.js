@@ -1,33 +1,5 @@
-﻿var initialBooks = [
-    {
-        title: "Test Book",
-        description: "Test Desc",
-        pages: 123,
-        isbn10: "1-234-56789-8",
-        isbn13: "1-234-56789-1234",
-        amazonUrl: "testUrl",
-        imageUrl: "testImgUrl"
-    },
-    {
-        title: "Second Test Book",
-        description: "Second Test Desc",
-        pages: 123,
-        isbn10: "1-234-56789-8",
-        isbn13: "1-234-56789-1234",
-        amazonUrl: "testUrl",
-        imageUrl: "testImgUrl"
-    }
-];
-
-var initialUsers = [
-    {
-        mail: "a@b.c",
-        password: "123", //will be hashed
-        isAdmin: true
-    }
-];
-
-var repository = require("../repository");
+﻿var initialBooks = require("./books.json");
+var initialUsers = require("./users.json");
 var models = require("../models");
 var hasher = require("../hasher");
 var Promise = require("bluebird");
@@ -53,7 +25,7 @@ var seed = function () {
     })
     .then(function (res) {
         users = res;
-        return mapUserBooks(users[0], [books[0], books[1]]);        
+        return mapUserBooks(users[0], [books[0], books[1]]);
     })
     .then(function (res) {
         console.log("Successfully updated references");
@@ -74,18 +46,23 @@ var seedDatabase = function (seedModel, seedArray, seedName) {
         console.log("Seeding");
         if (seedName == "users") {
             return Promise.map(seedArray, function (val) {
-                return hasher.getHashAsync(val.password);
+                return hasher.getHashAsync(val.password)
+                    .then(function (hashedPass) {
+                        val.password = hashedPass;
+                        return val;
+                    });
             });
         } else {
             return Promise.resolve(seedArray);
         }
-    }).each(function (val, index) {
-        if (seedName == "users")
-            seedArray[index].password = val;
     })
+    //.each(function (val, index) {
+    //    if (seedName == "users")
+    //        seedArray[index].password = val;
+    //})
     .then(function (res) {
         var insertAsync = Promise.promisify(seedModel.collection.insert, seedModel.collection);
-        return insertAsync(seedArray);
+        return insertAsync(res);
     });
 };
 /** Create references between a user and the books he added */
@@ -98,7 +75,7 @@ var mapUserBooks = function (user, books) {
     })
     .then(function () {
         user.saveAsync = Promise.promisify(user.save, user);
-        return user.saveAsync();    
+        return user.saveAsync();
     });
 };
 

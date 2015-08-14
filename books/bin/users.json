@@ -1,0 +1,7 @@
+﻿[
+    {
+        "mail": "a@b.c",
+        "password": "123",
+        "isAdmin": true
+    }
+]

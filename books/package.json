@@ -18,5 +18,9 @@
     "passport": "^0.2.2",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "should": "^7.0.4",
+    "supertest": "^1.0.1"
   }
 }

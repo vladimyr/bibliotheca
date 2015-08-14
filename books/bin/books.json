@@ -1,0 +1,20 @@
+﻿[
+    {
+        "title": "Test Book",
+        "description": "Test Desc",
+        "pages": 123,
+        "isbn10": "1-234-56789-8",
+        "isbn13": "1-234-56789-1234",
+        "amazonUrl": "testUrl",
+        "imageUrl": "testImgUrl"
+    },
+    {
+        "title": "Second Test Book",
+        "description": "Second Test Desc",
+        "pages": 123,
+        "isbn10": "1-234-56789-8",
+        "isbn13": "1-234-56789-1234",
+        "amazonUrl": "testUrl",
+        "imageUrl": "testImgUrl"
+    }
+]

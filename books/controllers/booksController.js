@@ -1,9 +1,9 @@
-﻿var repository = require("../repository");
+﻿var models = require("../models");
 
 exports.init = function (router) {
 
     router.get("/api/books", function (req, res) {
-        repository.books.getAll(function (err, books) {
+        models.Book.getAll(function (err, books) {
             if (err)
                 res.status(500).send(err);
             else
@@ -11,4 +11,14 @@ exports.init = function (router) {
         });
     });
 
+    router.get("/api/books/:id", function (req, res) {
+        models.Book.getById(req.params.id, function (err,book) {
+            if (err)
+                res.status(500).send(err);
+            else if (book === null)
+                res.sendStatus(404);
+            else
+                res.send(book);
+        });
+    });
 };
