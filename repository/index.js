@@ -1,4 +1,5 @@
-﻿var mongoose = require("mongoose");
+﻿"use strict"
+var mongoose = require("mongoose");
 var mongoUrl = require("../config").mongoUrl;
 
 mongoose.connect(mongoUrl);
@@ -13,6 +14,6 @@ db.once('open', function () {
 });
 
 module.exports = {
-    Book: require("./Book.js"),
-    User: require("./User.js")
+    books: require("./books.js"),
+    users: require("./users.js")
 };

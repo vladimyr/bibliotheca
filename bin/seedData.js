@@ -1,5 +1,7 @@
-﻿var initialBooks = require("./books.json");
+﻿"use strict"
+var initialBooks = require("./books.json");
 var initialUsers = require("./users.json");
+var repository = require("../repository");
 var models = require("../models");
 var hasher = require("../hasher");
 var Promise = require("bluebird");
@@ -47,10 +49,10 @@ var seedDatabase = function (seedModel, seedArray, seedName) {
         if (seedName == "users") {
             return Promise.map(seedArray, function (val) {
                 return hasher.getHashAsync(val.password)
-                    .then(function (hashedPass) {
-                        val.password = hashedPass;
-                        return val;
-                    });
+                .then(function (hashedPass) {
+                    val.password = hashedPass;
+                    return val;
+                });
             });
         } else {
             return Promise.resolve(seedArray);
@@ -65,7 +67,7 @@ var seedDatabase = function (seedModel, seedArray, seedName) {
         return insertAsync(res);
     });
 };
-/** Create references between a user and the books he added */
+/** Create references between a user and the books added */
 var mapUserBooks = function (user, books) {
     user.books = books;
     return Promise.each(books, function (val) {

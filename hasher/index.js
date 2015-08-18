@@ -1,24 +1,25 @@
-﻿var bcrypt = require("bcrypt");
+﻿"use strict"
+var bcrypt = require("bcrypt");
 
-exports.getHash = function (source, next) {
+exports.getHash = function (source, done) {
     bcrypt.genSalt(10, function (err, salt) {
         if (err)
-            next(err);
+            done(err);
         else
             bcrypt.hash(source, salt, function (err, hash) {
                 if (err)
-                    next(err);
+                    done(err);
                 else
-                    next(null, hash);
+                    done(null, hash);
             });
     });
 };
 
-exports.compare = function (source, hash, next) {
+exports.compare = function (source, hash, done) {
     bcrypt.compare(source, hash, function (err, result) {
         if (err)
-            next(err);
+            done(err);
         else
-            next(null, result);
+            done(null, result);
     });
 };

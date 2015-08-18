@@ -1,4 +1,5 @@
-﻿var fs = require("fs");
+﻿"use strict"
+var fs = require("fs");
 var minimatch = require("minimatch");
 
 /** Initialize all controllers */

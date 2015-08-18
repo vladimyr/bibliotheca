@@ -1,9 +1,11 @@
-﻿var models = require("../models");
+﻿"use strict"
+//var models = require("../models");
+var repository = require("../repository");
 
 exports.init = function (router) {
     
     router.get("/api/users", function (req, res) {
-        models.User.getAll(function (err, users) {
+        repository.users.getAll(function (err, users) {
             if (err)
                 res.status(500).send(err);
             else
@@ -12,7 +14,7 @@ exports.init = function (router) {
     });
 
     router.get("/api/users/:id", function (req, res) {
-        models.User.getById(req.params.id, function (err, user) {
+        repository.users.getById(req.params.id, function (err, user) {
             if (err)
                 res.status(500).send(err);
             else if (user === null)

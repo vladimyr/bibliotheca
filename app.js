@@ -1,4 +1,5 @@
-﻿var config = require("./config");
+﻿"use strict"
+var config = require("./config");
 var express = require("express");
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -9,6 +10,9 @@ app.use(bodyParser.json());
 
 var router = express.Router();
 app.use(router);
+
+var auth = require("./auth");
+auth.init(app);
 
 var controllers = require("./controllers");
 controllers.init(router);
