@@ -14,6 +14,9 @@ app.use(router);
 var auth = require("./auth");
 auth.init(app);
 
+var common=require("./common");
+common.initExtensions();
+
 var controllers = require("./controllers");
 controllers.init(router);
 

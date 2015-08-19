@@ -13,59 +13,59 @@ Promise.promisifyAll(models.User);
 var seed = function () {
     var books, users;
     return seedDatabase(models.User, initialUsers, "users")
-    .then(function () {
-        console.log("Successfully inserted users");
-        return seedDatabase(models.Book, initialBooks, "books");
-    })
-    .then(function () {
-        console.log("Successfully inserted books");
-        return models.Book.findAsync({});
-    })
-    .then(function (res) {
-        books = res;
-        return models.User.findAsync({});
-    })
-    .then(function (res) {
-        users = res;
-        return mapUserBooks(users[0], [books[0], books[1]]);
-    })
-    .then(function (res) {
-        console.log("Successfully updated references");
-    })
-    .catch(function (e) {
-        console.log("Global catch: " + e);
-    });
+        .then(function () {
+            console.log("Successfully inserted users");
+            return seedDatabase(models.Book, initialBooks, "books");
+        })
+        .then(function () {
+            console.log("Successfully inserted books");
+            return models.Book.findAsync({});
+        })
+        .then(function (res) {
+            books = res;
+            return models.User.findAsync({});
+        })
+        .then(function (res) {
+            users = res;
+            return mapUserBooks(users[0], [books[0], books[1]]);
+        })
+        .then(function (res) {
+            console.log("Successfully updated references");
+        })
+        .catch(function (e) {
+            console.log("Global catch: " + e);
+        });
 };
 
 /** Seed the database */
 var seedDatabase = function (seedModel, seedArray, seedName) {
     return seedModel.countAsync()
-    .then(function (count) {
-        if (count != 0)
-            return Promise.reject(new Error("Collection not empty!"));
-    })
-    .then(function () {
-        console.log("Seeding");
-        if (seedName == "users") {
-            return Promise.map(seedArray, function (val) {
-                return hasher.getHashAsync(val.password)
-                .then(function (hashedPass) {
-                    val.password = hashedPass;
-                    return val;
+        .then(function (count) {
+            if (count != 0)
+                return Promise.reject(new Error("Collection not empty!"));
+        })
+        .then(function () {
+            console.log("Seeding");
+            if (seedName == "users") {
+                return Promise.map(seedArray, function (val) {
+                    return hasher.getHashAsync(val.password)
+                        .then(function (hashedPass) {
+                            val.password = hashedPass;
+                            return val;
+                        });
                 });
-            });
-        } else {
-            return Promise.resolve(seedArray);
-        }
-    })
-    //.each(function (val, index) {
-    //    if (seedName == "users")
-    //        seedArray[index].password = val;
-    //})
-    .then(function (res) {
-        var insertAsync = Promise.promisify(seedModel.collection.insert, seedModel.collection);
-        return insertAsync(res);
-    });
+            } else {
+                return Promise.resolve(seedArray);
+            }
+        })
+        //.each(function (val, index) {
+        //    if (seedName == "users")
+        //        seedArray[index].password = val;
+        //})
+        .then(function (res) {
+            var insertAsync = Promise.promisify(seedModel.collection.insert, seedModel.collection);
+            return insertAsync(res);
+        });
 };
 /** Create references between a user and the books added */
 var mapUserBooks = function (user, books) {
@@ -75,10 +75,10 @@ var mapUserBooks = function (user, books) {
         val.saveAsync = Promise.promisify(val.save, val);
         return val.saveAsync();
     })
-    .then(function () {
-        user.saveAsync = Promise.promisify(user.save, user);
-        return user.saveAsync();
-    });
+        .then(function () {
+            user.saveAsync = Promise.promisify(user.save, user);
+            return user.saveAsync();
+        });
 };
 
 seed().then(function () {

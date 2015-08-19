@@ -1,7 +1,12 @@
 ﻿[
-    {
-        "mail": "a@b.c",
-        "password": "123",
-        "isAdmin": true
-    }
+  {
+    "mail": "admin@extensionengine.com",
+    "password": "1234",
+    "isAdmin": true
+  },
+  {
+    "mail": "user@extensionengine.com",
+    "password": "1234",
+    "isAdmin": false
+  }
 ]

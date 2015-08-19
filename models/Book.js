@@ -1,10 +1,10 @@
 ﻿"use strict"
 var mongoose = require("mongoose");
-var User = require("./User.js");
-var Promise = require("bluebird");
+//var User = require("./User.js");
+//var Promise = require("bluebird");
 
-var Model = mongoose.model("Book", {
-    title: { type: String, required: true },
+module.exports = mongoose.model("Book", {
+    title: {type: String, required: true},
     description: String,
     pages: Number,
     isbn10: String,
@@ -12,10 +12,8 @@ var Model = mongoose.model("Book", {
     amazonUrl: String,
     imageUrl: String,
     token: String,
-    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" }
+    user: {type: mongoose.Schema.Types.ObjectId, required: true, ref: "User"}
 });
-
-module.exports = Model;
 
 ///** Get all documents (populated) */
 //Model.getAll = function (next) {

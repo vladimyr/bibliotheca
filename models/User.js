@@ -1,14 +1,12 @@
 ﻿"use strict"
 var mongoose = require("mongoose");
 
-var Model = mongoose.model("User", {
-    mail: { type: String, required: true },
-    password: { type: String, required: true },
+module.exports = mongoose.model("User", {
+    mail: {type: String, required: true},
+    password: {type: String, required: true},
     isAdmin: Boolean,
-    books: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }]
+    books: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}]
 });
-
-module.exports = Model;
 
 ///** Get all documents (populated) */
 //Model.getAll = function (next) {
