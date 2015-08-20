@@ -91,7 +91,7 @@ exports.reverseIsAdmin = function (id, done) {
         if (err)
             done(err);
         else if (!user)
-            done("No such user");
+            done(new common.errors.NotFoundError("No such user"));
         else {
             if (user.isAdmin) {
                 user.isAdmin = false;

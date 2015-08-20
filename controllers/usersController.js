@@ -33,20 +33,20 @@ exports.init = function (router) {
 
     router.put("/api/users/:id/changePass", function (req, res) {
         //TODO: Compare oldPass with req.user.password from passport
-        repository.users.changePassword(req.params.id, req.body.oldPass, req.body.newPass, function (err, book) {
+        repository.users.changePassword(req.params.id, req.body.oldPass, req.body.newPass, function (err, user) {
             if (err)
                 res.customHandleError(err);
             else
-                res.send(book);
+                res.send(user);
         });
     });
 
-    router.put("/api/users/:id/reverseAdmin", function (req, res) {
-        repository.users.reverseIsAdmin(req.params.id, req.body.oldPass, req.body.newPass, function (err, book) {
+    router.get("/api/users/:id/reverseAdmin", function (req, res) {
+        repository.users.reverseIsAdmin(req.params.id, function (err, user) {
             if (err)
                 res.customHandleError(err);
             else
-                res.send(book);
+                res.send(user);
         });
     });
 };
