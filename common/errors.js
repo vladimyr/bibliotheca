@@ -5,6 +5,8 @@ var NotFoundError = function (message) {
     this.name = "NotFoundError";
     /** @type {*} */
     this.message = message || "";
+    /** @type {number} */
+    this.code = 1000;
 };
 NotFoundError.prototype = Error.prototype;
 
@@ -14,6 +16,8 @@ var UnauthorizedError = function (message) {
     this.name = "UnauthorizedError";
     /** @type {*} */
     this.message = message || "";
+    /** @type {number} */
+    this.code = 1001;
 };
 UnauthorizedError.prototype = Error.prototype;
 

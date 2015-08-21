@@ -1,0 +1,311 @@
+#%RAML 0.8 
+title: Books API
+version: v1
+baseUri: http://localhost:1337/api
+/users:
+  type: collection
+  get:
+    responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "_id": "55d705d439bd303c0f09b93e",
+                    "mail": "admin@extensionengine.com",
+                    "isAdmin": true,
+                    "books": [
+                      {
+                        "_id": "55d705d439bd303c0f09b940",
+                        "title": "Test Book",
+                        "description": "Test Desc",
+                        "pages": 123,
+                        "isbn10": "1-234-56789-8",
+                        "isbn13": "1-234-56789-1234",
+                        "amazonUrl": "testUrl",
+                        "imageUrl": "testImgUrl",
+                        "user": "55d705d439bd303c0f09b93e"
+                      }
+                    ]
+                  },
+                  {
+                    "_id": "55d705d439bd303c0f09b93f",
+                    "mail": "user@extensionengine.com",
+                    "isAdmin": false,
+                    "books": []
+                  }
+                ]
+  post:
+    responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "_id": "55d705d439bd303c0f09b93f",
+                  "mail": "user@extensionengine.com",
+                  "books": []
+                }
+  /{id}: 
+    uriParameters: 
+      id: 
+        displayName: User ID
+        description: 24-character ID of the user in the database.
+    type:
+      collection-item:
+        example: |
+          {
+            "_id": "55d705d439bd303c0f09b93e",
+            "mail": "admin@extensionengine.com",
+            "isAdmin": true,
+            "books": [
+              {
+                "_id": "55d705d439bd303c0f09b940",
+                "title": "Test Book",
+                "description": "Test Desc",
+                "pages": 123,
+                "isbn10": "1-234-56789-8",
+                "isbn13": "1-234-56789-1234",
+                "amazonUrl": "testUrl",
+                "imageUrl": "testImgUrl",
+                "user": "55d705d439bd303c0f09b93e"
+              }
+            ]
+          }
+    /changePass:
+      displayName: Change Password
+      put:
+        description: Change an old password to a new one.
+        responses:
+          200:
+    /reverseAdmin:
+      get: 
+        description: Reverse admin privileges.
+        headers: 
+          bearer:
+            description: Access token given to the user by the server.
+        responses:
+          200:
+/books: 
+  displayName: Books
+  type: collection
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "_id": "55d705d439bd303c0f09b940",
+                  "title": "Test Book",
+                  "description": "Test Desc",
+                  "pages": 123,
+                  "isbn10": "1-234-56789-8",
+                  "isbn13": "1-234-56789-1234",
+                  "amazonUrl": "testUrl",
+                  "imageUrl": "testImgUrl",
+                  "user": {
+                    "_id": "55d705d439bd303c0f09b93e",
+                    "mail": "admin@extensionengine.com",
+                    "isAdmin": true,
+                    "books": [
+                      "55d705d439bd303c0f09b940",
+                      "55d705d439bd303c0f09b941"
+                    ]
+                  }
+                },
+                {
+                  "_id": "55d705d439bd303c0f09b941",
+                  "title": "Second Test Book",
+                  "description": "Second Test Desc",
+                  "pages": 123,
+                  "isbn10": "1-234-56789-8",
+                  "isbn13": "1-234-56789-1234",
+                  "amazonUrl": "testUrl",
+                  "imageUrl": "testImgUrl",
+                  "user": {
+                    "_id": "55d705d439bd303c0f09b93e",
+                    "mail": "admin@extensionengine.com",
+                    "isAdmin": true,
+                    "books": [
+                      "55d705d439bd303c0f09b940",
+                      "55d705d439bd303c0f09b941"
+                    ]
+                  }
+                }
+              ]
+  post:
+    responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "_id": "55d705d439bd303c0f09b940",
+                  "title": "Test Book",
+                  "description": "Test Desc",
+                  "pages": 123,
+                  "isbn10": "1-234-56789-8",
+                  "isbn13": "1-234-56789-1234",
+                  "amazonUrl": "testUrl",
+                  "imageUrl": "testImgUrl",
+                  "user": {
+                    "_id": "55d705d439bd303c0f09b93e",
+                    "mail": "admin@extensionengine.com",
+                    "isAdmin": true,
+                    "books": [
+                      "55d705d439bd303c0f09b940",
+                      "55d705d439bd303c0f09b941"
+                    ]
+                  }
+                }
+  /{id}: 
+    uriParameters: 
+      id: 
+        displayName: Book ID
+        description: 24-character ID of the book in the database.
+    type:
+      collection-item:
+        example: |
+          {
+            "_id": "55d705d439bd303c0f09b940",
+            "title": "Test Book",
+            "description": "Test Desc",
+            "pages": 123,
+            "isbn10": "1-234-56789-8",
+            "isbn13": "1-234-56789-1234",
+            "amazonUrl": "testUrl",
+            "imageUrl": "testImgUrl",
+            "user": {
+              "_id": "55d705d439bd303c0f09b93e",
+              "mail": "admin@extensionengine.com",
+              "isAdmin": true,
+              "books": [
+                "55d705d439bd303c0f09b940",
+                "55d705d439bd303c0f09b941"
+              ]
+            }
+          }
+    put:
+    delete:
+schemas: 
+  - user: |
+      {
+        "type": "object",
+        "description": "JSON object representation of a user.", 
+        "properties": {
+          "_id": { "type": "string"},
+          "mail": { "type": "string"},
+          "books": { 
+            "type": "array",
+            "items": "string"
+          }
+        },
+        "required": ["_id", "mail"]
+      }
+  - users: |
+      {
+        "type": "array",
+        "description": "JSON array representation of users.", 
+        "items": { "$ref": "userPopulated"}
+      }
+  - userPopulated: |
+      {
+        "type": "object",
+        "description": "JSON object representation of a user.", 
+        "properties": {
+          "_id": { "type": "string"},
+          "mail": { "type": "string"},
+          "books": { 
+            "type": "array",
+            "items": { "$ref": "book"}
+          }
+        },
+        "required": ["_id", "mail"]
+      }
+  - book: |
+      {
+        "type": "object",
+        "description": "JSON object representation of a book.", 
+        "properties": {
+          "_id": { "type": "string"},
+          "title": { "type": "string"},
+          "description": { "type": "string"},
+          "pages": { "type": "string"},
+          "isbn10": { "type": "string"},
+          "isbn13": { "type": "string"},
+          "amazonUrl": { "type": "string"},
+          "imageUrl": { "type": "string"},
+          "token": { "type": "string"},
+          "user": { "type": "string"}
+        },
+        "required": ["_id", "title", "user"]
+      }
+  - books: |
+      {
+        "type": "array",
+        "description": "JSON array representation of books.", 
+        "items": { "$ref": "bookPopulated"}
+      }
+  - bookPopulated: |
+      {
+        "type": "object",
+        "description": "JSON object representation of a book.", 
+        "properties": {
+          "_id": { "type": "string"},
+          "title": { "type": "string"},
+          "description": { "type": "string"},
+          "pages": { "type": "string"},
+          "isbn10": { "type": "string"},
+          "isbn13": { "type": "string"},
+          "amazonUrl": { "type": "string"},
+          "imageUrl": { "type": "string"},
+          "token": { "type": "string"},
+          "user": { 
+            "type": "object",
+            "$ref": "user"
+          }
+        },
+        "required": ["_id", "title", "user"]
+      }
+resourceTypes:
+  - collection:
+      get: 
+        description: Get all <<resourcePathName>>.
+        responses:
+          200:
+            body:
+              application/json:
+                schema: <<resourcePathName>>
+      post:
+        description: Post a new <<resourcePathName|!singularize>>.
+        responses:
+          200:
+            body:
+              application/json:
+                schema: <<resourcePathName|!singularize>>Populated
+  - collection-item:
+      get: 
+        description: Get a single <<resourcePathName|!singularize>>.
+        responses:
+          200:
+            body:
+              application/json:
+                schema: <<resourcePathName|!singularize>>Populated
+                example: |
+                  <<example>>
+      put?: 
+        description: Modify a <<resourcePathName|!singularize>>.
+        responses:
+          200:
+            body:
+              application/json:
+                schema: <<resourcePathName|!singularize>>Populated
+                example: |
+                  <<example>>
+      delete?: 
+        description: Delete a <<resourcePathName|!singularize>>.
+        responses: 
+          200:

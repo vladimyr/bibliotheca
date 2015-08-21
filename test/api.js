@@ -11,10 +11,6 @@ describe("/api", function () {
     var url = "http://localhost:" + config.port;
     var _user, _book;
     var _randomId = "000011110000111100001111";
-    //before(function (done) {
-    //    mongoose.connect(config.mongoUrl);
-    //    done();
-    //});
     describe("/users", function () {
         var userUrl = "/api/users/";
         describe("Post", function () {
@@ -27,7 +23,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "password", "books"]);
+                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books"]);
                         _user = res.body;
                         done();
                     });
@@ -40,10 +36,11 @@ describe("/api", function () {
                     .expect("Content-Type", /json/)
                     .expect(200)
                     .end(function (err, res) {
+
                         if (err)
                             throw err;
                         res.body.should.be.instanceOf(Array);
-                        res.body[0].should.have.properties(["mail", "password", "books"]);
+                        res.body[0].should.have.properties(["mail", "books"]);
                         done();
                     });
             });
@@ -55,7 +52,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "password", "books"]);
+                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books"]);
                         done();
                     });
             });
@@ -67,7 +64,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "password", "books", "isAdmin"]);
+                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books", "isAdmin"]);
                         res.body.isAdmin.should.be.true();
                         done();
                     });
@@ -80,7 +77,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "password", "books", "isAdmin"]);
+                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books", "isAdmin"]);
                         res.body.isAdmin.should.be.false();
                         done();
                     });
@@ -99,16 +96,17 @@ describe("/api", function () {
                         done();
                     });
             });
-            it("Correct password provided, should return user as JSON object", function (done) {
+            it("Correct password provided, should return 200 OK", function (done) {
                 request(url)
                     .put(userUrl + _user._id + "/changePass")
                     .send({oldPass: userData.password, newPass: "123"})
-                    .expect("Content-Type", /json/)
+                    .expect("Content-Type", /text/)
                     .expect(200)
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "password", "books"]);
+                        //res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books"]);
+                        res.body.should.be.empty();
                         done();
                     });
             });
@@ -118,17 +116,16 @@ describe("/api", function () {
     describe("/books", function () {
         var bookUrl = "/api/books/";
         describe("Post", function () {
-            it("Invalid user field provided, should return CastError", function (done) {
+            it("Invalid user field provided, should return status 500", function (done) {
                 var _tempBook = bookData;
                 _tempBook.user = "123"
                 request(url)
                     .post(bookUrl)
                     .send(_tempBook)
-                    .expect(404)
+                    .expect(500)
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        should.equal(res.body.name, "CastError", "Unexpected error type");
                         done();
                     });
             });
@@ -206,15 +203,15 @@ describe("/api", function () {
             });
         });
         describe("Delete", function () {
-            it("Valid id provided, should return user as JSON object without deleted book", function (done) {
+            it("Valid id provided, should return 200 OK", function (done) {
                 request(url)
                     .delete(bookUrl + _book._id)
-                    .expect("Content-Type", /json/)
+                    .expect("Content-Type", /text/)
                     .expect(200)
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "password", "books"]);
+                        res.body.should.be.empty();
                         done();
                     });
             });

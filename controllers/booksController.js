@@ -47,7 +47,7 @@ exports.init = function (router) {
             if (err)
                 res.customHandleError(err);
             else
-                res.send(user);
+                res.sendStatus(200);
         });
     });
 

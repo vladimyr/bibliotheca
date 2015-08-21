@@ -55,6 +55,9 @@ exports.insert = function (book, done) {
         .then(function (user) {
             return Promise.cast(models.Book.create(book));
         })
+        .then(function(book){
+            return Promise.cast(book.populate("user"));
+        })
         .nodeify(done);
 };
 
