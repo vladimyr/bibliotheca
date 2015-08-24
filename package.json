@@ -27,6 +27,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "seed": "node bin/seedData.js"
+    "seed": "node bin/seedData.js",
+    "genspec": "raml2html apiSpec/apiSpec.raml > apiSpec/apiSpec.html"
   }
 }

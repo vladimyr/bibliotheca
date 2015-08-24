@@ -55,7 +55,7 @@ exports.insert = function (book, done) {
         .then(function (user) {
             return Promise.cast(models.Book.create(book));
         })
-        .then(function(book){
+        .then(function (book) {
             return Promise.cast(book.populate("user"));
         })
         .nodeify(done);
@@ -73,6 +73,8 @@ exports.update = function (id, book, done) {
     models.Book.findByIdAndUpdate(id, book, {"new": true}, function (err, updatedBook) {
         if (err)
             done(err);
+        else if (!updatedBook)
+            done(new common.errors.NotFoundError("Book not found"));
         else
             done(null, updatedBook);
     });

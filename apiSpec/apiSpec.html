@@ -1,0 +1,543 @@
+<!DOCTYPE HTML><html><head><title>Books API API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.0.2"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          if(history && history.replaceState) {
+            history.replaceState({}, '', '#');
+          }
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Books API API documentation <small>version v1</small></h1><p>http://localhost:1337/api</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="users" class="panel-title">/users</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users"><span class="parent"></span>/users</a> <span class="methods"><a href="#users_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_users" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get all users.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/users</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get all users.</p></div><ul class="nav nav-tabs"><li><a href="#users_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="users_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "array",
+  "description": "JSON array representation of users.", 
+  "items": { "$ref": "userPopulated"}
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "_id": "55d705d439bd303c0f09b93e",
+    "mail": "admin@extensionengine.com",
+    "isAdmin": true,
+    "books": [
+      {
+        "_id": "55d705d439bd303c0f09b940",
+        "title": "Test Book",
+        "description": "Test Desc",
+        "pages": 123,
+        "isbn10": "1-234-56789-8",
+        "isbn13": "1-234-56789-1234",
+        "amazonUrl": "testUrl",
+        "imageUrl": "testImgUrl",
+        "user": "55d705d439bd303c0f09b93e"
+      }
+    ]
+  },
+  {
+    "_id": "55d705d439bd303c0f09b93f",
+    "mail": "user@extensionengine.com",
+    "isAdmin": false,
+    "books": []
+  }
+]
+
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users__id_"><span class="parent">/users</span>/{id}</a> <span class="methods"><a href="#users__id__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_users__id_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users__id__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a single user.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__id__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/users</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a single user.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#users__id__get_request" data-toggle="tab">Request</a></li><li><a href="#users__id__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__id__get_request"><h3>URI Parameters</h3><ul><li><strong>User ID</strong>: <em>required (string)</em><p>24-character ID of the user in the database.</p></li></ul></div><div class="tab-pane" id="users__id__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a user.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "mail": { "type": "string"},
+    "isAdmin": { "type": "boolean"},
+    "books": { 
+      "type": "array",
+      "items": { "$ref": "book"}
+    }
+  },
+  "required": ["_id", "mail"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "_id": "55d705d439bd303c0f09b93e",
+  "mail": "admin@extensionengine.com",
+  "isAdmin": true,
+  "books": [
+    {
+      "_id": "55d705d439bd303c0f09b940",
+      "title": "Test Book",
+      "description": "Test Desc",
+      "pages": 123,
+      "isbn10": "1-234-56789-8",
+      "isbn13": "1-234-56789-1234",
+      "amazonUrl": "testUrl",
+      "imageUrl": "testImgUrl",
+      "user": "55d705d439bd303c0f09b93e"
+    }
+  ]
+}
+
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users__id__changePass"><span class="parent">/users/{id}</span>/changePass</a> <span class="methods"><a href="#users__id__changePass_put"><span class="badge badge_put">put</span></a></span></h4></div><div id="panel_users__id__changePass" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users__id__changePass_put'" class="list-group-item"><span class="badge badge_put">put</span><div class="method_description"><p>Change an old password to a new one.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__id__changePass_put"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_put">put</span> <span class="parent">/users/{id}</span>/changePass</h4></div><div class="modal-body"><div class="alert alert-info"><p>Change an old password to a new one.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#users__id__changePass_put_request" data-toggle="tab">Request</a></li><li><a href="#users__id__changePass_put_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__id__changePass_put_request"><h3>URI Parameters</h3><ul><li><strong>User ID</strong>: <em>required (string)</em><p>24-character ID of the user in the database.</p></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object containing new and old password.", 
+  "properties": {
+    "newPass": { "type": "string"},
+    "oldPass": { "type": "string"}                
+  },
+  "required": ["newPass", "oldPass"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "newPass":"123",
+  "oldPass":"445"
+}
+</code></pre></div><div class="tab-pane" id="users__id__changePass_put_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users__id__reverseAdmin"><span class="parent">/users/{id}</span>/reverseAdmin</a> <span class="methods"><a href="#users__id__reverseAdmin_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_users__id__reverseAdmin" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users__id__reverseAdmin_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Reverse admin privileges.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__id__reverseAdmin_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/users/{id}</span>/reverseAdmin</h4></div><div class="modal-body"><div class="alert alert-info"><p>Reverse admin privileges.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#users__id__reverseAdmin_get_request" data-toggle="tab">Request</a></li><li><a href="#users__id__reverseAdmin_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__id__reverseAdmin_get_request"><h3>URI Parameters</h3><ul><li><strong>User ID</strong>: <em>required (string)</em><p>24-character ID of the user in the database.</p></li></ul><h3>Headers</h3><ul><li><strong>bearer</strong>: <em>(string)</em><p>Access token given to the user by the server.</p></li></ul></div><div class="tab-pane" id="users__id__reverseAdmin_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a user.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "mail": { "type": "string"},
+    "isAdmin": { "type": "boolean"},
+    "books": { 
+      "type": "array",
+      "items": "string"
+    }
+  },
+  "required": ["_id", "mail"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "_id": "55d705d439bd303c0f09b93e",
+  "mail": "admin@extensionengine.com",
+  "isAdmin": true,
+  "books": [
+    "55d705d439bd303c0f09b940"
+  ]
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="books" class="panel-title">Books</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_books"><span class="parent"></span>/books</a> <span class="methods"><a href="#books_get"><span class="badge badge_get">get</span></a> <a href="#books_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_books" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#books_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get all books.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#books_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Post a new book.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="books_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/books</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get all books.</p></div><ul class="nav nav-tabs"><li><a href="#books_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="books_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "array",
+  "description": "JSON array representation of books.", 
+  "items": { "$ref": "bookPopulated"}
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "_id": "55d705d439bd303c0f09b940",
+    "title": "Test Book",
+    "description": "Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "testImgUrl",
+    "user": {
+      "_id": "55d705d439bd303c0f09b93e",
+      "mail": "admin@extensionengine.com",
+      "isAdmin": true,
+      "books": [
+        "55d705d439bd303c0f09b940",
+        "55d705d439bd303c0f09b941"
+      ]
+    }
+  },
+  {
+    "_id": "55d705d439bd303c0f09b941",
+    "title": "Second Test Book",
+    "description": "Second Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "testImgUrl",
+    "user": {
+      "_id": "55d705d439bd303c0f09b93e",
+      "mail": "admin@extensionengine.com",
+      "isAdmin": true,
+      "books": [
+        "55d705d439bd303c0f09b940",
+        "55d705d439bd303c0f09b941"
+      ]
+    }
+  }
+]
+
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="books_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/books</h4></div><div class="modal-body"><div class="alert alert-info"><p>Post a new book.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#books_post_request" data-toggle="tab">Request</a></li><li><a href="#books_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books_post_request"><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a book.", 
+  "properties": {
+    "title": { "type": "string"},
+    "description": { "type": "string"},
+    "pages": { "type": "string"},
+    "isbn10": { "type": "string"},
+    "isbn13": { "type": "string"},
+    "amazonUrl": { "type": "string"},
+    "imageUrl": { "type": "string"},
+    "token": { "type": "string"},
+    "user": { "type": "string"}
+  },
+  "required": ["_id", "title", "user"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "title": "Test Book",
+  "description": "Test Desc",
+  "pages": 123,
+  "isbn10": "1-234-56789-8",
+  "isbn13": "1-234-56789-1234",
+  "amazonUrl": "testUrl",
+  "imageUrl": "testImgUrl",
+  "user": "55d705d439bd303c0f09b93e"
+}
+</code></pre></div><div class="tab-pane" id="books_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a book.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "title": { "type": "string"},
+    "description": { "type": "string"},
+    "pages": { "type": "string"},
+    "isbn10": { "type": "string"},
+    "isbn13": { "type": "string"},
+    "amazonUrl": { "type": "string"},
+    "imageUrl": { "type": "string"},
+    "user": { 
+      "type": "object",
+      "$ref": "user"
+    }
+  },
+  "required": ["_id", "title", "user"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "_id": "55d705d439bd303c0f09b940",
+    "title": "Test Book",
+    "description": "Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "testImgUrl",
+    "user": {
+      "_id": "55d705d439bd303c0f09b93e",
+      "mail": "admin@extensionengine.com",
+      "isAdmin": true,
+      "books": [
+        "55d705d439bd303c0f09b940",
+        "55d705d439bd303c0f09b941"
+      ]
+    }
+  },
+  {
+    "_id": "55d705d439bd303c0f09b941",
+    "title": "Second Test Book",
+    "description": "Second Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "testImgUrl",
+    "user": {
+      "_id": "55d705d439bd303c0f09b93e",
+      "mail": "admin@extensionengine.com",
+      "isAdmin": true,
+      "books": [
+        "55d705d439bd303c0f09b940",
+        "55d705d439bd303c0f09b941"
+      ]
+    }
+  }
+]
+
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_books__id_"><span class="parent">/books</span>/{id}</a> <span class="methods"><a href="#books__id__get"><span class="badge badge_get">get</span></a> <a href="#books__id__put"><span class="badge badge_put">put</span></a> <a href="#books__id__delete"><span class="badge badge_delete">delete</span></a></span></h4></div><div id="panel_books__id_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#books__id__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a single book.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#books__id__put'" class="list-group-item"><span class="badge badge_put">put</span><div class="method_description"><p>Modify a book.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#books__id__delete'" class="list-group-item"><span class="badge badge_delete">delete</span><div class="method_description"><p>Delete a book.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="books__id__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/books</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a single book.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#books__id__get_request" data-toggle="tab">Request</a></li><li><a href="#books__id__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books__id__get_request"><h3>URI Parameters</h3><ul><li><strong>Book ID</strong>: <em>required (string)</em><p>24-character ID of the book in the database.</p></li></ul></div><div class="tab-pane" id="books__id__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a book.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "title": { "type": "string"},
+    "description": { "type": "string"},
+    "pages": { "type": "string"},
+    "isbn10": { "type": "string"},
+    "isbn13": { "type": "string"},
+    "amazonUrl": { "type": "string"},
+    "imageUrl": { "type": "string"},
+    "user": { 
+      "type": "object",
+      "$ref": "user"
+    }
+  },
+  "required": ["_id", "title", "user"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "_id": "55d705d439bd303c0f09b940",
+  "title": "Test Book",
+  "description": "Test Desc",
+  "pages": 123,
+  "isbn10": "1-234-56789-8",
+  "isbn13": "1-234-56789-1234",
+  "amazonUrl": "testUrl",
+  "imageUrl": "testImgUrl",
+  "user": {
+    "_id": "55d705d439bd303c0f09b93e",
+    "mail": "admin@extensionengine.com",
+    "isAdmin": true,
+    "books": [
+      "55d705d439bd303c0f09b940",
+      "55d705d439bd303c0f09b941"
+    ]
+  }
+}
+
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="books__id__put"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_put">put</span> <span class="parent">/books</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Modify a book.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#books__id__put_request" data-toggle="tab">Request</a></li><li><a href="#books__id__put_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books__id__put_request"><h3>URI Parameters</h3><ul><li><strong>Book ID</strong>: <em>required (string)</em><p>24-character ID of the book in the database.</p></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a book.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "title": { "type": "string"},
+    "description": { "type": "string"},
+    "pages": { "type": "string"},
+    "isbn10": { "type": "string"},
+    "isbn13": { "type": "string"},
+    "amazonUrl": { "type": "string"},
+    "imageUrl": { "type": "string"},
+    "user": { "type": "string"}
+  },
+  "required": ["_id", "title", "user"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "_id": "55d705d439bd303c0f09b940",
+  "title": "Test Book",
+  "description": "Test Desc",
+  "pages": 123,
+  "isbn10": "1-234-56789-8",
+  "isbn13": "1-234-56789-1234",
+  "amazonUrl": "testUrl",
+  "imageUrl": "testImgUrl",
+  "user": "55d705d439bd303c0f09b93e"
+}
+</code></pre></div><div class="tab-pane" id="books__id__put_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a book.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "title": { "type": "string"},
+    "description": { "type": "string"},
+    "pages": { "type": "string"},
+    "isbn10": { "type": "string"},
+    "isbn13": { "type": "string"},
+    "amazonUrl": { "type": "string"},
+    "imageUrl": { "type": "string"},
+    "user": { 
+      "type": "object",
+      "$ref": "user"
+    }
+  },
+  "required": ["_id", "title", "user"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "_id": "55d705d439bd303c0f09b940",
+  "title": "Test Book",
+  "description": "Test Desc",
+  "pages": 123,
+  "isbn10": "1-234-56789-8",
+  "isbn13": "1-234-56789-1234",
+  "amazonUrl": "testUrl",
+  "imageUrl": "testImgUrl",
+  "user": {
+    "_id": "55d705d439bd303c0f09b93e",
+    "mail": "admin@extensionengine.com",
+    "isAdmin": true,
+    "books": [
+      "55d705d439bd303c0f09b940",
+      "55d705d439bd303c0f09b941"
+    ]
+  }
+}
+
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="books__id__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/books</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete a book.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#books__id__delete_request" data-toggle="tab">Request</a></li><li><a href="#books__id__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books__id__delete_request"><h3>URI Parameters</h3><ul><li><strong>Book ID</strong>: <em>required (string)</em><p>24-character ID of the book in the database.</p></li></ul></div><div class="tab-pane" id="books__id__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="register" class="panel-title">/register</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_register"><span class="parent"></span>/register</a> <span class="methods"><a href="#register_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_register" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#register_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="register_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/register</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#register_post_request" data-toggle="tab">Request</a></li><li><a href="#register_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="register_post_request"><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of user credentials.", 
+  "properties": {
+    "mail": { "type": "string"},
+    "password": { "type": "string"}
+  },
+  "required": ["password", "mail"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "mail":"user@extensionengine.com",
+  "password":"123"
+}
+</code></pre></div><div class="tab-pane" id="register_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a user.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "mail": { "type": "string"},
+    "isAdmin": { "type": "boolean"},
+    "books": { 
+      "type": "array",
+      "items": "string"
+    }
+  },
+  "required": ["_id", "mail"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "_id": "55d705d439bd303c0f09b93f",
+  "mail": "user@extensionengine.com",
+  "isAdmin": false,
+  "books": []
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="login" class="panel-title">/login</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_login"><span class="parent"></span>/login</a> <span class="methods"><a href="#login_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_login" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#login_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="login_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/login</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#login_post_request" data-toggle="tab">Request</a></li><li><a href="#login_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="login_post_request"><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of user credentials.", 
+  "properties": {
+    "mail": { "type": "string"},
+    "password": { "type": "string"}
+  },
+  "required": ["password", "mail"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "mail":"user@extensionengine.com",
+  "password":"123"
+}
+</code></pre></div><div class="tab-pane" id="login_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object containing an user and token.", 
+  "properties": {
+    "user": { "$ref": "user"},
+    "token": { "type": "string"}
+  },
+  "required": ["user", "token"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1NWRiMjZhNDdjMWRmOGMwMWU0ODAyMzIiLCJlHAiOjE1MDA0MzA1ODM3ODJ9.EYq6AVCPfKS_89-9S1eGq9ZKVmyryjbbg3XCR0x2v5ce",
+  "user": {
+    "mail": "user@extensionengine.com",
+    "_id": "55db56b5c84a04b00a56241e",
+    "books": []
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#users">/users</a></li><li><a href="#books">Books</a></li><li><a href="#register">/register</a></li><li><a href="#login">/login</a></li></ul></div></div></div></div></body></html>

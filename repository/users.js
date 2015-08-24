@@ -16,7 +16,7 @@ exports.getAll = function (done) {
 };
 
 /**
- * Get one document by id (populated)
+ * Get one document by id (populated). Throws NotFoundError if not found.
  * @param {string|number} id Document id
  * @param {Function} done
  */
@@ -32,16 +32,32 @@ exports.getById = function (id, done) {
 };
 
 /**
- * Get one document by mail
- * @param {string|number} mail Document mail
+ * Get one document by token. Throws NotFoundError if now found
+ * @param {string} token
  * @param {Function} done
  */
-exports.getByMail = function (mail, done) {
-    models.User.findOne({mail: mail}).exec(done);
+exports.getByToken = function (token, done) {
+    return Promise.cast(models.User.findOne({token: token}).exec())
+        .then(function (user) {
+            if (!user)
+                return Promise.reject(new common.errors.NotFoundError("User not found"));
+            return user;
+        })
+        .nodeify(done);
 };
 
 /**
- * Inserts a new document
+ * Get one document by mail. Returns null if no document.
+ * @param {string} mail Document mail property
+ * @param {Function} done
+ */
+exports.getByMail = function (mail, done) {
+    return Promise.cast(models.User.findOne({mail: mail}).exec())
+        .nodeify(done);
+};
+
+/**
+ * Inserts a new document, and returns it.
  * @param {Object} user Document to insert
  * @param {Function} done
  */
@@ -54,7 +70,7 @@ exports.insert = function (user, done) {
 };
 
 /**
- * Changes the password to the new value if the old value is correct
+ * Changes the password to the new value if the old value is correct. Throws NotFoundError if not found.
  * @param {string|number} id User id
  * @param {string|number} oldPass Old password
  * @param {string|number} newPass New password
@@ -82,7 +98,7 @@ exports.changePassword = function (id, oldPass, newPass, done) {
 };
 
 /**
- * Reverses admin rights on an user
+ * Reverses admin rights on an user. Throws NotFoundError if not found.
  * @param {string|number} id User id
  * @param {Function} done
  */

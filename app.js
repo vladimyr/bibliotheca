@@ -5,7 +5,7 @@ var app = express();
 app.use(express.static(__dirname + "/public"));
 
 var bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 var router = express.Router();
@@ -14,7 +14,7 @@ app.use(router);
 var auth = require("./auth");
 auth.init(app);
 
-var common=require("./common");
+var common = require("./common");
 common.initExtensions();
 
 var controllers = require("./controllers");

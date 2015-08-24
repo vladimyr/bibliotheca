@@ -9,14 +9,14 @@ var models = require("../models");
 
 describe("/api", function () {
     var url = "http://localhost:" + config.port;
-    var _user, _book;
+    var _user, _book, _token;
     var _randomId = "000011110000111100001111";
-    describe("/users", function () {
-        var userUrl = "/api/users/";
+    describe("/register", function () {
+        var registerUrl = "/api/register";
         describe("Post", function () {
             it("Valid user provided, should return user as JSON object", function (done) {
                 request(url)
-                    .post(userUrl)
+                    .post(registerUrl)
                     .send(userData)
                     .expect("Content-Type", /json/)
                     .expect(200)
@@ -28,11 +28,83 @@ describe("/api", function () {
                         done();
                     });
             });
+            it("Existing user mail provided, should return 204 No Response", function (done) {
+                request(url)
+                    .post("/api/register")
+                    .send(userData)
+                    .expect(204)
+                    .end(function (err, res) {
+                        if (err)
+                            throw err;
+                        res.body.should.be.empty();
+                        done();
+                    });
+            });
         });
+    });
+    describe("/login", function () {
+        var loginUrl = "/api/login";
+        describe("Post", function () {
+            it("Incorrect mail provided, should return 404 Not Found", function (done) {
+                request(url)
+                    .post(loginUrl)
+                    .send({mail: "abcdefgh", password: "1234"})
+                    .expect("Content-Type", /json/)
+                    .expect(404)
+                    .end(function (err, res) {
+                        if (err)
+                            throw err;
+                        //res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books"]);
+                        done();
+                    });
+            });
+            it("Incorrect password provided, should return 404 Not Found", function (done) {
+                request(url)
+                    .post(loginUrl)
+                    .send({mail: userData.mail, password: "0000"})
+                    .expect("Content-Type", /json/)
+                    .expect(404)
+                    .end(function (err, res) {
+                        if (err)
+                            throw err;
+                        //res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books"]);
+                        done();
+                    });
+            });
+            it("Correct credentials provided, should return JSON object with user and token fields", function (done) {
+                request(url)
+                    .post(loginUrl)
+                    .send(userData)
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err)
+                            throw err;
+                        res.body.should.be.instanceOf(Object).and.have.properties(["user", "token"]);
+                        _token = res.body.token;
+                        done();
+                    });
+            });
+        });
+    });
+    describe("/users", function () {
+        var userUrl = "/api/users/";
         describe("Get", function () {
+            it("Should return 401 Unauthorized because of missing Authorization header", function (done) {
+                request(url)
+                    .get(userUrl)
+                    .expect(401)
+                    .end(function (err, res) {
+                        if (err)
+                            throw err;
+                        res.body.should.be.empty();
+                        done();
+                    });
+            });
             it("Should return users as JSON array", function (done) {
                 request(url)
                     .get(userUrl)
+                    .set("Authorization", "bearer " + _token)
                     .expect("Content-Type", /json/)
                     .expect(200)
                     .end(function (err, res) {
@@ -47,6 +119,7 @@ describe("/api", function () {
             it("Should return user as JSON object", function (done) {
                 request(url)
                     .get(userUrl + _user._id)
+                    .set("Authorization", "bearer " + _token)
                     .expect("Content-Type", /json/)
                     .expect(200)
                     .end(function (err, res) {
@@ -59,6 +132,7 @@ describe("/api", function () {
             it("Should return user as JSON object with isAdmin property true", function (done) {
                 request(url)
                     .get(userUrl + _user._id + "/reverseAdmin")
+                    .set("Authorization", "bearer " + _token)
                     .expect("Content-Type", /json/)
                     .expect(200)
                     .end(function (err, res) {
@@ -72,6 +146,7 @@ describe("/api", function () {
             it("Should return JSON object with isAdmin property false", function (done) {
                 request(url)
                     .get(userUrl + _user._id + "/reverseAdmin")
+                    .set("Authorization", "bearer " + _token)
                     .expect("Content-Type", /json/)
                     .expect(200)
                     .end(function (err, res) {
@@ -87,6 +162,7 @@ describe("/api", function () {
             it("Wrong password provided, should return UnauthorizedError", function (done) {
                 request(url)
                     .put(userUrl + _user._id + "/changePass")
+                    .set("Authorization", "bearer " + _token)
                     .send({oldPass: userData.password + "123", newPass: "123"})
                     .expect(401)
                     .end(function (err, res) {
@@ -99,6 +175,7 @@ describe("/api", function () {
             it("Correct password provided, should return 200 OK", function (done) {
                 request(url)
                     .put(userUrl + _user._id + "/changePass")
+                    .set("Authorization", "bearer " + _token)
                     .send({oldPass: userData.password, newPass: "123"})
                     .expect("Content-Type", /text/)
                     .expect(200)
@@ -121,6 +198,7 @@ describe("/api", function () {
                 _tempBook.user = "123"
                 request(url)
                     .post(bookUrl)
+                    .set("Authorization", "bearer " + _token)
                     .send(_tempBook)
                     .expect(500)
                     .end(function (err, res) {
@@ -134,6 +212,7 @@ describe("/api", function () {
                 _tempBook.user = _randomId;
                 request(url)
                     .post(bookUrl)
+                    .set("Authorization", "bearer " + _token)
                     .send(_tempBook)
                     .expect(404)
                     .end(function (err, res) {
@@ -147,6 +226,7 @@ describe("/api", function () {
                 bookData.user = _user._id;
                 request(url)
                     .post(bookUrl)
+                    .set("Authorization", "bearer " + _token)
                     .send(bookData)
                     .expect("Content-Type", /json/)
                     .expect(200)
@@ -163,6 +243,7 @@ describe("/api", function () {
             it("Should return books as JSON array", function (done) {
                 request(url)
                     .get(bookUrl)
+                    .set("Authorization", "bearer " + _token)
                     .expect("Content-Type", /json/)
                     .expect(200)
                     .end(function (err, res) {
@@ -176,6 +257,7 @@ describe("/api", function () {
             it("Should return JSON object", function (done) {
                 request(url)
                     .get(bookUrl + _book._id)
+                    .set("Authorization", "bearer " + _token)
                     .expect("Content-Type", /json/)
                     .expect(200)
                     .end(function (err, res) {
@@ -190,6 +272,7 @@ describe("/api", function () {
             it("Valid book object provided, should return JSON object", function (done) {
                 request(url)
                     .put(bookUrl + _book._id)
+                    .set("Authorization", "bearer " + _token)
                     .send(bookData)
                     .expect("Content-Type", /json/)
                     .expect(200)
@@ -206,6 +289,7 @@ describe("/api", function () {
             it("Valid id provided, should return 200 OK", function (done) {
                 request(url)
                     .delete(bookUrl + _book._id)
+                    .set("Authorization", "bearer " + _token)
                     .expect("Content-Type", /text/)
                     .expect(200)
                     .end(function (err, res) {
