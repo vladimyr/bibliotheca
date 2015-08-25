@@ -1,13 +1,14 @@
 ﻿"use strict"
 var repository = require("../repository");
 var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
-var bearerStrategy = require('passport-http-bearer').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
+var BearerStrategy = require('passport-http-bearer').Strategy;
 var jwt = require('jwt-simple');
 var config = require("../config");
 var hasher = require("../hasher");
 var Promise = require("bluebird");
 var common = require("../common");
+var logger=require("../logger");
 Promise.promisifyAll(hasher);
 
 /** Middleware that rejects non-admin users */
@@ -21,7 +22,7 @@ exports.requiresAdmin = function (req, res, next) {
 /** Initialize passport and used passport strategies */
 exports.init = function (app) {
 
-    passport.use("local", new localStrategy({usernameField: "mail"}, function (mail, password, next) {
+    passport.use("local", new LocalStrategy({usernameField: "mail"}, function (mail, password, next) {
         return repository.users.getByMail(mail)
             .bind({})
             .then(function (user) {
@@ -53,7 +54,7 @@ exports.init = function (app) {
             .nodeify(next);
     }));
 
-    passport.use("bearer", new bearerStrategy(function (token, next) {
+    passport.use("bearer", new BearerStrategy(function (token, next) {
         var decoded;
         try {
             decoded = jwt.decode(token, config.secret);
@@ -74,4 +75,5 @@ exports.init = function (app) {
     }));
 
     app.use(passport.initialize());
+    logger.log("info","Passport initialized");
 };

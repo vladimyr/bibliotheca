@@ -5,6 +5,7 @@ var repository = require("../repository");
 var models = require("../models");
 var hasher = require("../hasher");
 var Promise = require("bluebird");
+var logger = require("../logger");
 Promise.promisifyAll(hasher);
 Promise.promisifyAll(models.Book);
 Promise.promisifyAll(models.User);
@@ -14,11 +15,11 @@ var seed = function () {
     var books, users;
     return seedDatabase(models.User, initialUsers, "users")
         .then(function () {
-            console.log("Successfully inserted users");
+            logger.info("Successfully inserted users");
             return seedDatabase(models.Book, initialBooks, "books");
         })
         .then(function () {
-            console.log("Successfully inserted books");
+            logger.info("Successfully inserted books");
             return models.Book.findAsync({});
         })
         .then(function (res) {
@@ -30,10 +31,10 @@ var seed = function () {
             return mapUserBooks(users[0], [books[0], books[1]]);
         })
         .then(function (res) {
-            console.log("Successfully updated references");
+            logger.info("Successfully updated references");
         })
         .catch(function (e) {
-            console.log("Global catch: " + e);
+            logger.info("Global catch: " + e.message, e);//why isn't this logged to file? Why is e copying previous param?
         });
 };
 
@@ -45,7 +46,7 @@ var seedDatabase = function (seedModel, seedArray, seedName) {
                 return Promise.reject(new Error("Collection not empty!"));
         })
         .then(function () {
-            console.log("Seeding");
+            logger.info("Seeding");
             if (seedName == "users") {
                 return Promise.map(seedArray, function (val) {
                     return hasher.getHashAsync(val.password)
@@ -58,10 +59,6 @@ var seedDatabase = function (seedModel, seedArray, seedName) {
                 return Promise.resolve(seedArray);
             }
         })
-        //.each(function (val, index) {
-        //    if (seedName == "users")
-        //        seedArray[index].password = val;
-        //})
         .then(function (res) {
             var insertAsync = Promise.promisify(seedModel.collection.insert, seedModel.collection);
             return insertAsync(res);

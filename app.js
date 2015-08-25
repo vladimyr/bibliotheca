@@ -1,8 +1,13 @@
 ﻿"use strict"
 var config = require("./config");
 var express = require("express");
+var path = require("path");
 var app = express();
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "/public")));
+
+var logger = require("./logger");
+var morgan = require("morgan");
+app.use(morgan("combined",{"stream": logger.stream}));
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: false}));
@@ -20,10 +25,10 @@ common.initExtensions();
 var controllers = require("./controllers");
 controllers.init(router);
 
-app.get('*', function (req, res) {
-    res.sendFile(__dirname + "/public/app/index.html");
+app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "/public/app/index.html"));
 });
 
 var port = config.port;
 app.listen(port);
-console.log("Listening on port: " + port);
+logger.info("Application listening on port: " + port);
