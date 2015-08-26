@@ -7,7 +7,11 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 var logger = require("./logger");
 var morgan = require("morgan");
-app.use(morgan("combined",{"stream": logger.stream}));
+app.use(morgan("combined", {"stream": logger.stream}));
+
+var helmet = require("helmet");
+app.use(helmet());
+logger.info("Helmet initialized");
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: false}));
@@ -26,7 +30,7 @@ var controllers = require("./controllers");
 controllers.init(router);
 
 app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "/public/app/index.html"));
+    res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
 var port = config.port;

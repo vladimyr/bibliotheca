@@ -1,16 +1,17 @@
 ﻿"use strict"
 var mongoose = require("mongoose");
 var mongoUrl = require("../config").mongoUrl;
+var logger = require("../logger");
 
 mongoose.connect(mongoUrl);
 
 var db = mongoose.connection;
 
 db.on('error', function (err) {
-    console.log("Couldn't connect to database " + mongoUrl, err);
+    logger.info("Couldn't connect to database " + mongoUrl, err);
 });
 db.once('open', function () {
-    console.log("Connected to database " + mongoUrl);
+    logger.info("Connected to database " + mongoUrl);
 });
 
 module.exports = {

@@ -13,6 +13,7 @@
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
     "helmet": "^0.10.0",
+    "jquery": "^2.1.4",
     "jwt-simple": "^0.3.0",
     "minimatch": "^2.0.10",
     "mongoose": "^4.1.2",
@@ -23,9 +24,14 @@
     "winston": "^1.0.1"
   },
   "devDependencies": {
+    "css-loader": "^0.16.0",
+    "file-loader": "^0.8.4",
+    "imports-loader": "^0.6.4",
     "mocha": "^2.2.5",
     "should": "^7.0.4",
-    "supertest": "^1.0.1"
+    "style-loader": "^0.12.3",
+    "supertest": "^1.0.1",
+    "webpack": "^1.12.0"
   },
   "scripts": {
     "test": "xo && mocha",
