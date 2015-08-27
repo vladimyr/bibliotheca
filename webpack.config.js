@@ -1,4 +1,8 @@
-var path = require("path");
+'use strict';
+
+var path = require("path"),
+    ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
     entry: "./webpack.entry.js",
     output: {
@@ -7,9 +11,15 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.css$/, loader: "style!css"},
-            {test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/, loader: "file-loader"},
-            {test: /bootstrap\.js$/, loader: 'imports?jQuery=jquery'}
+            { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
+            { test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/, loader: 'file-loader' },
+
+            // bootstrap
+            { test: /bootstrap\.js$/, loader: 'imports?jQuery=jquery' },
+            { test: /bootstrap\/js\/.*\.js$/, loader: 'imports?jQuery=jquery' }
         ]
-    }
+    },
+    plugins: [
+       new ExtractTextPlugin('style.css', { allChunks: true })
+    ]
 };

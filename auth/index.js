@@ -1,4 +1,5 @@
-﻿"use strict"
+﻿'use strict';
+
 var repository = require("../repository");
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;

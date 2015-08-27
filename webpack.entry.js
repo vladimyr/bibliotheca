@@ -1,10 +1,17 @@
-var path = require("path");
-var nodeModulesPath = "./node_modules";
+'use strict';
+
 //require("angular");
 require("bootstrap/dist/css/bootstrap.css");
-//require(path.join(nodeModulesPath,"/bootstrap/dist/css/bootstrap.css"));
-require("jquery");
 
-require("imports?jQuery=jquery!bootstrap");
+var jQuery = require("jquery");
 require("bootstrap");
-//require(path.join(nodeModulesPath, "/bootstrap/dist/js/bootstrap.js"));
+
+var $ = jQuery;
+//window.$ = jQuery;
+
+$(document).ready(function(){
+
+    $('button').click(function(){
+        alert('It works!');
+    });
+});

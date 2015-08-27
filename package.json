@@ -11,7 +11,9 @@
     "bcrypt": "^0.8.4",
     "bluebird": "^2.9.34",
     "body-parser": "^1.13.3",
+    "bootstrap": "^3.3.5",
     "express": "^4.13.3",
+    "extract-text-webpack-plugin": "^0.8.2",
     "helmet": "^0.10.0",
     "jquery": "^2.1.4",
     "jwt-simple": "^0.3.0",
@@ -31,11 +33,22 @@
     "should": "^7.0.4",
     "style-loader": "^0.12.3",
     "supertest": "^1.0.1",
-    "webpack": "^1.12.0"
+    "webpack": "^1.12.0",
+    "xo": "^0.7.1"
   },
   "scripts": {
-    "test": "xo && mocha",
+    "lint": "xo",
+    "test": "mocha",
     "seed": "node bin/seedData.js",
     "genspec": "raml2html apiSpec/apiSpec.raml > apiSpec/apiSpec.html"
+  },
+  "xo": {
+    "envs": [ "node", "browser", "mocha" ],
+    "space": 4,
+    "rules": {
+      "no-irregular-whitespace": 0,
+      "curly": [ 1, "multi-or-nest" ],
+      "no-inline-comments": 0
+    }
   }
 }
