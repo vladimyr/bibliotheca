@@ -1,20 +1,20 @@
-﻿'use strict';
+﻿"use strict";
 
 var repository = require("../repository");
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var BearerStrategy = require('passport-http-bearer').Strategy;
-var jwt = require('jwt-simple');
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var BearerStrategy = require("passport-http-bearer").Strategy;
+var jwt = require("jwt-simple");
 var config = require("../config");
 var hasher = require("../hasher");
 var Promise = require("bluebird");
 var common = require("../common");
-var logger=require("../logger");
+var logger = require("../logger");
 Promise.promisifyAll(hasher);
 
 /** Middleware that rejects non-admin users */
 exports.requiresAdmin = function (req, res, next) {
-    if (req.user && req.user.isAdmin == true)
+    if (req.user && req.user.isAdmin === true)
         next();
     else
         res.sendStatus(401);
@@ -29,8 +29,7 @@ exports.init = function (app) {
             .then(function (user) {
                 if (!user) {
                     return Promise.reject(new common.errors.NotFoundError());
-                }
-                else {
+                } else {
                     this.user = user;
                     return hasher.compareAsync(password, user.password);
                 }
@@ -64,7 +63,7 @@ exports.init = function (app) {
             }
         } catch (err) {
             console.log(err);
-            return next(null, false); //return unauthorized regardless of reason
+            return next(null, false);
         }
         repository.users.getByToken(token, function (err, user) {
             if (err)
@@ -76,5 +75,5 @@ exports.init = function (app) {
     }));
 
     app.use(passport.initialize());
-    logger.log("info","Passport initialized");
+    logger.log("info", "Passport initialized");
 };

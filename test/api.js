@@ -195,7 +195,7 @@ describe("/api", function () {
         describe("Post", function () {
             it("Invalid user field provided, should return status 500", function (done) {
                 var _tempBook = bookData;
-                _tempBook.user = "123"
+                _tempBook.user = "123";
                 request(url)
                     .post(bookUrl)
                     .set("Authorization", "bearer " + _token)

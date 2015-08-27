@@ -86,7 +86,7 @@ exports.changePassword = function (id, oldPass, newPass, done) {
             return hasher.compareAsync(oldPass, user.password);
         })
         .then(function (result) {
-            if (result == false)
+            if (result === false)
                 return Promise.reject(new common.errors.UnauthorizedError());
             return hasher.getHashAsync(newPass);
         })
