@@ -5,6 +5,11 @@ var path = require("path");
 var app = express();
 app.use(express.static(path.join(__dirname, "/public")));
 
+var cors = require('express-cors');
+app.use(cors({
+    allowedOrigins: ["*"]
+}));
+
 var logger = require("./logger");
 var morgan = require("morgan");
 app.use(morgan("combined", {"stream": logger.stream}));
