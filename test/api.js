@@ -1,4 +1,4 @@
-﻿"use strict"
+﻿"use strict";
 var mongoose = require("mongoose");
 var request = require("supertest");
 var should = require("should");
@@ -8,11 +8,11 @@ var config = require("../config");
 var models = require("../models");
 
 describe("/api", function () {
-    var url = "http://localhost:" + config.port;
+    var url = config.apiUrl;
     var _user, _book, _token;
     var _randomId = "000011110000111100001111";
     describe("/register", function () {
-        var registerUrl = "/api/register";
+        var registerUrl = "/register";
         describe("Post", function () {
             it("Valid user provided, should return user as JSON object", function (done) {
                 request(url)
@@ -30,7 +30,7 @@ describe("/api", function () {
             });
             it("Existing user mail provided, should return 204 No Response", function (done) {
                 request(url)
-                    .post("/api/register")
+                    .post(registerUrl)
                     .send(userData)
                     .expect(204)
                     .end(function (err, res) {
@@ -43,7 +43,7 @@ describe("/api", function () {
         });
     });
     describe("/login", function () {
-        var loginUrl = "/api/login";
+        var loginUrl = "/login";
         describe("Post", function () {
             it("Incorrect mail provided, should return 404 Not Found", function (done) {
                 request(url)
@@ -88,19 +88,19 @@ describe("/api", function () {
         });
     });
     describe("/users", function () {
-        var userUrl = "/api/users/";
+        var userUrl = "/users/";
         describe("Get", function () {
-            it("Should return 401 Unauthorized because of missing Authorization header", function (done) {
-                request(url)
-                    .get(userUrl)
-                    .expect(401)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        res.body.should.be.empty();
-                        done();
-                    });
-            });
+            //it("Should return 401 Unauthorized because of missing Authorization header", function (done) {
+            //    request(url)
+            //        .get(userUrl)
+            //        .expect(401)
+            //        .end(function (err, res) {
+            //            if (err)
+            //                throw err;
+            //            res.body.should.be.empty();
+            //            done();
+            //        });
+            //});
             it("Should return users as JSON array", function (done) {
                 request(url)
                     .get(userUrl)
@@ -129,99 +129,76 @@ describe("/api", function () {
                         done();
                     });
             });
-            it("Should return user as JSON object with isAdmin property true", function (done) {
-                request(url)
-                    .get(userUrl + _user._id + "/reverseAdmin")
-                    .set("Authorization", "bearer " + _token)
-                    .expect("Content-Type", /json/)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books", "isAdmin"]);
-                        res.body.isAdmin.should.be.true();
-                        done();
-                    });
-            });
-            it("Should return JSON object with isAdmin property false", function (done) {
-                request(url)
-                    .get(userUrl + _user._id + "/reverseAdmin")
-                    .set("Authorization", "bearer " + _token)
-                    .expect("Content-Type", /json/)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books", "isAdmin"]);
-                        res.body.isAdmin.should.be.false();
-                        done();
-                    });
+        });
+        describe("/reverseAdmin", function () {
+            describe("Get", function () {
+                it("Should return user as JSON object with isAdmin property true", function (done) {
+                    request(url)
+                        .get(userUrl + _user._id + "/reverseAdmin")
+                        .set("Authorization", "bearer " + _token)
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books", "isAdmin"]);
+                            res.body.isAdmin.should.be.true();
+                            done();
+                        });
+                });
+                it("Should return JSON object with isAdmin property false", function (done) {
+                    request(url)
+                        .get(userUrl + _user._id + "/reverseAdmin")
+                        .set("Authorization", "bearer " + _token)
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books", "isAdmin"]);
+                            res.body.isAdmin.should.be.false();
+                            done();
+                        });
+                });
             });
         });
-        describe("Put", function () {
-            it("Wrong password provided, should return UnauthorizedError", function (done) {
-                request(url)
-                    .put(userUrl + _user._id + "/changePass")
-                    .set("Authorization", "bearer " + _token)
-                    .send({oldPass: userData.password + "123", newPass: "123"})
-                    .expect(401)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        should.equal(res.body.name, "UnauthorizedError", "Unexpected error type");
-                        done();
-                    });
-            });
-            it("Correct password provided, should return 200 OK", function (done) {
-                request(url)
-                    .put(userUrl + _user._id + "/changePass")
-                    .set("Authorization", "bearer " + _token)
-                    .send({oldPass: userData.password, newPass: "123"})
-                    .expect("Content-Type", /text/)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        //res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books"]);
-                        res.body.should.be.empty();
-                        done();
-                    });
+        describe("/changePass", function () {
+            describe("Put", function () {
+                it("Wrong password provided, should return UnauthorizedError", function (done) {
+                    request(url)
+                        .put(userUrl + _user._id + "/changePass")
+                        .set("Authorization", "bearer " + _token)
+                        .send({oldPass: userData.password + "123", newPass: "123"})
+                        .expect(401)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            should.equal(res.body.name, "UnauthorizedError", "Unexpected error type");
+                            done();
+                        });
+                });
+                it("Correct password provided, should return 200 OK", function (done) {
+                    request(url)
+                        .put(userUrl + _user._id + "/changePass")
+                        .set("Authorization", "bearer " + _token)
+                        .send({oldPass: userData.password, newPass: "123"})
+                        .expect("Content-Type", /text/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            //res.body.should.be.instanceOf(Object).and.have.properties(["mail", "books"]);
+                            res.body.should.be.empty();
+                            done();
+                        });
+                });
             });
         });
 
     });
     describe("/books", function () {
-        var bookUrl = "/api/books/";
+        var bookUrl = "/books/";
         describe("Post", function () {
-            it("Invalid user field provided, should return status 500", function (done) {
-                var _tempBook = bookData;
-                _tempBook.user = "123";
-                request(url)
-                    .post(bookUrl)
-                    .set("Authorization", "bearer " + _token)
-                    .send(_tempBook)
-                    .expect(500)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        done();
-                    });
-            });
-            it("Non-existing user field provided, should return NotFoundError", function (done) {
-                var _tempBook = bookData;
-                _tempBook.user = _randomId;
-                request(url)
-                    .post(bookUrl)
-                    .set("Authorization", "bearer " + _token)
-                    .send(_tempBook)
-                    .expect(404)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        should.equal(res.body.name, "NotFoundError", "Unexpected error type");
-                        done();
-                    });
-            });
             it("Valid book object provided, should return JSON object", function (done) {
                 bookData.user = _user._id;
                 request(url)
@@ -283,6 +260,88 @@ describe("/api", function () {
                         _book = res.body;
                         done();
                     });
+            });
+        });
+        describe("/like", function () {
+            describe("Get", function () {
+                it("Should return true because user has the book liked", function (done) {
+                    request(url)
+                        .get(bookUrl + _book._id + "/like")
+                        .set("Authorization", "bearer " + _token)
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            res.body.should.equal(true);
+                            done();
+                        });
+                });
+            });
+            describe("Put", function () {
+                it("Should return book as JSON object with empty 'likes' array", function (done) {
+                    request(url)
+                        .put(bookUrl + _book._id + "/like")
+                        .set("Authorization", "bearer " + _token)
+                        .send(bookData)
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            res.body.should.be.instanceOf(Object).and.have.properties(["title", "user", "likes"]);
+                            res.body.likes.should.be.instanceOf(Array).and.be.empty();
+                            done();
+                        });
+                });
+            });
+            describe("Get", function () {
+                it("Should return false because user has unliked the book", function (done) {
+                    request(url)
+                        .get(bookUrl + _book._id + "/like")
+                        .set("Authorization", "bearer " + _token)
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            res.body.should.equal(false);
+                            done();
+                        });
+                });
+            });
+            describe("Put", function () {
+                it("Should return book as JSON object with the userId in the 'likes' array", function (done) {
+                    request(url)
+                        .put(bookUrl + _book._id + "/like")
+                        .set("Authorization", "bearer " + _token)
+                        .send(bookData)
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            res.body.should.be.instanceOf(Object).and.have.properties(["title", "user", "likes"]);
+                            res.body.likes.should.be.instanceOf(Array);
+                            res.body.likes[0].should.equal(_user._id);
+                            done();
+                        });
+                });
+            });
+            describe("Get", function () {
+                it("Should return true because user has liked the book again", function (done) {
+                    request(url)
+                        .get(bookUrl + _book._id + "/like")
+                        .set("Authorization", "bearer " + _token)
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err)
+                                throw err;
+                            res.body.should.equal(true);
+                            done();
+                        });
+                });
             });
         });
         describe("Delete", function () {

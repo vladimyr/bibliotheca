@@ -1,5 +1,6 @@
-"use strict"
+"use strict";
 var repository = require("../repository");
+var generateCallback = require("../common").controllerHelper.generateCallback;
 
 exports.init = function (router) {
 
@@ -10,14 +11,7 @@ exports.init = function (router) {
             else if (user)
                 res.sendStatus(204);
             else {
-                if (req.body.isAdmin)
-                    delete req.body.isAdmin;
-                repository.users.insert(req.body, function (err, user) {
-                    if (err)
-                        res.customHandleError(err);
-                    else
-                        res.status(200).send(user);
-                });
+                repository.users.insert(req.body, generateCallback(res));
             }
         });
     });

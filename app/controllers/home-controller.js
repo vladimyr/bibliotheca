@@ -1,16 +1,14 @@
-"use strict"
-//module.exports = function (app) {
-//    app.controller("HomeController", ["$scope", function ($scope) {
-//        $scope.testBox = "test";
-//    }]);
-//};
-var angular=require("angular");
+"use strict";
+
 var deps = ["$scope"];
-var ctrl = function ($scope) {
-    $scope.testBox = "test";
-};
+
+function ctrl($scope) {
+    //
+
+    //
+}
 ctrl.$inject = deps;
+
 module.exports = function (app) {
     app.controller("HomeController", ctrl);
 };
-

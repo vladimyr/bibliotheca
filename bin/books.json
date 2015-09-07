@@ -1,20 +1,22 @@
 ﻿[
-    {
-        "title": "Test Book",
-        "description": "Test Desc",
-        "pages": 123,
-        "isbn10": "1-234-56789-8",
-        "isbn13": "1-234-56789-1234",
-        "amazonUrl": "testUrl",
-        "imageUrl": "testImgUrl"
-    },
-    {
-        "title": "Second Test Book",
-        "description": "Second Test Desc",
-        "pages": 123,
-        "isbn10": "1-234-56789-8",
-        "isbn13": "1-234-56789-1234",
-        "amazonUrl": "testUrl",
-        "imageUrl": "testImgUrl"
-    }
+  {
+    "title": "Test Book",
+    "author": "Test Author",
+    "description": "* Written by the inventor of the language, the book is the defining, classic text on the language that has become central to software development over the past five years. This third edition incorporates additions and changes on a major scale. In particular, the new edition is based on the ANSI/ISO C++ final draft with its many new language features - templates, exceptions, namespaces, and run-time type identification, to name a few - in addition to the C++ Standard Template Library that has revolutionized C++ development. * Throughout, the book does far more than merely describe every element of the language. The focus is on showing how the language is used as a tool for design and programming, and teaching the basic concepts programmers need to master C++. With this third edition, Stroustrup has made the book even more accessible to those new to the language while adding information and techniques that even expert C++ programmers will find invaluable.",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "http://ecx.images-amazon.com/images/I/51E-UF9BzDL._SX395_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Second Test Book",
+    "author": "Test Author Second",
+    "description": "Second Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
+  }
 ]

@@ -1,5 +1,6 @@
 {
   "title": "Test Book",
+  "author": "Test Author",
   "description": "Test Desc",
   "pages": 123,
   "isbn10": "1-234-56789-1",

@@ -1,14 +1,11 @@
-﻿"use strict"
-var config = require("./config");
-var express = require("express");
-var path = require("path");
-var app = express();
+﻿"use strict";
+var config = require("./config"),
+    express = require("express"),
+    path = require("path"),
+    app = express(),
+    cors = require("cors");
 app.use(express.static(path.join(__dirname, "/public")));
-
-var cors = require('express-cors');
-app.use(cors({
-    allowedOrigins: ["*"]
-}));
+app.use(cors());
 
 var logger = require("./logger");
 var morgan = require("morgan");

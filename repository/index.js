@@ -1,4 +1,4 @@
-﻿"use strict"
+﻿"use strict";
 var mongoose = require("mongoose");
 var mongoUrl = require("../config").mongoUrl;
 var logger = require("../logger");

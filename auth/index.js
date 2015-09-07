@@ -62,7 +62,7 @@ exports.init = function (app) {
                 throw new Error("Token expired");
             }
         } catch (err) {
-            console.log(err);
+            logger.error(err);
             return next(null, false);
         }
         repository.users.getByToken(token, function (err, user) {

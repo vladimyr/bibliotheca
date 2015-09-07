@@ -9,27 +9,24 @@ module.exports = {
     entry: "./app/index.js",
     output: {
         path: path.join(__dirname, "/public/dist"),
+        publicPath: "/dist/",
         filename: "bundle.js"
     },
     module: {
         loaders: [
             {test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
-            {test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/, loader: "file-loader"},
-            // ngtemplate - can require all templates from app/views
-            //{test: /\.html$/, loader: "ngtemplate?relativeTo=" + (path.resolve(__dirname, "./app/views")) + "/!html"},
-            {test: /\.html$/, loader: "html!ngtemplate"},
+            {test: /\.(eot|woff|woff2|ttf|svg|jpg)$/, loader: "file-loader"},
+            {test: /\.png$/, loader: "url-loader"},
+            {test: /\.html$/, loader: "html"},
             // expose jQuery globally
             //{test: require.resolve("jquery"), loader: "expose?jQuery"},
             // if using require("bootstrap/dist/js/bootstrap.js")
             //{test: /bootstrap\.js$/, loader: "imports?jQuery=jquery" },
-            {test: /bootstrap(\\|\/)js(\\|\/).*\.js$/, loader: "imports?jQuery=jquery"}
+            {test: /bootstrap(\\|\/)js(\\|\/).*\.js$/, loader: "imports?jQuery=jquery"},
+            {test: /semantic(\\|\/)dist(\\|\/).*\.js$/, loader: "imports?jQuery=jquery"}
         ]
     },
     plugins: [
-        //new webpack.ProvidePlugin({
-        //    "angular": "angular"
-        //}),
         new ExtractTextPlugin("style.css", {allChunks: true})
     ]
 };
-console.log(path.resolve(__dirname, './app/views'));

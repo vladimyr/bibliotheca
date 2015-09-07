@@ -1,4 +1,4 @@
-﻿"use strict"
+﻿"use strict";
 var models = require("../models");
 var Promise = require("bluebird");
 var hasher = require("../hasher");
@@ -9,7 +9,8 @@ var common = require("../common");
 
 /**
  * Get all documents (populated).
- * @param done
+ * @param {Function} done
+ * @returns {Object}
  */
 exports.getAll = function (done) {
     models.User.find({}).populate("books").exec(done);
@@ -19,6 +20,7 @@ exports.getAll = function (done) {
  * Get one document by id (populated). Throws NotFoundError if not found.
  * @param {string|number} id Document id
  * @param {Function} done
+ * @returns {Promise<R>}
  */
 exports.getById = function (id, done) {
     //models.User.findOne({_id: id}).populate("books").exec(done);
@@ -35,14 +37,15 @@ exports.getById = function (id, done) {
  * Get one document by token. Throws NotFoundError if now found
  * @param {string} token
  * @param {Function} done
+ * @returns {Promise<R>}
  */
 exports.getByToken = function (token, done) {
     return Promise.cast(models.User.findOne({token: token}).exec())
-        .then(function (user) {
-            if (!user)
-                return Promise.reject(new common.errors.NotFoundError("User not found"));
-            return user;
-        })
+        //.then(function (user) {
+        //    if (!user)
+        //        return Promise.reject(new common.errors.NotFoundError("User not found"));
+        //    return user;
+        //})
         .nodeify(done);
 };
 
@@ -50,6 +53,7 @@ exports.getByToken = function (token, done) {
  * Get one document by mail. Returns null if no document.
  * @param {string} mail Document mail property
  * @param {Function} done
+ * @returns {Promise<R>}
  */
 exports.getByMail = function (mail, done) {
     return Promise.cast(models.User.findOne({mail: mail}).exec())
@@ -60,6 +64,7 @@ exports.getByMail = function (mail, done) {
  * Inserts a new document, and returns it.
  * @param {Object} user Document to insert
  * @param {Function} done
+ * @returns {Promise<R>}
  */
 exports.insert = function (user, done) {
     return hasher.getHashAsync(user.password)
@@ -75,6 +80,7 @@ exports.insert = function (user, done) {
  * @param {string|number} oldPass Old password
  * @param {string|number} newPass New password
  * @param {Function} done
+ * @returns {Promise<R>}
  */
 exports.changePassword = function (id, oldPass, newPass, done) {
     var _user;
@@ -101,6 +107,7 @@ exports.changePassword = function (id, oldPass, newPass, done) {
  * Reverses admin rights on an user. Throws NotFoundError if not found.
  * @param {string|number} id User id
  * @param {Function} done
+ * @returns {void}
  */
 exports.reverseIsAdmin = function (id, done) {
     models.User.findOne({_id: id}, function (err, user) {

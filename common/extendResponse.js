@@ -1,8 +1,9 @@
-"use strict"
+"use strict";
 var express = require("express");
 var errorEnum = require("./errorEnum.js");
+var logger=require("../logger");
 /**
- * Responds depending on the type of error
+ * Extension to the Express response object. Responds depending on the type of error
  * @param {Error} err
  */
 express.response.customHandleError = function (err) {
@@ -12,4 +13,5 @@ express.response.customHandleError = function (err) {
         this.status(401).send(err);
     } else
         this.sendStatus(500);
+    logger.error(err);
 };

@@ -1,4 +1,4 @@
-﻿"use strict"
+﻿"use strict";
 var initialBooks = require("./books.json");
 var initialUsers = require("./users.json");
 var repository = require("../repository");
@@ -69,6 +69,7 @@ var mapUserBooks = function (user, books) {
     user.books = books;
     return Promise.each(books, function (val) {
         val.user = user._id;
+        val.likes = [user._id];
         val.saveAsync = Promise.promisify(val.save, val);
         return val.saveAsync();
     })

@@ -150,6 +150,7 @@
     "_id": "55d705d439bd303c0f09b93e",
     "mail": "admin@extensionengine.com",
     "isAdmin": true,
+    "verified": true,
     "books": [
       {
         "_id": "55d705d439bd303c0f09b940",
@@ -179,6 +180,7 @@
     "_id": { "type": "string"},
     "mail": { "type": "string"},
     "isAdmin": { "type": "boolean"},
+    "verified": { "type": "boolean"},
     "books": { 
       "type": "array",
       "items": { "$ref": "book"}
@@ -225,6 +227,7 @@
     "_id": { "type": "string"},
     "mail": { "type": "string"},
     "isAdmin": { "type": "boolean"},
+    "verified": { "type": "boolean"},
     "books": { 
       "type": "array",
       "items": "string"
@@ -477,7 +480,34 @@
   }
 }
 
-</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="books__id__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/books</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete a book.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#books__id__delete_request" data-toggle="tab">Request</a></li><li><a href="#books__id__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books__id__delete_request"><h3>URI Parameters</h3><ul><li><strong>Book ID</strong>: <em>required (string)</em><p>24-character ID of the book in the database.</p></li></ul></div><div class="tab-pane" id="books__id__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="register" class="panel-title">/register</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_register"><span class="parent"></span>/register</a> <span class="methods"><a href="#register_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_register" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#register_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="register_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/register</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#register_post_request" data-toggle="tab">Request</a></li><li><a href="#register_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="register_post_request"><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="books__id__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/books</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete a book.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#books__id__delete_request" data-toggle="tab">Request</a></li><li><a href="#books__id__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books__id__delete_request"><h3>URI Parameters</h3><ul><li><strong>Book ID</strong>: <em>required (string)</em><p>24-character ID of the book in the database.</p></li></ul></div><div class="tab-pane" id="books__id__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_books__id__like"><span class="parent">/books/{id}</span>/like</a> <span class="methods"><a href="#books__id__like_get"><span class="badge badge_get">get</span></a> <a href="#books__id__like_put"><span class="badge badge_put">put</span></a></span></h4></div><div id="panel_books__id__like" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#books__id__like_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get response saying does the logged user have the book liked or not.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#books__id__like_put'" class="list-group-item"><span class="badge badge_put">put</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="books__id__like_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/books/{id}</span>/like</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get response saying does the logged user have the book liked or not.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#books__id__like_get_request" data-toggle="tab">Request</a></li><li><a href="#books__id__like_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books__id__like_get_request"><h3>URI Parameters</h3><ul><li><strong>Book ID</strong>: <em>required (string)</em><p>24-character ID of the book in the database.</p></li></ul></div><div class="tab-pane" id="books__id__like_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "type": "object",
+  "description": "JSON object representation of a book.", 
+  "properties": {
+    "_id": { "type": "string"},
+    "title": { "type": "string"},
+    "description": { "type": "string"},
+    "pages": { "type": "string"},
+    "isbn10": { "type": "string"},
+    "isbn13": { "type": "string"},
+    "amazonUrl": { "type": "string"},
+    "imageUrl": { "type": "string"},
+    "user": { "type": "string"}
+  },
+  "required": ["_id", "title", "user"]
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "_id": "55d705d439bd303c0f09b940",
+  "title": "Test Book",
+  "description": "Test Desc",
+  "pages": 123,
+  "isbn10": "1-234-56789-8",
+  "isbn13": "1-234-56789-1234",
+  "amazonUrl": "testUrl",
+  "imageUrl": "testImgUrl",
+  "user": "55d705d439bd303c0f09b93e"
+} 
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="books__id__like_put"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_put">put</span> <span class="parent">/books/{id}</span>/like</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#books__id__like_put_request" data-toggle="tab">Request</a></li></ul><div class="tab-content"><div class="tab-pane active" id="books__id__like_put_request"><h3>URI Parameters</h3><ul><li><strong>Book ID</strong>: <em>required (string)</em><p>24-character ID of the book in the database.</p></li></ul></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="register" class="panel-title">/register</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_register"><span class="parent"></span>/register</a> <span class="methods"><a href="#register_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_register" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#register_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="register_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/register</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#register_post_request" data-toggle="tab">Request</a></li><li><a href="#register_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="register_post_request"><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
   "type": "object",
   "description": "JSON object representation of user credentials.", 
   "properties": {
@@ -497,6 +527,7 @@
     "_id": { "type": "string"},
     "mail": { "type": "string"},
     "isAdmin": { "type": "boolean"},
+    "verified": { "type": "boolean"},
     "books": { 
       "type": "array",
       "items": "string"

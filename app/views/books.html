@@ -1,0 +1,43 @@
+<div class="ui stackable cards">
+    <div ng-repeat="b in books" class="card" style="width: 270px;">
+        <div class="image">
+            <img src={{b.imageUrl}}>
+        </div>
+        <div class="content">
+            <span class="right floated">
+                {{b.likeNumber}}
+              <i class="thumbs outline up icon"></i>
+          </span>
+            <div class="header">
+                {{b.title}}
+            </div>
+            <div class="meta">
+                <a>By {{b.author}}</a>
+            </div>
+            <div class="description">
+                <div ng-if=b.shortDesc>
+                    Short: {{b.shortDesc}}
+                    <a>Read more</a>
+                </div>
+                <div ng-if=!b.shortDesc>
+                    Long: {{b.description}}
+                </div>
+
+            </div>
+        </div>
+        <div class="extra content">
+          <span class="right floated">
+              <!--<i class="thumbs outline up icon"></i>-->
+            <!--{{b.likeNumber}} Likes-->
+          </span>
+        </div>
+        <div class="ui bottom attached button">
+            <i class="thumbs up icon"></i>
+            Like
+        </div>
+        <div class="ui bottom attached button green">
+            <i class="thumbs up icon"></i>
+            Liked
+        </div>
+    </div>
+</div>

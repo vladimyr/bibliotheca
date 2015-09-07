@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 /**
  * Initialize all custom extensions
@@ -8,5 +8,6 @@ var initExtensions = function () {
 };
 module.exports = {
     initExtensions: initExtensions,
-    errors: require("./errors.js")
+    errors: require("./errors.js"),
+    controllerHelper: require("./controllerHelper.js")
 };
