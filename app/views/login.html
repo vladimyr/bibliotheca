@@ -4,7 +4,7 @@
             <img src="../images/EELogo.png" class="image">
 
             <div class="content">
-                Log-in to your account
+
             </div>
         </h2>
         <form class="ui large form">
@@ -21,24 +21,36 @@
                         <input ng-model="password" type="password" name="password" placeholder="Password">
                     </div>
                 </div>
-                <div ng-click="login()" class="ui fluid large teal submit button">Login</div>
-                <div class="ui horizontal divider"></div>
-                <div class="inline field">
-                    <div class="ui checkbox">
-                        <input type="checkbox" ng-model="remember">
-                        <label>Remember me</label>
+                <div ng-if="isLogin" ng-click="login()" class="ui fluid large teal submit button">
+                    Login
+                </div>
+                <div ng-if="!isLogin" ng-click="register()" class="ui fluid large teal submit button">
+                    Register
+                </div>
+                <div ng-if="isLogin">
+                    <div class="ui horizontal divider"></div>
+                    <div class="inline field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" ng-model="remember">
+                            <label>Remember me</label>
+                        </div>
                     </div>
                 </div>
 
             </div>
-
         </form>
-
-        <div class="ui message">
-            Don't have an account? <a href="#">Register</a>
+        <div ng-if="isLogin" class="ui message">
+            Don't have an account? <a ui-sref="register()">Register</a>
         </div>
-        <div class="ui negative message">
-            {{res}}
+        <div ng-if="!isLogin" class="ui message">
+            Already have an account? <a ui-sref="login()">Login</a>
+        </div>
+        <div ng-if="hasRegistered">Verification mail has been sent to your address. Please confirm
+            it and then login <a ui-sref="login()">here</a>.
+        </div>
+        <div ng-if="!hasRegistered" class="ui error message">
+            {{msg}}
         </div>
     </div>
 </div>
+

@@ -8,7 +8,18 @@ function cfg($stateProvider, $urlRouterProvider) {
         .state("login", {
             url: "/login",
             template: require(viewsRoot + "login.html"),
-            controller: "LoginController"
+            controller: "LoginController",
+            data: {
+                isLogin: true
+            }
+        })
+        .state("register", {
+            url: "/register",
+            template: require(viewsRoot + "login.html"),
+            controller: "LoginController",
+            data: {
+                isLogin: false
+            }
         })
         .state("root", {
             abstract: true,
@@ -24,7 +35,6 @@ function cfg($stateProvider, $urlRouterProvider) {
         })
         .state("root.home", {
             url: "/home",
-            data: {requireLogin: true},
             views: {
                 "": {
                     template: require(viewsRoot + "home.html"),
