@@ -9,7 +9,7 @@ baseUri: http://localhost:1337/api
         [
           {
             "_id": "55d705d439bd303c0f09b93e",
-            "mail": "admin@extensionengine.com",
+            "email": "admin@extensionengine.com",
             "isAdmin": true,
             "verified": true,
             "books": [
@@ -28,7 +28,7 @@ baseUri: http://localhost:1337/api
           },
           {
             "_id": "55d705d439bd303c0f09b93f",
-            "mail": "user@extensionengine.com",
+            "email": "user@extensionengine.com",
             "isAdmin": false,
             "books": []
           }
@@ -44,7 +44,7 @@ baseUri: http://localhost:1337/api
         customExample: |
           {
             "_id": "55d705d439bd303c0f09b93e",
-            "mail": "admin@extensionengine.com",
+            "email": "admin@extensionengine.com",
             "isAdmin": true,
             "books": [
               {
@@ -100,7 +100,7 @@ baseUri: http://localhost:1337/api
                 example: |
                   {
                     "_id": "55d705d439bd303c0f09b93e",
-                    "mail": "admin@extensionengine.com",
+                    "email": "admin@extensionengine.com",
                     "isAdmin": true,
                     "books": [
                       "55d705d439bd303c0f09b940"
@@ -125,7 +125,7 @@ baseUri: http://localhost:1337/api
             "imageUrl": "testImgUrl",
             "user": {
               "_id": "55d705d439bd303c0f09b93e",
-              "mail": "admin@extensionengine.com",
+              "email": "admin@extensionengine.com",
               "isAdmin": true,
               "books": [
                 "55d705d439bd303c0f09b940",
@@ -144,7 +144,7 @@ baseUri: http://localhost:1337/api
             "imageUrl": "testImgUrl",
             "user": {
               "_id": "55d705d439bd303c0f09b93e",
-              "mail": "admin@extensionengine.com",
+              "email": "admin@extensionengine.com",
               "isAdmin": true,
               "books": [
                 "55d705d439bd303c0f09b940",
@@ -203,7 +203,7 @@ baseUri: http://localhost:1337/api
             "imageUrl": "testImgUrl",
             "user": {
               "_id": "55d705d439bd303c0f09b93e",
-              "mail": "admin@extensionengine.com",
+              "email": "admin@extensionengine.com",
               "isAdmin": true,
               "books": [
                 "55d705d439bd303c0f09b940",
@@ -255,7 +255,7 @@ baseUri: http://localhost:1337/api
         schema: credential
         example: |
           {
-            "mail":"user@extensionengine.com",
+            "email":"user@extensionengine.com",
             "password":"123"
           }
     responses:
@@ -266,7 +266,7 @@ baseUri: http://localhost:1337/api
             example: |
               {
                 "_id": "55d705d439bd303c0f09b93f",
-                "mail": "user@extensionengine.com",
+                "email": "user@extensionengine.com",
                 "isAdmin": false,
                 "books": []
               }
@@ -278,7 +278,7 @@ baseUri: http://localhost:1337/api
         schema: credential
         example: |
           {
-            "mail":"user@extensionengine.com",
+            "email":"user@extensionengine.com",
             "password":"123"
           }
     responses:
@@ -290,7 +290,7 @@ baseUri: http://localhost:1337/api
               {
               "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1NWRiMjZhNDdjMWRmOGMwMWU0ODAyMzIiLCJlHAiOjE1MDA0MzA1ODM3ODJ9.EYq6AVCPfKS_89-9S1eGq9ZKVmyryjbbg3XCR0x2v5ce",
                 "user": {
-                  "mail": "user@extensionengine.com",
+                  "email": "user@extensionengine.com",
                   "_id": "55db56b5c84a04b00a56241e",
                   "books": []
                 }
@@ -302,10 +302,10 @@ schemas:
         "type": "object",
         "description": "JSON object representation of user credentials.", 
         "properties": {
-          "mail": { "type": "string"},
+          "email": { "type": "string"},
           "password": { "type": "string"}
         },
-        "required": ["password", "mail"]
+        "required": ["password", "email"]
       }
   - user: |
       {
@@ -313,7 +313,7 @@ schemas:
         "description": "JSON object representation of a user.", 
         "properties": {
           "_id": { "type": "string"},
-          "mail": { "type": "string"},
+          "email": { "type": "string"},
           "isAdmin": { "type": "boolean"},
           "verified": { "type": "boolean"},
           "books": { 
@@ -321,7 +321,7 @@ schemas:
             "items": "string"
           }
         },
-        "required": ["_id", "mail"]
+        "required": ["_id", "email"]
       }
   - users: |
       {
@@ -335,7 +335,7 @@ schemas:
         "description": "JSON object representation of a user.", 
         "properties": {
           "_id": { "type": "string"},
-          "mail": { "type": "string"},
+          "email": { "type": "string"},
           "isAdmin": { "type": "boolean"},
           "verified": { "type": "boolean"},
           "books": { 
@@ -343,7 +343,7 @@ schemas:
             "items": { "$ref": "book"}
           }
         },
-        "required": ["_id", "mail"]
+        "required": ["_id", "email"]
       }
   - userAndToken: |
       {

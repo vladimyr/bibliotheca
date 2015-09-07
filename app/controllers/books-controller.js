@@ -5,8 +5,8 @@ var deps = ["$scope", "dataService"];
 function ctrl($scope, dataService) {
     //
     dataService.books.getAll()
-        .then(function (result) {
-            $scope.books = result.data;
+        .then(function (res) {
+            $scope.books = res.data;
             $scope.books.forEach(function (val) {
                 if (val.description.length > 260)
                     val.shortDesc = val.description.substring(0, 260) + "...";

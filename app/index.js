@@ -13,8 +13,9 @@ require("angular-ui-router");
 
 // app
 var app = angular.module("app", ["ui.router"]);
-
-//config
+// run config
+require("./runConfig.js")(app);
+//route config
 require("./routeConfig.js")(app);
 // services
 var services = require.context("./services", true, /.js$/);

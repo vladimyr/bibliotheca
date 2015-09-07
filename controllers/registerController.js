@@ -5,7 +5,7 @@ var generateCallback = require("../common").controllerHelper.generateCallback;
 exports.init = function (router) {
 
     router.post("/api/register", function (req, res) {
-        repository.users.getByMail(req.body.mail, function (err, user) {
+        repository.users.getByEmail(req.body.email, function (err, user) {
             if (err)
                 res.customHandleError(err);
             else if (user)

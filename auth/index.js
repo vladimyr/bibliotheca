@@ -23,8 +23,8 @@ exports.requiresAdmin = function (req, res, next) {
 /** Initialize passport and used passport strategies */
 exports.init = function (app) {
 
-    passport.use("local", new LocalStrategy({usernameField: "mail"}, function (mail, password, next) {
-        return repository.users.getByMail(mail)
+    passport.use("local", new LocalStrategy({usernameField: "email"}, function (email, password, next) {
+        return repository.users.getByEmail(email)
             .bind({})
             .then(function (user) {
                 if (!user) {
@@ -48,8 +48,11 @@ exports.init = function (app) {
                 }
             })
             .then(function (user) {
-                this.user = user;
-                return this;
+                return {
+                    _id: user._id,
+                    email: user.email,
+                    token: this.token
+                };
             })
             .nodeify(next);
     }));

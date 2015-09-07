@@ -5,7 +5,7 @@ var hasher = require("../hasher");
 Promise.promisifyAll(hasher);
 var common = require("../common");
 
-//TODO: Implement verifying logic through extensionengine mail
+//TODO: Implement verifying logic through extensionengine email
 
 /**
  * Get all documents (populated).
@@ -50,13 +50,13 @@ exports.getByToken = function (token, done) {
 };
 
 /**
- * Get one document by mail. Returns null if no document.
- * @param {string} mail Document mail property
+ * Get one document by email. Returns null if no document.
+ * @param {string} email Document email property
  * @param {Function} done
  * @returns {Promise<R>}
  */
-exports.getByMail = function (mail, done) {
-    return Promise.cast(models.User.findOne({mail: mail}).exec())
+exports.getByEmail = function (email, done) {
+    return Promise.cast(models.User.findOne({email: email}).exec())
         .nodeify(done);
 };
 
@@ -69,7 +69,7 @@ exports.getByMail = function (mail, done) {
 exports.insert = function (user, done) {
     return hasher.getHashAsync(user.password)
         .then(function (hashedPass) {
-            return Promise.cast(models.User.create({mail: user.mail, password: hashedPass}));
+            return Promise.cast(models.User.create({email: user.email, password: hashedPass}));
         })
         .nodeify(done);
 };

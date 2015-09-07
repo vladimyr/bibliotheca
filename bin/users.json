@@ -1,11 +1,11 @@
 ﻿[
   {
-    "mail": "admin@extensionengine.com",
+    "email": "admin@extensionengine.com",
     "password": "1234",
     "isAdmin": true
   },
   {
-    "mail": "user@extensionengine.com",
+    "email": "user@extensionengine.com",
     "password": "1234",
     "isAdmin": false
   }

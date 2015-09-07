@@ -1,13 +1,14 @@
 "use strict";
 
-var $ = require("jquery");
-var deps = ["$scope"];
+//var $ = require("jquery");
 
-function ctrl($scope) {
-    //
+var deps = ["$scope", "authService"];
+function ctrl($scope, authService) {
     //$("#config-button").dropdown();
-    $scope.logout = function () {
+    $scope.user = authService.getUser();
 
+    $scope.logout = function () {
+        authService.clearUser();
     };
     $scope.changePass = function () {
         //modal

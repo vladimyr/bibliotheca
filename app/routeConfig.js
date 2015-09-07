@@ -24,6 +24,7 @@ function cfg($stateProvider, $urlRouterProvider) {
         })
         .state("root.home", {
             url: "/home",
+            data: {requireLogin: true},
             views: {
                 "": {
                     template: require(viewsRoot + "home.html"),
