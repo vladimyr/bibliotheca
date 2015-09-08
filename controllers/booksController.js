@@ -8,7 +8,10 @@ var noSessionBearerAuth = passport.authenticate("bearer", {session: false});
 exports.init = function (router) {
 
     router.get("/api/books", function (req, res) {
-        repository.books.getAll(generateCallback(res));
+        if (req.query.count)
+            repository.books.getAllCount(generateCallback(res));
+        else
+            repository.books.getAll(req.query.page, req.query.perPage, generateCallback(res));
     });
 
     router.get("/api/books/:id", noSessionBearerAuth, function (req, res) {
@@ -31,10 +34,6 @@ exports.init = function (router) {
 
     router.get("/api/books/:id/like", noSessionBearerAuth, function (req, res) {
         repository.books.isLiked(req.params.id, req.user._id, generateCallback(res));
-    });
-
-    router.get("/api/books/:id/like/number", function (req, res) {
-        repository.books.getLikeNumber(req.params.id, generateCallback(res));
     });
 
     router.put("/api/books/:id/like", noSessionBearerAuth, function (req, res) {

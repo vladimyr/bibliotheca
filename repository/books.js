@@ -9,8 +9,21 @@ var common = require("../common");
  * @param done
  * @returns {Object}
  */
-exports.getAll = function (done) {
-    models.Book.find({}).populate("user").exec(done);
+exports.getAll = function (page, perPage, done) {
+    page = typeof page !== "undefined" ? page : 1;
+    perPage = typeof perPage !== "undefined" ? perPage : 4;
+    models.Book.find({})
+        .sort({likeNumber: -1})
+        .limit(perPage)
+        .skip(perPage * (page - 1))
+        .populate("user")
+        .exec(done);
+};
+
+exports.getAllCount = function (done) {
+    models.Book.find({}).count(function (err, count) {
+        done(err, count.toString());
+    });
 };
 
 /**
@@ -56,22 +69,6 @@ exports.isLiked = function (bookId, userId, done) {
 };
 
 /**
- * Returns an object containing the number of likes.
- * @param {String} id
- * @param {Function} done
- * @returns {Promise<R>}
- */
-exports.getLikeNumber = function (id, done) {
-    return Promise.cast(models.Book.findOne({_id: id}).exec())
-        .then(function (book) {
-            if (!book)
-                return Promise.reject(new common.errors.NotFoundError("Book not found"));
-            return {likeNumber: book.likes.length};
-        })
-        .nodeify(done);
-};
-
-/**
  * Likes/unlikes the book by the user:
  * If not already liked, saves the user in the book's "likes" array, and saves the book in user's "books" array.
  * If already liked, removes the user from the book's "likes" and removes the book from the user's "books".
@@ -83,8 +80,8 @@ exports.getLikeNumber = function (id, done) {
 exports.reverseLike = function (bookId, userId, done) {
 
     return Promise.bind({book: null, user: null, unlike: false})
-        .then(findModelById(bookId, models.Book))
-        .then(findModelById(userId, models.User))
+        .then(findDocById(bookId, models.Book))
+        .then(findDocById(userId, models.User))
         .then(getUserBooks)
         .filter(unlikeFromUser)
         .then(likeFromUserAndSave)
@@ -92,10 +89,11 @@ exports.reverseLike = function (bookId, userId, done) {
         .filter(unlikeFromBook)
         .then(likeFromBookAndSave)
         .then(saveUser)
+        .then(changeLikeNumber)
         .then(saveBook)
         .nodeify(done);
 
-    function findModelById(id, model) {
+    function findDocById(id, model) {
         return function query() {
             var _self = this,
                 name = model.modelName.toLowerCase();
@@ -147,6 +145,14 @@ exports.reverseLike = function (bookId, userId, done) {
         return Promise.cast(this.user.save());
     }
 
+    function changeLikeNumber() {
+        if (this.unlike)
+            this.book.likeNumber = this.book.likeNumber - 1;
+        else
+            this.book.likeNumber = this.book.likeNumber + 1;
+        //return Promise.cast(this.book.update({$inc: {likeNumber: 1}}).exec());
+    }
+
     function saveBook() {
         return Promise.cast(this.book.save());
     }
@@ -166,6 +172,7 @@ exports.insert = function (book, done) {
             reject("No user provided");
         else {
             book.likes.push(book.user);
+            book.likeNumber = book.likes.length;
             resolve();
         }
     })
@@ -187,16 +194,26 @@ exports.insert = function (book, done) {
 };
 
 /**
- * Update a document by id
+ * Update a document by id. Affects: title, author,
+ * description, pages, isbn10, isbn13, amazonUrl and imageUrl fields.
  * @param {string|number} id Document id
  * @param {Object} book Document to update
  * @param {Function} done
  * @returns {Promise<R>}
  */
 exports.update = function (id, book, done) {
-    if (book.user)
-        delete book.user;
-    models.Book.findByIdAndUpdate(id, book, {"new": true}, function (err, updatedBook) {
+    models.Book.findByIdAndUpdate(id, {
+        $set: {
+            title: book.title,
+            author: book.author,
+            description: book.description,
+            pages: book.pages,
+            isbn10: book.isbn10,
+            isbn13: book.isbn13,
+            amazonUrl: book.amazonUrl,
+            imageUrl: book.imageUrl
+        }
+    }, {"new": true}, function (err, updatedBook) {
         if (err)
             done(err);
         else if (!updatedBook)

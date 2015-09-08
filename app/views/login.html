@@ -2,12 +2,14 @@
     <div class="column" style="max-width: 450px;">
         <h2 class="ui teal image header">
             <img src="../images/EELogo.png" class="image">
-
-            <div class="content">
-
+            <div ng-if="isLogin" class="content">
+                Login
+            </div>
+            <div ng-if="!isLogin" class="content">
+                Register
             </div>
         </h2>
-        <form class="ui large form">
+        <form ng-show="!hasRegistered" class="ui large form">
             <div class="ui stacked segment">
                 <div class="field">
                     <div class="ui left icon input">
@@ -42,7 +44,7 @@
         <div ng-if="isLogin" class="ui message">
             Don't have an account? <a ui-sref="register()">Register</a>
         </div>
-        <div ng-if="!isLogin" class="ui message">
+        <div ng-if="!isLogin && !hasRegistered" class="ui message">
             Already have an account? <a ui-sref="login()">Login</a>
         </div>
         <div ng-if="hasRegistered">Verification mail has been sent to your address. Please confirm

@@ -18,5 +18,45 @@
     "isbn13": "1-234-56789-1234",
     "amazonUrl": "testUrl",
     "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Second Test Book",
+    "author": "Test Author Second",
+    "description": "Second Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Second Test Book",
+    "author": "Test Author Second",
+    "description": "Second Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Second Test Book",
+    "author": "Test Author Second",
+    "description": "Second Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Second Test Book",
+    "author": "Test Author Second",
+    "description": "Second Test Desc",
+    "pages": 123,
+    "isbn10": "1-234-56789-8",
+    "isbn13": "1-234-56789-1234",
+    "amazonUrl": "testUrl",
+    "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
   }
 ]

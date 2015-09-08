@@ -12,13 +12,14 @@ var bookSchema = new mongoose.Schema({
     imageUrl: String,
     token: String,
     user: {type: mongoose.Schema.Types.ObjectId, required: true, ref: "User"},
-    likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
+    likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+    likeNumber: {type: Number, default: 0}
 });
 //TODO: Rremove likes from JSON
 bookSchema.set("toJSON", {
     transform: function (doc, ret, options) {
         delete ret.__v;
-        ret.likeNumber = ret.likes.length;
+        //ret.likeNumber = ret.likes.length;
         return ret;
     }
 });

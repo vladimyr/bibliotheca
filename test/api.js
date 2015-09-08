@@ -279,7 +279,7 @@ describe("/api", function () {
                 });
             });
             describe("Put", function () {
-                it("Should return book as JSON object with empty 'likes' array", function (done) {
+                it("Should return book as JSON object with empty 'likes' array and '0' value in likeNumber property", function (done) {
                     request(url)
                         .put(bookUrl + _book._id + "/like")
                         .set("Authorization", "bearer " + _token)
@@ -289,8 +289,9 @@ describe("/api", function () {
                         .end(function (err, res) {
                             if (err)
                                 throw err;
-                            res.body.should.be.instanceOf(Object).and.have.properties(["title", "user", "likes"]);
+                            res.body.should.be.instanceOf(Object).and.have.properties(["title", "user", "likes","likeNumber"]);
                             res.body.likes.should.be.instanceOf(Array).and.be.empty();
+                            res.body.likeNumber.should.equal(0);
                             done();
                         });
                 });
@@ -324,6 +325,7 @@ describe("/api", function () {
                             res.body.should.be.instanceOf(Object).and.have.properties(["title", "user", "likes"]);
                             res.body.likes.should.be.instanceOf(Array);
                             res.body.likes[0].should.equal(_user._id);
+                            res.body.likeNumber.should.equal(1);
                             done();
                         });
                 });
