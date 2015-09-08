@@ -6,8 +6,12 @@ function serv($http) {
     var config = require("../config.js");
     var apiUrl = config.apiUrl + "/books/";
 
-    function getAll() {
-        return $http.get(apiUrl);
+    function getAll(page, perPage) {
+        return $http.get(apiUrl, {params: {page: page, perPage: perPage}});
+    }
+
+    function getAllCount() {
+        return $http.get(apiUrl, {params: {count: true}});
     }
 
     function getById(id) {
@@ -36,6 +40,7 @@ function serv($http) {
 
     return function Ctor() {
         this.getAll = getAll;
+        this.getAllCount = getAllCount;
         this.getById = getById;
         this.insert = insert;
         this.update = update;

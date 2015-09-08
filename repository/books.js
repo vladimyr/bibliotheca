@@ -10,10 +10,11 @@ var common = require("../common");
  * @returns {Object}
  */
 exports.getAll = function (page, perPage, done) {
-    page = typeof page !== "undefined" ? page : 1;
-    perPage = typeof perPage !== "undefined" ? perPage : 4;
+    page = (typeof page !== "undefined" && page > 0) ? page : 1;
+    perPage = (typeof perPage !== "undefined" && perPage > 0) ? perPage : 4;
+
     models.Book.find({})
-        .sort({likeNumber: -1})
+        .sort({_id: -1})
         .limit(perPage)
         .skip(perPage * (page - 1))
         .populate("user")
