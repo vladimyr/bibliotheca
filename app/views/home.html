@@ -1,4 +1,28 @@
-<h1 class="ui header">Semantic UI Fixed Template</h1>
-<p>This is a basic fixed menu template using fixed size containers.</p>
-<p>A text container is used for the main container, which is useful for single column layouts</p>
-<div ui-view="books"></div>
+<div class="ui main container">
+    <div class="ui basic segment" id="sticky-segment">
+        <div class="ui right very close rail" style="z-index: 103;padding-top:70px;">
+            <div class="ui segment sticky" style="top:75px;">
+                <h2>Top 5 Books</h2>
+                <div class="ui items">
+                    <div ng-repeat="b in books" class="item">
+                        <div class="ui tiny image">
+                            <img src={{b.imageUrl}} >
+                        </div>
+                        <div class="middle aligned content">
+                            <a class="header">Title{{b.title}}</a>
+
+                            <div class="meta">
+                                <div>By {{b.author}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 class="ui header">Latest Books</h1>
+        <!--<p>This is a basic fixed menu template using fixed size containers.</p>-->
+        <!--<p>A text container is used for the main container, which is useful for single column layouts</p>-->
+        <div ui-view="books"></div>
+    </div>
+
+</div>

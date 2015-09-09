@@ -1,10 +1,11 @@
 "use strict";
 
-//var $ = require("jquery");
+var $ = require("jquery");
 
 var deps = ["$scope", "authService"];
 function ctrl($scope, authService) {
-    //$("#config-button").dropdown();
+    $(".ui.pointing").dropdown();
+
     $scope.user = authService.getUser();
 
     $scope.logout = function () {

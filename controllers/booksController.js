@@ -11,7 +11,7 @@ exports.init = function (router) {
         if (req.query.count)
             repository.books.getAllCount(generateCallback(res));
         else
-            repository.books.getAll(req.query.page, req.query.perPage, generateCallback(res));
+            repository.books.getAll(req.query.page, req.query.perPage, req.query.sortByLikes, generateCallback(res));
     });
 
     router.get("/api/books/:id", noSessionBearerAuth, function (req, res) {

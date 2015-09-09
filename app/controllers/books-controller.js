@@ -6,7 +6,7 @@ function ctrl($scope, dataService) {
     //
     $scope.currentPage = 1;
     $scope.bookCount = 0;
-    var perPage = 4;
+    var perPage = 8;
 
     $scope.getBooks = function (page) {
         dataService.books.getAllCount()
@@ -18,7 +18,7 @@ function ctrl($scope, dataService) {
                 else
                     $scope.currentPage = page;
 
-                return dataService.books.getAll($scope.currentPage, perPage);
+                return dataService.books.getAll($scope.currentPage, perPage,true);
             })
             .then(function (res) {
                 $scope.books = res.data;

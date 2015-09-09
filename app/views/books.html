@@ -1,5 +1,5 @@
-<div class="ui stackable cards">
-    <div ng-repeat="b in books" class="card" style="width: 270px;">
+<div class="ui cards">
+    <div ng-repeat="b in books" class="card" style="width: 262px">
         <div class="image">
             <img src={{b.imageUrl}}>
         </div>
@@ -13,7 +13,7 @@
                 {{b.title}}
             </div>
             <div class="meta">
-                <a>By {{b.author}}</a>
+                <div>By {{b.author}}</div>
             </div>
             <div class="description">
                 <div ng-if=b.shortDesc>

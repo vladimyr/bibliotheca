@@ -6,8 +6,8 @@ function serv($http) {
     var config = require("../config.js");
     var apiUrl = config.apiUrl + "/books/";
 
-    function getAll(page, perPage) {
-        return $http.get(apiUrl, {params: {page: page, perPage: perPage}});
+    function getAll(page, perPage, sortByLikes) {
+        return $http.get(apiUrl, {params: {page: page, perPage: perPage, sortByLikes: sortByLikes}});
     }
 
     function getAllCount() {

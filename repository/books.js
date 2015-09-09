@@ -5,22 +5,35 @@ var mongoose = require("mongoose");
 var common = require("../common");
 
 /**
- * Get all documents (populated).
+ * Get a number of documents, sorted by _id field descending (populated).
+ *
+ * @param {String|Number} page - Page number. Default is 1.
+ * @param {String|Number} perPage - Number of items per page. Default is 10.
+ * @param {Boolean} sortByLikes - If true, sorts by likes instead of _id.
  * @param done
- * @returns {Object}
  */
-exports.getAll = function (page, perPage, done) {
+exports.getAll = function (page, perPage, sortByLikes, done) {
     page = (typeof page !== "undefined" && page > 0) ? page : 1;
-    perPage = (typeof perPage !== "undefined" && perPage > 0) ? perPage : 4;
+    perPage = (typeof perPage !== "undefined" && perPage > 0) ? perPage : 10;
+
+    var sortObj = {_id: -1};
+    if (sortByLikes) {
+        sortObj = {likeNumber: -1};
+    }
+
 
     models.Book.find({})
-        .sort({_id: -1})
+        .sort(sortObj)
         .limit(perPage)
         .skip(perPage * (page - 1))
         .populate("user")
         .exec(done);
 };
 
+/**
+ * Get a count of all books in the database.
+ * @param done
+ */
 exports.getAllCount = function (done) {
     models.Book.find({}).count(function (err, count) {
         done(err, count.toString());
@@ -29,12 +42,11 @@ exports.getAllCount = function (done) {
 
 /**
  * Get one document by id (populated)
- * @param {string|number} id Document id
+ * @param {String|Number} id Document id
  * @param {Function} done
  * @returns {Promise<R>}
  */
 exports.getById = function (id, done) {
-    //models.Book.findOne({_id: id}).populate("user").exec(done);
     return Promise.cast(models.Book.findOne({_id: id}).populate("user").exec())
         .then(function (book) {
             if (!book)
