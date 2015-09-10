@@ -45,6 +45,14 @@ function ctrl($scope, dataService) {
                 book.isLiked = !book.isLiked;
             });
     };
+
+    $scope.closeModal = function () {
+        $scope.show_modal = false;
+    };
+    $scope.openModal = function (book) {
+        $scope.bookInstance = book;
+        $scope.show_modal = true;
+    };
     //
 }
 ctrl.$inject = deps;

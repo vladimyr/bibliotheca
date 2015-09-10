@@ -1,8 +1,8 @@
 <div class="ui cards">
     <div ng-repeat="b in books" class="card" style="width: 262px">
-        <div class="image">
-            <img src={{b.imageUrl}}>
-        </div>
+        <a class="image">
+            <img ng-click="openModal(b)" src={{b.imageUrl}}>
+        </a>
         <div class="content">
             <span class="right floated">
                 {{b.likeNumber}}
@@ -18,7 +18,7 @@
             <div class="description">
                 <div ng-if=b.shortDesc>
                     Short: {{b.shortDesc}}
-                    <a>Read more</a>
+                    <a ng-click="openModal(b)">Read more</a>
                 </div>
                 <div ng-if=!b.shortDesc>
                     Long: {{b.description}}
@@ -68,3 +68,24 @@
     </div>
 </div>
 
+<modal-book ng-model="show_modal" book-instance="bookInstance">
+    <!--<div class="header">-->
+        <!--{{modalBook.title}}-->
+    <!--</div>-->
+    <!--<div class="image content">-->
+        <!--<div class="ui  image">-->
+            <!--<img src={{modalBook.imageUrl}} alt=""/>-->
+        <!--</div>-->
+        <!--<div class="description">-->
+            <!--<div class="ui header">{{modalBook.author}}</div>-->
+            <!--<p>{{modalBook.description}}</p>-->
+
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="actions">-->
+        <!--<div class="ui primary approve button">-->
+            <!--Proceed-->
+            <!--<i class="right chevron icon"></i>-->
+        <!--</div>-->
+    <!--</div>-->
+</modal-book>

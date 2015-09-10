@@ -1,0 +1,21 @@
+<div class="ui modal">
+    <div class="header">
+        {{bookInstance.title}}
+    </div>
+    <div class="image content">
+        <div class="ui  image">
+            <img src={{bookInstance.imageUrl}} alt=""/>
+        </div>
+        <div class="description">
+            <div class="ui header">{{bookInstance.author}}</div>
+            <p>{{bookInstance.description}}</p>
+
+        </div>
+    </div>
+    <div class="actions">
+        <a href={{bookInstance.amazonUrl}} target="_blank" class="ui primary approve button">
+            Amazon
+            <i class="right chevron icon"></i>
+        </a>
+    </div>
+</div>

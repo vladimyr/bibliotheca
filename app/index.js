@@ -22,8 +22,14 @@ var services = require.context("./services", true, /.js$/);
 services.keys().forEach(function (x) {
     services(x)(app);
 });
+// directives
+var directives = require.context("./directives", true, /.js$/);
+directives.keys().forEach(function (x) {
+    directives(x)(app);
+});
 // controllers
 var controllers = require.context("./controllers", true, /.js$/);
 controllers.keys().forEach(function (x) {
     controllers(x)(app);
 });
+

@@ -1,7 +1,7 @@
 <div class="ui main container">
     <div class="ui basic segment" id="sticky-segment" style="min-width: 310px;min-height: 730px;">
-        <div class="ui right very close rail" style="z-index: 103;padding-top: 70px">
-            <div class="ui segment sticky" style="top:75px;min-width: 300px;min-height: 720px;">
+        <div class="ui right very close rail" style="min-width: 310px;min-height: 730px;z-index: 103;padding-top: 70px !important;">
+            <div class="ui segment sticky" id="sticky-component" create-sticky={{stickyConfig}} style="min-width: 300px;min-height: 720px;">
                 <h2>Top 5 Books</h2>
                 <div class="ui items">
                     <div ng-repeat="b in books" class="item">
