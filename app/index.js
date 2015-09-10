@@ -16,7 +16,7 @@ var app = angular.module("app", ["ui.router"]);
 // run config
 require("./runConfig.js")(app);
 //route config
-require("./routeConfig.js")(app);
+require("./appConfig.js")(app);
 // services
 var services = require.context("./services", true, /.js$/);
 services.keys().forEach(function (x) {

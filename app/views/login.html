@@ -50,7 +50,7 @@
         <div ng-if="hasRegistered">Verification mail has been sent to your address. Please confirm
             it and then login <a ui-sref="login()">here</a>.
         </div>
-        <div ng-if="!hasRegistered" class="ui error message">
+        <div ng-if="!hasRegistered && msg!=''" class="ui error message">
             {{msg}}
         </div>
     </div>

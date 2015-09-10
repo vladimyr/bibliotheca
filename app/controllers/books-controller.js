@@ -18,18 +18,33 @@ function ctrl($scope, dataService) {
                 else
                     $scope.currentPage = page;
 
-                return dataService.books.getAll($scope.currentPage, perPage,true);
+                return dataService.books.getAll($scope.currentPage, perPage);
             })
             .then(function (res) {
                 $scope.books = res.data;
                 $scope.books.forEach(function (val) {
                     if (val.description.length > 260)
                         val.shortDesc = val.description.substring(0, 260) + "...";
+                    dataService.books.isLiked(val._id)
+                        .then(function (res) {
+                            val.isLiked = res.data;
+                        });
                 });
 
             });
     };
     $scope.getBooks($scope.currentPage);
+
+    $scope.reverseLike = function (book) {
+        dataService.books.reverseLike(book._id)
+            .then(function (res) {
+                if (book.isLiked)
+                    book.likeNumber--;
+                else
+                    book.likeNumber++;
+                book.isLiked = !book.isLiked;
+            });
+    };
     //
 }
 ctrl.$inject = deps;

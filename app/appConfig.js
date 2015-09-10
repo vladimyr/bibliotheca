@@ -1,7 +1,10 @@
 "use strict"
 
-var deps = ["$stateProvider", "$urlRouterProvider"];
-function cfg($stateProvider, $urlRouterProvider) {
+var deps = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
+function cfg($stateProvider, $urlRouterProvider, $httpProvider) {
+
+    $httpProvider.interceptors.push("authInterceptor");
+
     var viewsRoot = "./views/";
     $urlRouterProvider.otherwise("/home");
     $stateProvider

@@ -32,13 +32,9 @@
             <!--{{b.likeNumber}} Likes-->
           </span>
         </div>
-        <div class="ui bottom attached button">
+        <div ng-click="reverseLike(b)" ng-class="{'green':b.isLiked}" class="ui bottom attached button">
             <i class="thumbs up icon"></i>
-            Like
-        </div>
-        <div class="ui bottom attached button green">
-            <i class="thumbs up icon"></i>
-            Liked
+            Like<span ng-if="b.isLiked">d</span>
         </div>
     </div>
 </div>

@@ -4,15 +4,20 @@ var $ = require("jquery");
 
 var deps = ["$scope", "authService"];
 function ctrl($scope, authService) {
-    $(".ui.pointing").dropdown();
+
+    var $dropdown = $(".ui.pointing").dropdown();
 
     $scope.user = authService.getUser();
 
     $scope.logout = function () {
+        $dropdown.dropdown("destroy");
         authService.clearUser();
     };
     $scope.changePass = function () {
         //modal
+        $('.ui.modal')
+            .modal('show')
+        ;
     };
     //
 }

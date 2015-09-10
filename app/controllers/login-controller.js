@@ -6,6 +6,7 @@ function ctrl($scope, authService, $state) {
     //
     $scope.isLogin = $state.current.data.isLogin;
     $scope.hasRegistered = false;
+    $scope.msg="";
     $scope.remember = false;
     $scope.login = function () {
         authService.login($scope.email, $scope.password, $scope.remember)

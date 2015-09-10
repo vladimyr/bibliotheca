@@ -9,15 +9,13 @@ function ctrl($scope, dataService) {
         .then(function (res) {
             $scope.books = res.data;
         });
+    $(document).ready(function () {
+        $(".ui.sticky")
+            .sticky({
+                context: "#sticky-segment"
+            });
+    });
 
-    //$('.ui.sidebar')
-    //    .sidebar('toggle')
-    //;
-    $(".ui.sticky")
-        .sticky({
-            context: "#sticky-segment"
-        })
-    ;
     //the function to hide the div
     function hideDiv() {
 
@@ -34,17 +32,17 @@ function ctrl($scope, dataService) {
     }
 
 //run on document load and on window resize
-    $(document).ready(function () {
-
-        //on load
-        hideDiv();
-
-        //on resize
-        $(window).resize(function () {
-            hideDiv();
-        });
-
-    });
+//    $(document).ready(function () {
+//
+//        //on load
+//        hideDiv();
+//
+//        //on resize
+//        $(window).resize(function () {
+//            hideDiv();
+//        });
+//
+//    });
     //
 }
 ctrl.$inject = deps;

@@ -7,7 +7,7 @@ var noSessionBearerAuth = passport.authenticate("bearer", {session: false});
 
 exports.init = function (router) {
 
-    router.get("/api/books", function (req, res) {
+    router.get("/api/books", noSessionBearerAuth, function (req, res) {
         if (req.query.count)
             repository.books.getAllCount(generateCallback(res));
         else
