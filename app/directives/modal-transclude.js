@@ -1,6 +1,6 @@
 "use strict";
 
-// This directive uses an external template as modal dialog.
+// This directive transcludes the content of its caller element.
 var $ = require("jquery");
 
 var deps = [];
@@ -9,11 +9,9 @@ function dir() {
     return {
         restrict: "E",
         replace: true,
+        transclude: true,
         require: "ngModel",
-        template: require("../views/modal.html"),
-        scope:{
-            bookInstance:"="
-        },
+        template: "<div class='ui modal long test' ng-transclude></div>",
         link: function (scope, element, attrs, ngModel) {
             $(element).modal({
                 onHide: function () {
@@ -32,5 +30,5 @@ function dir() {
 dir.$inject = deps;
 
 module.exports = function (app) {
-    app.directive("modalBook", dir);
+    app.directive("modalTransclude", dir);
 };

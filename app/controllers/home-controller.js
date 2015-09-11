@@ -8,10 +8,24 @@ function ctrl($scope, dataService) {
     dataService.books.getAll(1, 5, true)
         .then(function (res) {
             $scope.books = res.data;
+            $scope.books.forEach(function (val) {
+                if (val.description.length > 260)
+                    val.shortDesc = val.description.substring(0, 260) + "...";
+                dataService.books.isLiked(val._id)
+                    .then(function (res) {
+                        val.isLiked = res.data;
+                    });
+            });
         });
+
     $scope.stickyConfig = {
         offset: 70,
         context: "#sticky-segment"
+    };
+
+    $scope.openModal = function (book) {
+        $scope.bookInstance = book;
+        $scope.showModal = true;
     };
     //moved to directive
     //    $("#sticky-component")

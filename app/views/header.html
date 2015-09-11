@@ -1,17 +1,16 @@
 <div class="ui container">
-    <a ui-sref="home()" class="ui image header item">
+    <a ui-sref="root.home()" class="ui image header item">
         <img src="../images/EELogo.png" alt=""/>
         <b>Books</b>
     </a>
 
     <div class="ui right floated item">
-        <!--<div class="ui compact menu">-->
-            <div class="ui top right pointing compact dropdown item" create-dropdown control="dropdownControl">
+            <div class="ui top right pointing dropdown item" create-dropdown control="dropdownControl" config="dropdownConfig">
                 {{user.email}}
                 <i class="dropdown icon"></i>
 
                 <div class="menu">
-                    <div class="item">My Books</div>
+                    <div class="item" ui-sref="root.user()">My Books</div>
                     <div class="item">Add Book</div>
                     <div class="ui divider"></div>
                     <div class="header">Account</div>
@@ -19,6 +18,5 @@
                     <div class="item" ng-click="logout()">Logout</div>
                 </div>
             </div>
-        <!--</div>-->
     </div>
 </div>

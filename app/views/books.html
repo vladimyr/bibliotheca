@@ -1,3 +1,4 @@
+<h4 class="ui header basic segment centered" ng-if="!books.length">No books.</h4>
 <div class="ui cards">
     <div ng-repeat="b in books" class="card" style="width: 262px">
         <a class="image">
@@ -68,24 +69,5 @@
     </div>
 </div>
 
-<modal-book ng-model="show_modal" book-instance="bookInstance">
-    <!--<div class="header">-->
-        <!--{{modalBook.title}}-->
-    <!--</div>-->
-    <!--<div class="image content">-->
-        <!--<div class="ui  image">-->
-            <!--<img src={{modalBook.imageUrl}} alt=""/>-->
-        <!--</div>-->
-        <!--<div class="description">-->
-            <!--<div class="ui header">{{modalBook.author}}</div>-->
-            <!--<p>{{modalBook.description}}</p>-->
-
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="actions">-->
-        <!--<div class="ui primary approve button">-->
-            <!--Proceed-->
-            <!--<i class="right chevron icon"></i>-->
-        <!--</div>-->
-    <!--</div>-->
-</modal-book>
+<modal ng-model="showModal" book-instance="bookInstance" template="modal-book.html">
+</modal>

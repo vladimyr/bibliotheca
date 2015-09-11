@@ -1,18 +1,27 @@
 <div class="ui modal">
+    <i class="close icon"></i>
+
     <div class="header">
         {{bookInstance.title}}
     </div>
     <div class="image content">
-        <div class="ui  image">
+        <div class="ui image">
             <img src={{bookInstance.imageUrl}} alt=""/>
         </div>
         <div class="description">
             <div class="ui header">{{bookInstance.author}}</div>
             <p>{{bookInstance.description}}</p>
 
+            <div><b>Pages: </b>{{bookInstance.pages}}</div>
+            <div><b>ISBN-10: </b>{{bookInstance.isbn10}}</div>
+            <div><b>ISBN-13: </b>{{bookInstance.isbn13}}</div>
         </div>
     </div>
     <div class="actions">
+        <button ng-class="{'green':bookInstance.isLiked}" ng-click="reverseLike(bookInstance)" class="ui button">
+            <i class="thumbs up icon"></i>
+            Like<span ng-if="bookInstance.isLiked">d</span>
+        </button>
         <a href={{bookInstance.amazonUrl}} target="_blank" class="ui primary approve button">
             Amazon
             <i class="right chevron icon"></i>

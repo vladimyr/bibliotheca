@@ -6,6 +6,9 @@ var deps = ["$scope", "authService"];
 function ctrl($scope, authService) {
 
     $scope.dropdownControl = {};
+    $scope.dropdownConfig = {
+        action: "hide"
+    };
     $scope.user = authService.getUser();
 
 

@@ -47,6 +47,9 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider) {
                     template: require(viewsRoot + "books.html"),
                     controller: "BooksController"
                 }
+            },
+            data: {
+                isUser: false
             }
         })
         .state("root.user", {
@@ -60,6 +63,9 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider) {
                     template: require(viewsRoot + "books.html"),
                     controller: "BooksController"
                 }
+            },
+            data: {
+                isUser: true
             }
         })
     ;

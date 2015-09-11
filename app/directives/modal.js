@@ -1,17 +1,22 @@
 "use strict";
 
-// This directive transcludes the content of its caller element.
+// This directive uses an external template as modal dialog.
 var $ = require("jquery");
 
-var deps = [];
-function dir() {
+var deps = ["dataService"];
+function dir(dataService) {
     //
     return {
         restrict: "E",
         replace: true,
-        transclude: true,
         require: "ngModel",
-        template: "<div class='ui modal long test' ng-transclude></div>",
+        //template: require("../views/modal-book.html"),
+        template: function (el, att) {
+            return require("../views/" + att.template);
+        },
+        scope: {
+            bookInstance: "="
+        },
         link: function (scope, element, attrs, ngModel) {
             $(element).modal({
                 onHide: function () {
@@ -23,6 +28,16 @@ function dir() {
             }, function (modelValue) {
                 $(element).modal(modelValue ? "show" : "hide");
             });
+            scope.reverseLike = function (book) {
+                dataService.books.reverseLike(book._id)
+                    .then(function (res) {
+                        if (book.isLiked)
+                            book.likeNumber--;
+                        else
+                            book.likeNumber++;
+                        book.isLiked = !book.isLiked;
+                    });
+            };
         }
     };
     //

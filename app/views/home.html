@@ -1,19 +1,25 @@
 <div class="ui main container">
     <div class="ui basic segment" id="sticky-segment" style="min-width: 310px;min-height: 730px;">
-        <div class="ui right very close rail" style="min-width: 310px;min-height: 730px;z-index: 103;padding-top: 70px !important;">
-            <div class="ui segment sticky" id="sticky-component" create-sticky={{stickyConfig}} style="min-width: 300px;min-height: 720px;">
-                <h2>Top 5 Books</h2>
+        <div class="ui right very close rail"
+             style="min-width: 310px;min-height: 730px;z-index: 103;padding-top: 70px !important;">
+            <div class="ui segment sticky" create-sticky={{stickyConfig}}
+                 style="min-width: 300px;min-height: 720px;">
+                <h2>Top 5 Wishlist</h2>
+
                 <div class="ui items">
                     <div ng-repeat="b in books" class="item">
-                        <div class="ui tiny image">
-                            <img src={{b.imageUrl}} >
-                        </div>
+                        <a class="ui tiny image">
+                            <img ng-click="openModal(b)" src={{b.imageUrl}}>
+                        </a>
                         <div class="middle aligned content">
-                            <a class="header">Title{{b.title}}</a>
+                            <a ng-click="openModal(b)" class="header">Title{{b.title}}</a>
 
                             <div class="meta">
                                 <div>By {{b.author}}</div>
                             </div>
+                            <div>
+                                {{b.likeNumber}}
+                                <i class="thumbs outline up icon"></i></div>
                         </div>
                     </div>
                 </div>
@@ -24,5 +30,6 @@
         <!--<p>A text container is used for the main container, which is useful for single column layouts</p>-->
         <div ui-view="books"></div>
     </div>
-
 </div>
+<modal ng-model="showModal" book-instance="bookInstance" template="modal-book.html">
+</modal>

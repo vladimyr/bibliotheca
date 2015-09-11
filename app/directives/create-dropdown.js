@@ -8,10 +8,11 @@ function dir() {
     return {
         restrict: "A",
         scope: {
-            control: "="
+            control: "=",
+            config:"="
         },
         link: function (scope, element, attrs) {
-            scope.control = $(element).dropdown(scope.$eval(attrs.createDropdown));
+            scope.control = $(element).dropdown(scope.config);
         }
     };
     //
