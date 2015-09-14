@@ -1,6 +1,7 @@
 "use strict";
 
 var deps = ["$rootScope", "$http", "$q", "$state"];
+
 function serv($rootScope, $http, $q, $state) {
     //
     var config = require("../config.js");
@@ -71,7 +72,7 @@ function serv($rootScope, $http, $q, $state) {
         clearUser: clearUser
     };
     //
-};
+}
 serv.$inject = deps;
 module.exports = function (app) {
     app.factory("authService", serv);

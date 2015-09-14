@@ -3,6 +3,7 @@
 var $ = require("jquery");
 
 var deps = ["$scope", "authService"];
+
 function ctrl($scope, authService) {
 
     $scope.dropdownControl = {};

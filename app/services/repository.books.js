@@ -1,21 +1,37 @@
 "use strict";
 
-var deps = ["$http"];
+var deps = ["$http", "Pool", "Book"];
 
-function serv($http) {
+function serv($http, Pool, Book) {
+
     var config = require("../config.js");
     var apiUrl = config.apiUrl + "/books/";
 
+    var _pool = new Pool(Book);
+
     function getAll(page, perPage, sortByLikes) {
-        return $http.get(apiUrl, {params: {page: page, perPage: perPage, sortByLikes: sortByLikes}});
+        return $http.get(apiUrl, {params: {page: page, perPage: perPage, sortByLikes: sortByLikes}})
+            .then(function (res) {
+                var models = [];
+                res.data.forEach(function (val) {
+                    models.push(_pool.updateInstance(val._id, val));
+                });
+                return models;
+            });
     }
 
     function getAllCount() {
-        return $http.get(apiUrl, {params: {count: true}});
+        return $http.get(apiUrl, {params: {count: true}})
+            .then(function(res){
+                return res.data;
+            });
     }
 
     function getById(id) {
-        return $http.get(apiUrl + id);
+        return $http.get(apiUrl + id)
+            .then(function (res) {
+                return _pool.updateInstance(res.data._id, res.data);
+            });
     }
 
     function insert(book) {
@@ -31,11 +47,24 @@ function serv($http) {
     }
 
     function isLiked(id) {
-        return $http.get(apiUrl + id + "/like");
+        var book = _pool.getInstance(id);
+        return $http.get(apiUrl + id + "/like")
+            .then(function (res) {
+                book.isLiked = res.data;
+                return book.isLiked;
+            });
     }
 
     function reverseLike(id) {
-        return $http.put(apiUrl + id + "/like");
+        var book = _pool.getInstance(id);
+        return $http.put(apiUrl + id + "/like")
+            .then(function (res) {
+                if (book.isLiked)
+                    book.likeNumber--;
+                else
+                    book.likeNumber++;
+                book.isLiked = !book.isLiked;
+            });
     }
 
     return function Ctor() {
@@ -49,7 +78,7 @@ function serv($http) {
         this.reverseLike = reverseLike;
     };
 
-};
+}
 serv.$inject = deps;
 
 module.exports = function (app) {

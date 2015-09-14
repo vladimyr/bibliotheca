@@ -42,6 +42,11 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider) {
                 "": {
                     template: require(viewsRoot + "home.html"),
                     controller: "HomeController"
+                    //resolve: {
+                    //    topBooksResolver: ["dataService", function (dataService) {
+                    //        return dataService.books.getAll(1, 5, true);
+                    //    }]
+                    //}
                 },
                 "books@root.home": {
                     template: require(viewsRoot + "books.html"),

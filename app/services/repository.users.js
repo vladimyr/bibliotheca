@@ -3,15 +3,22 @@
 var deps = ["$http"];
 
 function serv($http) {
+
     var config = require("../config.js");
     var apiUrl = config.apiUrl + "/users/";
 
     function getAll() {
-        return $http.get(apiUrl);
+        return $http.get(apiUrl)
+            .then(function(res){
+                return res.data;
+            });
     }
 
     function getById(id) {
-        return $http.get(apiUrl + id);
+        return $http.get(apiUrl + id)
+            .then(function(res){
+                return res.data;
+            });
     }
 
     function changePass(id, oldPass, newPass) {
@@ -29,7 +36,7 @@ function serv($http) {
         this.reverseAdmin = reverseAdmin;
     };
 
-};
+}
 serv.$inject = deps;
 
 module.exports = function (app) {

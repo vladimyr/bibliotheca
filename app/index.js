@@ -17,6 +17,11 @@ var app = angular.module("app", ["ui.router"]);
 require("./runConfig.js")(app);
 //route config
 require("./appConfig.js")(app);
+// values
+var values = require.context("./values", true, /.js$/);
+values.keys().forEach(function (x) {
+    values(x)(app);
+});
 // services
 var services = require.context("./services", true, /.js$/);
 services.keys().forEach(function (x) {

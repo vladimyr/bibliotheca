@@ -14,20 +14,30 @@ function ctrl($scope, dataService, authService, $state) {
     function getBooksPromise() {
         if (isUser)
             return dataService.users.getById($scope.user._id)
-                .then(function (res) {
-                    return res.data.books;
+                .then(function (data) {
+                    return data.books;
+                })
+                .then(function (ids) {
+                    var books = [];
+                    ids.forEach(function (id) {
+                        dataService.books.getById(id)
+                            .then(function (book) {
+                                books.push(book);
+                            });
+                    });
+                    return books;
                 });
         else
             return dataService.books.getAll($scope.currentPage, perPage)
-                .then(function (res) {
-                    return res.data;
+                .then(function (data) {
+                    return data;
                 });
     };
 
     $scope.getBooks = function (page) {
         dataService.books.getAllCount()
-            .then(function (res) {
-                $scope.bookCount = res.data;
+            .then(function (data) {
+                $scope.bookCount = data;
                 $scope.maxPage = Math.ceil($scope.bookCount / perPage);
                 if (page > $scope.maxPage)
                     $scope.currentPage = $scope.maxPage;
@@ -39,12 +49,7 @@ function ctrl($scope, dataService, authService, $state) {
             .then(function (books) {
                 $scope.books = books;
                 $scope.books.forEach(function (val) {
-                    if (val.description.length > 260)
-                        val.shortDesc = val.description.substring(0, 260) + "...";
-                    dataService.books.isLiked(val._id)
-                        .then(function (res) {
-                            val.isLiked = res.data;
-                        });
+                    dataService.books.isLiked(val._id);
                 });
 
             });
@@ -52,14 +57,7 @@ function ctrl($scope, dataService, authService, $state) {
     $scope.getBooks($scope.currentPage);
 
     $scope.reverseLike = function (book) {
-        dataService.books.reverseLike(book._id)
-            .then(function (res) {
-                if (book.isLiked)
-                    book.likeNumber--;
-                else
-                    book.likeNumber++;
-                book.isLiked = !book.isLiked;
-            });
+        dataService.books.reverseLike(book._id);
     };
 
     $scope.openModal = function (book) {

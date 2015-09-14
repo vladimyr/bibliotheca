@@ -1,9 +1,9 @@
 "use strict";
 
 var deps = ["$injector"];
+
 function serv($injector) {
 //https://www.npmjs.com/package/d
-//http://semantic-ui.com/views/card.html
     var repos = ["users","books"];
     var service = {};
 
@@ -24,7 +24,7 @@ function serv($injector) {
 
     return service;
 
-};
+}
 serv.$inject = deps;
 module.exports = function (app) {
     app.factory("dataService", serv);

@@ -28,17 +28,13 @@ function dir(dataService) {
             }, function (modelValue) {
                 $(element).modal(modelValue ? "show" : "hide");
             });
-            scope.reverseLike = function (book) {
-                dataService.books.reverseLike(book._id)
-                    .then(function (res) {
-                        if (book.isLiked)
-                            book.likeNumber--;
-                        else
-                            book.likeNumber++;
-                        book.isLiked = !book.isLiked;
-                    });
+        },
+        //TODO: remove this "reverseLike" logic to caller controller
+        controller: ["$scope", function ($scope) {
+            $scope.reverseLike = function (book) {
+                dataService.books.reverseLike(book._id);
             };
-        }
+        }]
     };
     //
 }

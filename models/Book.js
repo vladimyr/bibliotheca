@@ -10,7 +10,6 @@ var bookSchema = new mongoose.Schema({
     isbn13: String,
     amazonUrl: String,
     imageUrl: String,
-    token: String,
     user: {type: mongoose.Schema.Types.ObjectId, required: true, ref: "User"},
     likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     likeNumber: {type: Number, default: 0}
@@ -19,7 +18,6 @@ var bookSchema = new mongoose.Schema({
 bookSchema.set("toJSON", {
     transform: function (doc, ret, options) {
         delete ret.__v;
-        //ret.likeNumber = ret.likes.length;
         return ret;
     }
 });

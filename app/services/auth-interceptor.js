@@ -24,7 +24,7 @@ function serv($injector, $q) {
         responseError: responseError
     };
 
-};
+}
 serv.$inject = deps;
 
 module.exports = function (app) {
