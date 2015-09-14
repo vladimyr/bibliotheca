@@ -9,33 +9,15 @@ function ctrl($scope, dataService, authService, $state) {
     $scope.user = authService.getUser();
     $scope.currentPage = 1;
     $scope.bookCount = 0;
-    var perPage = 8;
-
-    function getBooksPromise() {
-        if (isUser)
-            return dataService.users.getById($scope.user._id)
-                .then(function (data) {
-                    return data.books;
-                })
-                .then(function (ids) {
-                    var books = [];
-                    ids.forEach(function (id) {
-                        dataService.books.getById(id)
-                            .then(function (book) {
-                                books.push(book);
-                            });
-                    });
-                    return books;
-                });
-        else
-            return dataService.books.getAll($scope.currentPage, perPage)
-                .then(function (data) {
-                    return data;
-                });
-    };
+    var perPage = 4;
 
     $scope.getBooks = function (page) {
-        dataService.books.getAllCount()
+        var userId;
+        if (isUser)
+            userId = $scope.user._id;
+        else
+            userId = null;
+        dataService.books.getCount(userId)
             .then(function (data) {
                 $scope.bookCount = data;
                 $scope.maxPage = Math.ceil($scope.bookCount / perPage);
@@ -43,8 +25,12 @@ function ctrl($scope, dataService, authService, $state) {
                     $scope.currentPage = $scope.maxPage;
                 else
                     $scope.currentPage = page;
-
-                return getBooksPromise();
+            })
+            .then(function () {
+                return dataService.books.getAll($scope.currentPage, perPage, userId)
+                    .then(function (data) {
+                        return data;
+                    });
             })
             .then(function (books) {
                 $scope.books = books;

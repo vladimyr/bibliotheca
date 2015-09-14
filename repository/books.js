@@ -3,6 +3,7 @@ var models = require("../models");
 var Promise = require("bluebird");
 var mongoose = require("mongoose");
 var common = require("../common");
+var users = require("./users.js");
 
 /**
  * Get a number of documents, sorted by _id field descending (populated).
@@ -10,9 +11,10 @@ var common = require("../common");
  * @param {String|Number} page - Page number. Default is 1.
  * @param {String|Number} perPage - Number of items per page. Default is 10.
  * @param {Boolean} sortByLikes - If true, sorts by likes instead of _id.
+ * @param {String} userId - If set, gets only books of a specific user.
  * @param done
  */
-exports.getAll = function (page, perPage, sortByLikes, done) {
+exports.getAll = function (page, perPage, sortByLikes, userId, done) {
     page = (typeof page !== "undefined" && page > 0) ? page : 1;
     perPage = (typeof perPage !== "undefined" && perPage > 0) ? perPage : 10;
 
@@ -20,14 +22,28 @@ exports.getAll = function (page, perPage, sortByLikes, done) {
     if (sortByLikes) {
         sortObj = {likeNumber: -1};
     }
-
-
-    models.Book.find({})
-        .sort(sortObj)
-        .limit(perPage)
-        .skip(perPage * (page - 1))
-        .populate("user")
-        .exec(done);
+    if (userId) {
+        users.getById(userId)
+            .then(function (user) {
+                return {_id: {$in: user.books}};
+            })
+            .then(function (findObj) {
+                findBooks(findObj);
+            })
+            .catch(function (e) {
+                done(e);
+            });
+    } else {
+        findBooks({});
+    }
+    function findBooks(findObj) {
+        models.Book.find(findObj)
+            .sort(sortObj)
+            .limit(perPage)
+            .skip(perPage * (page - 1))
+            .populate("user")
+            .exec(done);
+    }
 };
 
 /**
