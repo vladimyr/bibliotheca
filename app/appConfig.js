@@ -73,6 +73,20 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider) {
                 isUser: true
             }
         })
+        .state("root.editBook", {
+            url: "/editBook/:id",
+            template: require(viewsRoot + "edit-book.html"),
+            controller: "EditBookController",
+            resolve: {
+                getBookResolver: ["dataService", "$stateParams", function (dataService, $stateParams) {
+                    var bookId = $stateParams.id;
+                    if (bookId != "newBook")
+                        return dataService.books.getById(bookId);
+                    else
+                        return;
+                }]
+            }
+        })
     ;
 };
 cfg.$inject = deps;

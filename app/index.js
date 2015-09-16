@@ -3,6 +3,7 @@
 // .css
 //require("bootstrap/dist/css/bootstrap.css");
 require("../semantic/dist/semantic.css");
+require("angular-toastr/dist/angular-toastr.css")
 
 // .js
 require("jquery");
@@ -10,9 +11,11 @@ require("jquery");
 require("../semantic/dist/semantic.js");
 var angular = require("angular");
 require("angular-ui-router");
+require("angular-animate");
+require("angular-toastr");
 
 // app
-var app = angular.module("app", ["ui.router"]);
+var app = angular.module("app", ["ui.router","ngAnimate","toastr"]);
 // run config
 require("./runConfig.js")(app);
 //route config

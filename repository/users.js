@@ -17,14 +17,14 @@ exports.getAll = function (done) {
 };
 
 /**
- * Get one document by id (not populated). Throws NotFoundError if not found.
+ * Get one document by id (populated). Throws NotFoundError if not found.
  * @param {string|number} id Document id
  * @param {Function} done
  * @returns {Promise<R>}
  */
 exports.getById = function (id, done) {
     //models.User.findOne({_id: id}).populate("books").exec(done);
-    return Promise.cast(models.User.findOne({_id: id}).exec())
+    return Promise.cast(models.User.findOne({_id: id}).populate("books").exec())
         .then(function (user) {
             if (!user)
                 return Promise.reject(new common.errors.NotFoundError("User not found"));

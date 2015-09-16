@@ -9,7 +9,7 @@ function serv($http, Pool, Book) {
 
     var _pool = new Pool(Book);
 
-    function getAll(page, perPage, userId,sortByLikes) {
+    function getAll(page, perPage, userId, sortByLikes) {
         return $http.get(apiUrl, {params: {page: page, perPage: perPage, sortByLikes: sortByLikes, user: userId}})
             .then(function (res) {
                 var models = [];
@@ -35,11 +35,17 @@ function serv($http, Pool, Book) {
     }
 
     function insert(book) {
-        return $http.post(apiUrl, book);
+        return $http.post(apiUrl, book)
+            .then(function (res) {
+                return res.data;
+            });
     }
 
     function update(id, book) {
-        return $http.put(apiUrl + id, book);
+        return $http.put(apiUrl + id, book)
+            .then(function(res){
+                return res.data;
+            });
     }
 
     function remove(id) {

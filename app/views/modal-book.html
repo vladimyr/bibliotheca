@@ -18,6 +18,14 @@
         </div>
     </div>
     <div class="actions">
+        <button ng-click="remove(bookInstance)" class="ui red button">
+            <i class="remove icon"></i>
+            Delete
+        </button>
+        <button ng-click="edit(bookInstance)" class="ui yellow button">
+            <i class="edit icon"></i>
+            Edit
+        </button>
         <button ng-class="{'green':bookInstance.isLiked}" ng-click="reverseLike(bookInstance)" class="ui button">
             <i class="thumbs up icon"></i>
             Like<span ng-if="bookInstance.isLiked">d</span>

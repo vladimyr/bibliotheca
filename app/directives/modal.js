@@ -3,14 +3,13 @@
 // This directive uses an external template as modal dialog.
 var $ = require("jquery");
 
-var deps = ["dataService"];
-function dir(dataService) {
+var deps = ["$controller"];
+function dir($controller) {
     //
     return {
         restrict: "E",
         replace: true,
         require: "ngModel",
-        //template: require("../views/modal-book.html"),
         template: function (el, att) {
             return require("../views/" + att.template);
         },
@@ -23,18 +22,19 @@ function dir(dataService) {
                     ngModel.$setViewValue(false);
                 }
             });
+
             scope.$watch(function () {
                 return ngModel.$modelValue;
             }, function (modelValue) {
                 $(element).modal(modelValue ? "show" : "hide");
             });
-        },
-        //TODO: remove this "reverseLike" logic to caller controller
-        controller: ["$scope", function ($scope) {
-            $scope.reverseLike = function (book) {
-                dataService.books.reverseLike(book._id);
+
+            scope.close = function () {
+                ngModel.$setViewValue(false);
             };
-        }]
+
+            $controller(attrs.controller, {$scope: scope});
+        }
     };
     //
 }

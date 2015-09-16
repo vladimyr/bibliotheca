@@ -10,10 +10,13 @@ function dir() {
         restrict: "A",
         scope: {
             control: "=",
-            config:"="
+            config: "="
         },
         link: function (scope, element, attrs) {
             scope.control = $(element).dropdown(scope.config);
+            scope.control.destroy = function () {
+                scope.control.dropdown("destroy");
+            };
         }
     };
     //

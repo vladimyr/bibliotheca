@@ -1,0 +1,57 @@
+<div class="ui main container">
+    <form class="ui form">
+        <h4 class="ui dividing header">Book Information</h4>
+
+        <div class="field">
+            <label>Title</label>
+            <input ng-model="book.title" type="text" name="shipping[first-name]">
+        </div>
+        <div class="field">
+            <label>Author(s)</label>
+            <input ng-model="book.author" type="text" name="shipping[last-name]">
+        </div>
+        <h4 class="ui dividing header">Billing Information</h4>
+
+        <div class="fields">
+            <div class="two wide field">
+                <label>Pages</label>
+                <input ng-model="book.pages" type="text" name="card[number]" maxlength="5">
+            </div>
+            <div class="seven wide field">
+                <label>ISBN-10</label>
+                <input ng-model="book.isbn10" type="text" name="card[cvc]" maxlength="13">
+            </div>
+            <div class="seven wide field">
+                <label>ISBN-13</label>
+                <input ng-model="book.isbn13" type="text" name="card[cvc]" maxlength="17">
+            </div>
+        </div>
+        <div class="field">
+            <label>Description</label>
+            <textarea ng-model="book.description" rows="4"></textarea>
+        </div>
+        <div class="field">
+            <label>Amazon Link</label>
+            <input ng-model="book.amazonUrl" type="text" name="shipping[first-name]">
+        </div>
+        <div class="field">
+            <label>Amazon Image URL</label>
+            <input ng-model="book.imageUrl" type="text" name="shipping[first-name]">
+        </div>
+        <div class="field">
+            <label>Image preview:</label>
+            <img src={{book.imageUrl}} class="ui small image"
+                 alt="Please fill the 'Amazon Image URL' field with a valid URL.">
+        </div>
+
+
+        <div ng-click="submit(book)" class="ui button teal" tabindex="0">
+            <i class="checkmark icon"></i>
+            Submit
+        </div>
+        <div ui-sref="root.home()" class="ui button red" tabindex="0">
+            <i class="remove icon"></i>
+            Cancel
+        </div>
+    </form>
+</div>
