@@ -19,7 +19,7 @@ function ctrl($scope, authService) {
         authService.clearUser();
     };
     $scope.changePass = function () {
-
+        $scope.showModal = true;
     };
     //
 }

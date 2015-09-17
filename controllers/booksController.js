@@ -8,6 +8,7 @@ var noSessionBearerAuth = passport.authenticate("bearer", {session: false});
 exports.init = function (router) {
 
     router.get("/api/books", noSessionBearerAuth, function (req, res) {
+        //TODO: search
         if (req.query.count) {
             if (req.query.user)
                 repository.users.getById(req.query.user)
@@ -18,9 +19,11 @@ exports.init = function (router) {
             else
                 repository.books.getAllCount(generateCallback(res));
         }
-        else
+        else//TODO: create config object
             repository.books.getAll(req.query.page, req.query.perPage, req.query.sortByLikes,req.query.user, generateCallback(res));
     });
+
+    //TODO: books/wishList and books/readingList
 
     router.get("/api/books/:id", noSessionBearerAuth, function (req, res) {
         repository.books.getById(req.params.id, generateCallback(res));

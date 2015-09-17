@@ -7,7 +7,9 @@ var deps = ["$scope", "dataService", "getBookResolver", "toastr"];
 function ctrl($scope, dataService, getBookResolver, toastr) {
     //
     $scope.book = getBookResolver;
-
+    //TODO: make ajax request to server to get amazon title (nodejs will make amazon request)
+    // cheerio
+    // check vladimyr
     if (!$scope.book) {
         $scope.book = {};
     }

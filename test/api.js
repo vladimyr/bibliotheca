@@ -169,11 +169,11 @@ describe("/api", function () {
                         .put(userUrl + _user._id + "/changePass")
                         .set("Authorization", "bearer " + _token)
                         .send({oldPass: userData.password + "123", newPass: "123"})
-                        .expect(401)
+                        .expect(403)
                         .end(function (err, res) {
                             if (err)
                                 throw err;
-                            should.equal(res.body.name, "UnauthorizedError", "Unexpected error type");
+                            should.equal(res.body.name, "ForbiddenError", "Unexpected error type");
                             done();
                         });
                 });

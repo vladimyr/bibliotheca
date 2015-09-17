@@ -19,6 +19,7 @@
     "bootstrap": "^3.3.5",
     "cors": "^2.7.1",
     "del": "^2.0.0",
+    "emailjs": "^0.3.16",
     "express": "^4.13.3",
     "extend": "^3.0.0",
     "extend-error": "0.0.2",

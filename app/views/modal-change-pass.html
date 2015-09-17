@@ -1,0 +1,26 @@
+<div class="ui modal">
+    <i class="close icon"></i>
+
+    <div class="header">
+        Change Password
+    </div>
+    <form ng-show="!hasRegistered" class="ui large form">
+        <div class="ui stacked segment">
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input ng-model="oldPass" type="password" name="oldPass" placeholder="Old password">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input ng-model="newPass" type="password" name="newPass" placeholder="New password">
+                </div>
+            </div>
+            <div ng-click="submit(oldPass,newPass)" class="ui fluid large teal submit button">
+                Submit
+            </div>
+        </div>
+    </form>
+</div>

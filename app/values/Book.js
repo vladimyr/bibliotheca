@@ -30,8 +30,8 @@ Ctor.prototype = {
 Object.defineProperties(Ctor.prototype, {
     "shortDesc": {
         get: function () {
-            if (this.description.length > 260)
-                return this.description.substring(0, 260) + "...";
+            if (this.description.length > 180)
+                return this.description.substring(0, 180) + "...";
             else
                 return "";
         }

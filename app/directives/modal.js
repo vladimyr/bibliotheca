@@ -14,7 +14,7 @@ function dir($controller) {
             return require("../views/" + att.template);
         },
         scope: {
-            bookInstance: "="
+            sourceObject: "="
         },
         link: function (scope, element, attrs, ngModel) {
             $(element).modal({
@@ -32,7 +32,6 @@ function dir($controller) {
             scope.close = function () {
                 ngModel.$setViewValue(false);
             };
-
             $controller(attrs.controller, {$scope: scope});
         }
     };

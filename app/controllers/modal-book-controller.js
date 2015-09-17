@@ -1,8 +1,8 @@
 "use strict"
 
-var deps = ["$scope", "$state", "$stateParams", "dataService"];
+var deps = ["$scope", "$state", "dataService"];
 
-function ctrl($scope, $state, $stateParams, dataService) {
+function ctrl($scope, $state, dataService) {
     //
     $scope.reverseLike = function (book) {
         dataService.books.reverseLike(book._id);

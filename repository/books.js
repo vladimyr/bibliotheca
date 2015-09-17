@@ -15,8 +15,8 @@ var users = require("./users.js");
  * @param done
  */
 exports.getAll = function (page, perPage, sortByLikes, userId, done) {
-    page = (typeof page !== "undefined" && page > 0) ? page : 1;
-    perPage = (typeof perPage !== "undefined" && perPage > 0) ? perPage : 10;
+    page = page || 1;
+    perPage = perPage || 10;
 
     var sortObj = {_id: -1};
     if (sortByLikes) {

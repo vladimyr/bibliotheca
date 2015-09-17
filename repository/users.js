@@ -93,7 +93,7 @@ exports.changePassword = function (id, oldPass, newPass, done) {
         })
         .then(function (result) {
             if (result === false)
-                return Promise.reject(new common.errors.UnauthorizedError());
+                return Promise.reject(new common.errors.ForbiddenError("Old password wrong."));
             return hasher.getHashAsync(newPass);
         })
         .then(function (hashedPass) {

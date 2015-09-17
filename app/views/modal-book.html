@@ -1,36 +1,36 @@
-<div class="ui modal">
+<div class="ui modal small">
     <i class="close icon"></i>
 
     <div class="header">
-        {{bookInstance.title}}
+        {{sourceObject.title}}
     </div>
     <div class="image content">
         <div class="ui image">
-            <img src={{bookInstance.imageUrl}} alt=""/>
+            <img src={{sourceObject.imageUrl}} alt=""/>
         </div>
         <div class="description">
-            <div class="ui header">{{bookInstance.author}}</div>
-            <p>{{bookInstance.description}}</p>
+            <div class="ui header">{{sourceObject.author}}</div>
+            <p>{{sourceObject.description}}</p>
 
-            <div><b>Pages: </b>{{bookInstance.pages}}</div>
-            <div><b>ISBN-10: </b>{{bookInstance.isbn10}}</div>
-            <div><b>ISBN-13: </b>{{bookInstance.isbn13}}</div>
+            <div><b>Pages: </b>{{sourceObject.pages}}</div>
+            <div><b>ISBN-10: </b>{{sourceObject.isbn10}}</div>
+            <div><b>ISBN-13: </b>{{sourceObject.isbn13}}</div>
         </div>
     </div>
     <div class="actions">
-        <button ng-click="remove(bookInstance)" class="ui red button">
+        <button ng-click="remove(sourceObject)" class="ui red button">
             <i class="remove icon"></i>
             Delete
         </button>
-        <button ng-click="edit(bookInstance)" class="ui yellow button">
+        <button ng-click="edit(sourceObject)" class="ui yellow button">
             <i class="edit icon"></i>
             Edit
         </button>
-        <button ng-class="{'green':bookInstance.isLiked}" ng-click="reverseLike(bookInstance)" class="ui button">
+        <button ng-class="{'green':sourceObject.isLiked}" ng-click="reverseLike(sourceObject)" class="ui button">
             <i class="thumbs up icon"></i>
-            Like<span ng-if="bookInstance.isLiked">d</span>
+            Like<span ng-if="sourceObject.isLiked">d</span>
         </button>
-        <a href={{bookInstance.amazonUrl}} target="_blank" class="ui primary approve button">
+        <a href={{sourceObject.amazonUrl}} target="_blank" class="ui primary approve button">
             Amazon
             <i class="right chevron icon"></i>
         </a>
