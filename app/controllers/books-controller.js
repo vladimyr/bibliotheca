@@ -21,6 +21,8 @@ function ctrl($scope, dataService, authService, $state) {
             .then(function (data) {
                 $scope.bookCount = data;
                 $scope.maxPage = Math.ceil($scope.bookCount / perPage);
+                if ($scope.maxPage === 0)
+                    $scope.maxPage++;
                 if (page > $scope.maxPage)
                     $scope.currentPage = $scope.maxPage;
                 else

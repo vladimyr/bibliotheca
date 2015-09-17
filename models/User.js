@@ -7,15 +7,18 @@ var userSchema = new mongoose.Schema({
     password: {type: String, required: true},
     isAdmin: Boolean,
     token: String,
-    books: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}],
-    hash: String,
-    verified: Boolean
+    likedBooks: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}],
+    rentedBooks: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}],
+    verifyToken: String,
+    verified: {type: Boolean, default: false}
 });
 //TODO: Remove hash from JSON
 userSchema.set("toJSON", {
     transform: function (doc, ret, options) {
         delete ret.password;
         delete ret.token;
+        delete ret.verifyToken;
+        delete ret.verified;
         delete ret.__v;
         return ret;
     }

@@ -1,18 +1,21 @@
 var email = require("emailjs");
-var logger=require("../logger");
+var logger = require("../logger");
+var config = require("../config");
 
-module.exports = email.server.connect({
+var server = email.server.connect({
     host: "mail.vip.hr"
 });
 
-module.exports.sendVerificationMail = function (to, link) {
+server.sendVerificationMail = function (to, token) {
+    var url = config.apiUrl + "/register/" + token;
     server.send({
         from: "noreply@extensionengine.com",
         to: to,
         subject: "Verification for ExtensionEngine Books",
-        text: "Please verify your account by clicking this link: " + link
+        text: "Please verify your account by clicking on this link: " + url
     }, function (err, message) {
         logger.info(err || message);
     });
 };
 
+module.exports = server;

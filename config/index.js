@@ -7,6 +7,7 @@ module.exports = {
     apiUrl: "http://localhost:1337/api",
     secret: "randomBookSecret",
     tokenMs: 604800000,
+    verifyTokenMs: 86400000,
     domains:[
         "@extensionengine.com"//generate regexp from this
     ]

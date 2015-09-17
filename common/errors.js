@@ -33,5 +33,6 @@ var extend = require("extend-error");
 module.exports = {
     NotFoundError: Error.extend("NotFoundError", 1000),
     UnauthorizedError: Error.extend("UnauthorizedError", 1001),
-    ForbiddenError: Error.extend("ForbiddenError", 1002)
+    ForbiddenError: Error.extend("ForbiddenError", 1002),
+    TokenExpiredError: Error.extend("TokenExpiredError", 1003)
 };

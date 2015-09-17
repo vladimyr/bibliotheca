@@ -23,7 +23,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["email", "books"]);
+                        res.body.should.be.instanceOf(Object).and.have.properties(["email", "likedBooks"]);
                         _user = res.body;
                         done();
                     });
@@ -54,7 +54,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        //res.body.should.be.instanceOf(Object).and.have.properties(["email", "books"]);
+                        //res.body.should.be.instanceOf(Object).and.have.properties(["email", "likedBooks"]);
                         done();
                     });
             });
@@ -67,7 +67,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        //res.body.should.be.instanceOf(Object).and.have.properties(["email", "books"]);
+                        //res.body.should.be.instanceOf(Object).and.have.properties(["email", "likedBooks"]);
                         done();
                     });
             });
@@ -112,7 +112,7 @@ describe("/api", function () {
                         if (err)
                             throw err;
                         res.body.should.be.instanceOf(Array);
-                        res.body[0].should.have.properties(["email", "books"]);
+                        res.body[0].should.have.properties(["email", "likedBooks"]);
                         done();
                     });
             });
@@ -125,7 +125,7 @@ describe("/api", function () {
                     .end(function (err, res) {
                         if (err)
                             throw err;
-                        res.body.should.be.instanceOf(Object).and.have.properties(["email", "books"]);
+                        res.body.should.be.instanceOf(Object).and.have.properties(["email", "likedBooks"]);
                         done();
                     });
             });
@@ -141,7 +141,7 @@ describe("/api", function () {
                         .end(function (err, res) {
                             if (err)
                                 throw err;
-                            res.body.should.be.instanceOf(Object).and.have.properties(["email", "books", "isAdmin"]);
+                            res.body.should.be.instanceOf(Object).and.have.properties(["email", "likedBooks", "isAdmin"]);
                             res.body.isAdmin.should.be.true();
                             done();
                         });
@@ -155,7 +155,7 @@ describe("/api", function () {
                         .end(function (err, res) {
                             if (err)
                                 throw err;
-                            res.body.should.be.instanceOf(Object).and.have.properties(["email", "books", "isAdmin"]);
+                            res.body.should.be.instanceOf(Object).and.have.properties(["email", "likedBooks", "isAdmin"]);
                             res.body.isAdmin.should.be.false();
                             done();
                         });
@@ -187,7 +187,7 @@ describe("/api", function () {
                         .end(function (err, res) {
                             if (err)
                                 throw err;
-                            //res.body.should.be.instanceOf(Object).and.have.properties(["email", "books"]);
+                            //res.body.should.be.instanceOf(Object).and.have.properties(["email", "likedBooks"]);
                             res.body.should.be.empty();
                             done();
                         });

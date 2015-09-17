@@ -13,6 +13,8 @@ express.response.customHandleError = function (err) {
         this.status(401).send(err);
     } else if (err.code == errorEnum.ForbiddenError) {
         this.status(403).send(err);
+    } else if (err.code == errorEnum.TokenExpiredError) {
+        this.status(200).send(err);
     } else
         this.sendStatus(500);
     logger.error(err);

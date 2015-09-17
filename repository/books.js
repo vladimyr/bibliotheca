@@ -15,8 +15,8 @@ var users = require("./users.js");
  * @param done
  */
 exports.getAll = function (page, perPage, sortByLikes, userId, done) {
-    page = page || 1;
-    perPage = perPage || 10;
+    page = (parseInt(page, 10) && page > 0) ? page : 1;
+    perPage = (parseInt(perPage, 10) && perPage > 0) ? perPage : 10;
 
     var sortObj = {_id: -1};
     if (sortByLikes) {
@@ -25,7 +25,7 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
     if (userId) {
         users.getById(userId)
             .then(function (user) {
-                return {_id: {$in: user.books}};
+                return {_id: {$in: user.likedBooks}};
             })
             .then(function (findObj) {
                 findBooks(findObj);
@@ -36,6 +36,7 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
     } else {
         findBooks({});
     }
+
     function findBooks(findObj) {
         models.Book.find(findObj)
             .sort(sortObj)
@@ -85,7 +86,7 @@ exports.isLiked = function (bookId, userId, done) {
         .then(function (user) {
             if (!user)
                 return Promise.reject(new common.errors.NotFoundError("User not found"));
-            return user.books;
+            return user.likedBooks;
         })
         .each(function (book) {
             if (bookId == book)
@@ -99,8 +100,8 @@ exports.isLiked = function (bookId, userId, done) {
 
 /**
  * Likes/unlikes the book by the user:
- * If not already liked, saves the user in the book's "likes" array, and saves the book in user's "books" array.
- * If already liked, removes the user from the book's "likes" and removes the book from the user's "books".
+ * If not already liked, saves the user in the book's "likes" array, and saves the book in user's "likedBooks" array.
+ * If already liked, removes the user from the book's "likes" and removes the book from the user's "likedBooks".
  * @param {String} bookId
  * @param {String} userId
  * @param {Function} done
@@ -111,7 +112,7 @@ exports.reverseLike = function (bookId, userId, done) {
     return Promise.bind({book: null, user: null, unlike: false})
         .then(findDocById(bookId, models.Book))
         .then(findDocById(userId, models.User))
-        .then(getUserBooks)
+        .then(getUserLikedBooks)
         .filter(unlikeFromUser)
         .then(likeFromUserAndSave)
         .then(getBookLikes)
@@ -137,8 +138,8 @@ exports.reverseLike = function (bookId, userId, done) {
         };
     }
 
-    function getUserBooks() {
-        return this.user.books;
+    function getUserLikedBooks() {
+        return this.user.likedBooks;
     }
 
     function getBookLikes() {
@@ -153,10 +154,10 @@ exports.reverseLike = function (bookId, userId, done) {
         }
     }
 
-    function likeFromUserAndSave(books) {
-        this.user.books = books;
+    function likeFromUserAndSave(likedBooks) {
+        this.user.likedBooks = likedBooks;
         if (!this.unlike)
-            this.user.books.push(this.book._id);
+            this.user.likedBooks.push(this.book._id);
     }
 
     function unlikeFromBook(like) {
@@ -212,7 +213,7 @@ exports.insert = function (book, done) {
             if (!user)
                 return Promise.reject(new common.errors.NotFoundError("User not found"));
             else {
-                user.books.push(book._id);
+                user.likedBooks.push(book._id);
                 return Promise.cast(user.save());
             }
         })
@@ -274,13 +275,13 @@ exports.delete = function (id, done) {
         })
         .then(function (user) {
             _user = user;
-            return Promise.filter(user.books, function (val) {
+            return Promise.filter(user.likedBooks, function (val) {
                 if (_book.id != val)
                     return true;
             });
         })
-        .then(function (books) {
-            _user.books = books;
+        .then(function (likedBooks) {
+            _user.likedBooks = likedBooks;
             return Promise.cast(_user.save());
         })
         .nodeify(done);

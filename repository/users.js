@@ -4,6 +4,8 @@ var Promise = require("bluebird");
 var hasher = require("../hasher");
 Promise.promisifyAll(hasher);
 var common = require("../common");
+var jwt = require("jwt-simple");
+var config = require("../config");
 
 //TODO: Implement verifying logic through extensionengine email
 
@@ -13,7 +15,7 @@ var common = require("../common");
  * @returns {Object}
  */
 exports.getAll = function (done) {
-    models.User.find({}).populate("books").exec(done);
+    models.User.find({}).populate("likedBooks").exec(done);
 };
 
 /**
@@ -23,8 +25,7 @@ exports.getAll = function (done) {
  * @returns {Promise<R>}
  */
 exports.getById = function (id, done) {
-    //models.User.findOne({_id: id}).populate("books").exec(done);
-    return Promise.cast(models.User.findOne({_id: id}).populate("books").exec())
+    return Promise.cast(models.User.findOne({_id: id}).populate("likedBooks").exec())
         .then(function (user) {
             if (!user)
                 return Promise.reject(new common.errors.NotFoundError("User not found"));
@@ -71,14 +72,23 @@ exports.insert = function (user, done) {
         .then(function (hashedPass) {
             return Promise.cast(models.User.create({email: user.email, password: hashedPass}));
         })
+        .then(function (user) {
+            var verifyToken = jwt.encode({
+                iss: user.id,
+                exp: Date.now() + config.verifyTokenMs
+            }, config.secret);
+
+            user.verifyToken = verifyToken;
+            return Promise.cast(user.save());
+        })
         .nodeify(done);
 };
 
 /**
  * Changes the password to the new value if the old value is correct. Throws NotFoundError if not found.
  * @param {string|number} id User id
- * @param {string|number} oldPass Old password
- * @param {string|number} newPass New password
+ * @param {string} oldPass Old password
+ * @param {string} newPass New password
  * @param {Function} done
  * @returns {Promise<R>}
  */
@@ -125,4 +135,42 @@ exports.reverseIsAdmin = function (id, done) {
             done(null, user);
         }
     });
+};
+
+/**
+ * Verify the user. Return ForbiddenError if the user is already verified.
+ * @param {string|number} id User id
+ * @param {Function} done
+ * @returns {Promise<R>}
+ */
+exports.verify = function (id, done) {
+    return Promise.cast(models.User.findOne({_id: id}).exec())
+        .then(function (user) {
+            if (!user)
+                return Promise.reject(new common.errors.NotFoundError("No such user"));
+            if (user.verified)
+                return Promise.reject(new common.errors.ForbiddenError("Forbidden."));
+            else {
+                user.verified = true;
+                return Promise.cast(user.save());
+            }
+        })
+        .nodeify(done);
+};
+
+/**
+ * Remove the user from the collection.
+ * @param {string|number} id User id
+ * @param {Function} done
+ * @returns {Promise<R>}
+ */
+exports.remove = function (id, done) {
+    return Promise.cast(models.User.findOne({_id: id}).exec())
+        .then(function (user) {
+            if (!user)
+                return Promise.reject(new common.errors.NotFoundError("No such user"));
+            else
+                return Promise.cast(user.remove());
+        })
+        .nodeify(done);
 };

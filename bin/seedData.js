@@ -72,7 +72,7 @@ var seedDatabase = function (seedModel, seedArray, seedName) {
 };
 /** Create references between a user and the books added */
 var mapUserBooks = function (user, books) {
-    user.books = books;
+    user.likedBooks = books;
     return Promise.each(books, function (val) {
         val.user = user._id;
         val.likes = [user._id];

@@ -13,7 +13,7 @@ exports.init = function (router) {
             if (req.query.user)
                 repository.users.getById(req.query.user)
                     .then(function (user) {
-                        return user.books.length.toString();
+                        return user.likedBooks.length.toString();
                     })
                     .nodeify(generateCallback(res));
             else

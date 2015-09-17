@@ -10,9 +10,17 @@ var bookSchema = new mongoose.Schema({
     isbn13: String,
     amazonUrl: String,
     imageUrl: String,
+    // user that added the book
     user: {type: mongoose.Schema.Types.ObjectId, required: true, ref: "User"},
+    verified: {type: Boolean, default: false},
     likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
-    likeNumber: {type: Number, default: 0}
+    likeNumber: {type: Number, default: 0},
+    // 0-wishlist, 1-ordered, 2-available, 3-rented
+    //TODO: check for mongoose enum (custom type,e.g.BookNumber);otherwise write enum
+    status: {type: Number, min: 0, max: 3, default: 0},
+    rentedTo: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    rentedDate: Date,
+    rentQueue: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
 });
 //TODO: Rremove likes from JSON
 bookSchema.set("toJSON", {

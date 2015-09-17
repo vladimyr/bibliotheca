@@ -2,11 +2,13 @@
   {
     "email": "admin@extensionengine.com",
     "password": "1234",
-    "isAdmin": true
+    "isAdmin": true,
+    "verified": true
   },
   {
     "email": "user@extensionengine.com",
     "password": "1234",
-    "isAdmin": false
+    "isAdmin": false,
+    "verified": true
   }
 ]
