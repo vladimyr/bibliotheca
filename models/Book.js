@@ -15,9 +15,7 @@ var bookSchema = new mongoose.Schema({
     verified: {type: Boolean, default: false},
     likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
     likeNumber: {type: Number, default: 0},
-    // 0-wishlist, 1-ordered, 2-available, 3-rented
-    //TODO: check for mongoose enum (custom type,e.g.BookNumber);otherwise write enum
-    status: {type: Number, min: 0, max: 3, default: 0},
+    status: {type: String, enum: ["wishlist", "ordered", "available", "rented"], default: "wishlist"},
     rentedTo: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     rentedDate: Date,
     rentQueue: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]

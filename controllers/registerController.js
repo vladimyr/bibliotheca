@@ -34,7 +34,6 @@ exports.init = function (router) {
                 res.customHandleError(err);
             else if (user) {
                 handleUserExists(res, user, req.body, generateCallback(res));
-                //res.sendStatus(204);
             } else {
                 insertUserAndSendVerificationMail(req.body, generateCallback(res));
             }

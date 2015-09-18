@@ -45,12 +45,30 @@ function ctrl($scope, dataService, authService, $state) {
     $scope.getBooks($scope.currentPage);
 
     $scope.reverseLike = function (book) {
-        dataService.books.reverseLike(book._id);
+        if (book.isLiked)
+            openWishlistRemoveModal(book);
+        else
+            dataService.books.reverseLike(book._id);
     };
 
-    $scope.openModal = function (book) {
+    $scope.openBookModal = function (book) {
         $scope.bookInstance = book;
-        $scope.showModal = true;
+        $scope.showBookModal = true;
+    };
+
+    function openWishlistRemoveModal(book) {
+        $scope.wishlistRemoveConfig = {
+            message:"Are you sure you want to remove this book from your wishlist?" +
+            " If you change your mind, you will be added to the end of waiting queue!",
+            ok: function () {
+                dataService.books.reverseLike(book._id);
+                $scope.showWishlistRemoveModal = false;
+            },
+            cancel: function () {
+                $scope.showWishlistRemoveModal = false;
+            }
+        };
+        $scope.showWishlistRemoveModal = true;
     };
     //
 }

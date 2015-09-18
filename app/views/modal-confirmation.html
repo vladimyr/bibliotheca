@@ -1,0 +1,19 @@
+<div class="ui small basic  modal">
+    <div class="ui icon header">
+        <i class="archive icon"></i>
+        {{sourceObject.title||"Confirm"}}
+    </div>
+    <div class="content">
+        <p>{{sourceObject.message||"Are you sure?"}}</p>
+    </div>
+    <div class="actions">
+        <div ng-click="sourceObject.cancel()" class="ui red basic cancel inverted button">
+            <i class="remove icon"></i>
+            No
+        </div>
+        <div ng-click="sourceObject.ok()" class="ui green basic ok inverted button">
+            <i class="checkmark icon"></i>
+            Yes
+        </div>
+    </div>
+</div>

@@ -2,12 +2,12 @@
 <div class="ui cards">
     <div ng-repeat="b in books" class="card" style="width: 262px">
         <a class="image">
-            <img ng-click="openModal(b)" src={{b.imageUrl}}>
+            <img ng-click="openBookModal(b)" src={{b.imageUrl}}>
         </a>
         <div class="content">
             <span class="right floated">
+                <i class="checkmark box icon"></i>
                 {{b.likeNumber}}
-              <i class="thumbs outline up icon"></i>
           </span>
 
             <div class="header">
@@ -19,7 +19,7 @@
             <div class="description">
                 <div ng-if=b.shortDesc>
                     {{b.shortDesc}}
-                    <a ng-click="openModal(b)">Read more</a>
+                    <a ng-click="openBookModal(b)">Read more</a>
                 </div>
                 <div ng-if=!b.shortDesc>
                     {{b.description}}
@@ -34,8 +34,10 @@
           </span>
         </div>
         <div ng-click="reverseLike(b)" ng-class="{'green':b.isLiked}" class="ui bottom attached button">
-            <i class="thumbs up icon"></i>
-            Like<span ng-if="b.isLiked">d</span>
+            <!--<i class="thumbs up icon"></i>-->
+            <i ng-show="b.isLiked" class="checkmark box icon"></i>
+            <i ng-hide="b.isLiked" class="add circle icon"></i>
+            Wishlist<span ng-show="b.isLiked">ed</span>
         </div>
     </div>
 </div>
@@ -69,5 +71,7 @@
     </div>
 </div>
 
-<modal ng-model="showModal" source-object="bookInstance" controller="ModalBookController" template="modal-book.html">
+<modal ng-model="showBookModal" source-object="bookInstance" controller="ModalBookController" template="modal-book.html">
+</modal>
+<modal ng-model="showWishlistRemoveModal" source-object="wishlistRemoveConfig" template="modal-confirmation.html">
 </modal>

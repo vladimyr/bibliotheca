@@ -32,7 +32,8 @@ function dir($controller) {
             scope.close = function () {
                 ngModel.$setViewValue(false);
             };
-            $controller(attrs.controller, {$scope: scope});
+            if (attrs.controller)
+                $controller(attrs.controller, {$scope: scope});
         }
     };
     //

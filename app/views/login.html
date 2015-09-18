@@ -47,8 +47,8 @@
         <div ng-if="!isLogin && !hasRegistered" class="ui message">
             Already have an account? <a ui-sref="login()">Login</a>
         </div>
-        <div ng-if="hasRegistered">Verification mail has been sent to your address. Please confirm
-            it and then login <a ui-sref="login()">here</a>.
+        <div ng-if="hasRegistered">Verification mail has been sent to your address. Please verify your
+            mail and then login <a ui-sref="login()">here</a>.
         </div>
         <div ng-if="!hasRegistered && msg!=''" class="ui error message">
             {{msg}}

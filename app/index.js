@@ -15,7 +15,7 @@ require("angular-animate");
 require("angular-toastr");
 
 // app
-var app = angular.module("app", ["ui.router","ngAnimate","toastr"]);
+var app = angular.module("app", ["ui.router","toastr"]);
 // run config
 require("./runConfig.js")(app);
 //route config

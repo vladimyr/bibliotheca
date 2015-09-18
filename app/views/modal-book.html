@@ -27,12 +27,15 @@
             Edit
         </button>
         <button ng-class="{'green':sourceObject.isLiked}" ng-click="reverseLike(sourceObject)" class="ui button">
-            <i class="thumbs up icon"></i>
-            Like<span ng-if="sourceObject.isLiked">d</span>
+            <i ng-show="sourceObject.isLiked" class="checkmark box icon"></i>
+            <i ng-hide="sourceObject.isLiked" class="add circle icon"></i>
+            Wishlist<span ng-show="sourceObject.isLiked">ed</span>
         </button>
         <a href={{sourceObject.amazonUrl}} target="_blank" class="ui primary approve button">
             Amazon
             <i class="right chevron icon"></i>
         </a>
     </div>
+    <modal ng-model="showWishlistRemoveModal" source-object="wishlistRemoveConfig" template="modal-confirmation.html">
+    </modal>
 </div>
