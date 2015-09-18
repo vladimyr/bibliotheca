@@ -7,8 +7,6 @@ var common = require("../common");
 var jwt = require("jwt-simple");
 var config = require("../config");
 
-//TODO: Implement verifying logic through extensionengine email
-
 /**
  * Get all documents (populated).
  * @param {Function} done

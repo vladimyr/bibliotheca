@@ -6,8 +6,7 @@ var common = require("../common");
 var users = require("./users.js");
 
 /**
- * Get a number of documents, sorted by _id field descending (populated).
- *
+ * Get a number of documents, sorted by _id field descending (populated). *
  * @param {String|Number} page - Page number. Default is 1.
  * @param {String|Number} perPage - Number of items per page. Default is 10.
  * @param {Boolean} sortByLikes - If true, sorts by likes instead of _id.
@@ -18,9 +17,9 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
     page = (parseInt(page, 10) && page > 0) ? page : 1;
     perPage = (parseInt(perPage, 10) && perPage > 0) ? perPage : 10;
 
-    var sortObj = {_id: -1};
+    var sortObj = [["_id", -1]];
     if (sortByLikes) {
-        sortObj = {likeNumber: -1};
+        sortObj.unshift(["likeNumber", -1]);
     }
     if (userId) {
         users.getById(userId)
@@ -113,16 +112,22 @@ exports.reverseLike = function (bookId, userId, done) {
         .then(findDocById(bookId, models.Book))
         .then(findDocById(userId, models.User))
         .then(getUserLikedBooks)
-        .filter(unlikeFromUser)
+        .filter(filterRemoveLikedBookFromUser)
         .then(likeFromUserAndSave)
         .then(getBookLikes)
-        .filter(unlikeFromBook)
+        .filter(filterRemoveUserLikeFromBook)
         .then(likeFromBookAndSave)
         .then(saveUser)
         .then(changeLikeNumber)
         .then(saveBook)
         .nodeify(done);
 
+    /**
+     * Finds a document, returns it, and sets this[modelName] to it.
+     * @param id
+     * @param model
+     * @returns {Function}
+     */
     function findDocById(id, model) {
         return function query() {
             var _self = this,
@@ -138,51 +143,92 @@ exports.reverseLike = function (bookId, userId, done) {
         };
     }
 
+    /**
+     * Get all books from this.user's likedBooks array.
+     * @returns {Array|*}
+     */
     function getUserLikedBooks() {
         return this.user.likedBooks;
     }
 
+    /**
+     * Get all users from this.book's likes array.
+     * @returns {*}
+     */
     function getBookLikes() {
         return this.book.likes;
     }
 
-    function unlikeFromUser(book) {
-        if (book == this.book.id) {
+    /**
+     * FILTER FUNCTION. Checks a specified bookId against this.book.id. If a match is found,
+     * sets this.unlike to true and doesn't return. Else, returns true.
+     * @param book
+     * @returns {boolean}
+     */
+    function filterRemoveLikedBookFromUser(bookId) {
+        if (bookId == this.book.id) {
             this.unlike = true;
         } else {
             return true;
         }
     }
 
+    /**
+     * Set this.user.likedBooks to specified likedBooks. If this.unlike is not
+     * true, push this.book._id into this.user.likedBooks.
+     * @param likedBooks
+     */
     function likeFromUserAndSave(likedBooks) {
         this.user.likedBooks = likedBooks;
         if (!this.unlike)
             this.user.likedBooks.push(this.book._id);
     }
 
-    function unlikeFromBook(like) {
-        if (like != this.user.id)
+    /**
+     * FILTER FUNCTION. Checks a specified userId against this.user.id. If a match is found,
+     * doesn't return. Else, returns true.
+     * @param like
+     * @returns {boolean}
+     */
+    function filterRemoveUserLikeFromBook(userId) {
+        if (userId != this.user.id)
             return true;
     }
 
+    /**
+     * Set this.book.likesto specified likes. If this.unlike is not
+     * true, push this.user._id into this.user.likes.
+     * @param likes
+     */
     function likeFromBookAndSave(likes) {
         this.book.likes = likes;
         if (!this.unlike)
             this.book.likes.push(this.user._id);
     }
 
+    /**
+     * Save the user and return the saved document.
+     * @returns {Object}
+     */
     function saveUser() {
         return Promise.cast(this.user.save());
     }
 
+    /**
+     * Increments this.book.likeNumber if this.unlike is false.
+     * Decrements it otherwise.
+     */
     function changeLikeNumber() {
         if (this.unlike)
             this.book.likeNumber = this.book.likeNumber - 1;
         else
             this.book.likeNumber = this.book.likeNumber + 1;
-        //return Promise.cast(this.book.update({$inc: {likeNumber: 1}}).exec());
     }
 
+    /**
+     * Save the book and return the saved document.
+     * @returns {Object}
+     */
     function saveBook() {
         return Promise.cast(this.book.save());
     }
