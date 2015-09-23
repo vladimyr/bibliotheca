@@ -15,27 +15,70 @@
             <div><b>Pages: </b>{{sourceObject.pages}}</div>
             <div><b>ISBN-10: </b>{{sourceObject.isbn10}}</div>
             <div><b>ISBN-13: </b>{{sourceObject.isbn13}}</div>
+            <div><b>Status: </b>
+                <book-status book="sourceObject"></book-status>
+            </div>
+
+            <!--<div create-dropdown control="dropdownControl" config="dropdownConfig"-->
+            <!--class="ui selection dropdown">-->
+            <!--<input type="hidden">-->
+            <!--<i class="dropdown icon"></i>-->
+
+            <!--<div class="menu">-->
+            <!--<div  ng-repeat="(name,value) in bookStatusEnum" class="item" data-value="{{value}}">{{name}}</div>-->
+            <!--</div>-->
+            <!--</div>-->
         </div>
+    </div>
+    <div ng-if="sourceObject.status==3" class="content">
+        <div>Rented to {{sourceObject.rentedTo.user}} since {{sourceObject.rentedTo.date}}</div>
+        <div>Next in queue: {{sourceObject.nextUserToRent.email}}</div>
     </div>
     <div class="actions">
         <button ng-click="remove(sourceObject)" class="ui red button">
             <i class="remove icon"></i>
             Delete
         </button>
-        <button ng-click="edit(sourceObject)" class="ui yellow button">
+        <button ng-click="edit(sourceObject)" class="ui orange button">
             <i class="edit icon"></i>
             Edit
         </button>
+        <span ng-hide="sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented" class="actions">
+            <span style="margin-left: 0.75em;">Status:</span>
+        <!--<select class="ui dropdown"-->
+                <!--ng-model="sourceObject.status"-->
+                <!--ng-options="value as name for (name,value) in bookStatusEnum">-->
+        <select class="ui button"
+                ng-model="dropdownStatus"
+                ng-options="status.value as status.name for status in statuses">
+        </select>
+        <button ng-click="changeStatus(sourceObject,dropdownStatus)" class="ui violet button">
+            <i class="idea icon"></i>
+            Change status
+        </button>
+        </span>
+        <button ng-show="sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented" ng-click="rentNext(sourceObject)"
+                class="ui teal button">
+            <i class="calendar icon"></i>
+            <span ng-if="sourceObject.likes.length>0">Rent to next</span>
+            <span ng-if="sourceObject.likes.length==0">Unrent</span>
+        </button>
+    </div>
+    <div class="actions">
         <button ng-class="{'green':sourceObject.isLiked}" ng-click="reverseLike(sourceObject)" class="ui button">
             <i ng-show="sourceObject.isLiked" class="checkmark box icon"></i>
             <i ng-hide="sourceObject.isLiked" class="add circle icon"></i>
             Wishlist<span ng-show="sourceObject.isLiked">ed</span>
         </button>
-        <a href={{sourceObject.amazonUrl}} target="_blank" class="ui primary approve button">
-            Amazon
+        <a href={{sourceObject.pageUrl}} target="_blank" class="ui primary approve button">
+            Product page
             <i class="right chevron icon"></i>
         </a>
     </div>
     <modal ng-model="showWishlistRemoveModal" source-object="wishlistRemoveConfig" template="modal-confirmation.html">
+    </modal>
+    <modal ng-model="showRentNextModal" source-object="rentNextConfig" template="modal-confirmation.html">
+    </modal>
+    <modal ng-model="showSetAvailableModal" source-object="setAvailableConfig" template="modal-confirmation.html">
     </modal>
 </div>

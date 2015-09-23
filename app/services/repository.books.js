@@ -43,8 +43,15 @@ function serv($http, Pool, Book) {
 
     function update(id, book) {
         return $http.put(apiUrl + id, book)
-            .then(function(res){
+            .then(function (res) {
                 return res.data;
+            });
+    }
+
+    function updateStatus(id, status) {
+        return $http.put(apiUrl + id + "/status", {status: status})
+            .then(function (res) {
+                return _pool.updateInstance(res.data._id, res.data);
             });
     }
 
@@ -65,11 +72,12 @@ function serv($http, Pool, Book) {
         var book = _pool.getInstance(id);
         return $http.put(apiUrl + id + "/like")
             .then(function (res) {
-                if (book.isLiked)
-                    book.likeNumber--;
-                else
-                    book.likeNumber++;
+                //if (book.isLiked)
+                //    book.likeNumber--;
+                //else
+                //    book.likeNumber++;
                 book.isLiked = !book.isLiked;
+                return getById(id);
             });
     }
 
@@ -79,6 +87,7 @@ function serv($http, Pool, Book) {
         this.getById = getById;
         this.insert = insert;
         this.update = update;
+        this.updateStatus = updateStatus;
         this.remove = remove;
         this.isLiked = isLiked;
         this.reverseLike = reverseLike;

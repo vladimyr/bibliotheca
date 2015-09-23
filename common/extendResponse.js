@@ -1,6 +1,6 @@
 "use strict";
 var express = require("express");
-var errorEnum = require("./errorEnum.js");
+var errorEnum = require("../enums").error;
 var logger = require("../logger");
 /**
  * Extension to the Express response object. Responds depending on the type of error

@@ -4,11 +4,12 @@
         <a class="image">
             <img ng-click="openBookModal(b)" src={{b.imageUrl}}>
         </a>
+
         <div class="content">
-            <span class="right floated">
-                <i class="checkmark box icon"></i>
-                {{b.likeNumber}}
-          </span>
+            <!--<span class="right floated">-->
+            <!--<i class="checkmark box icon"></i>-->
+            <!--{{b.likeNumber}}-->
+            <!--</span>-->
 
             <div class="header">
                 {{b.title}}
@@ -24,13 +25,15 @@
                 <div ng-if=!b.shortDesc>
                     {{b.description}}
                 </div>
-
             </div>
         </div>
         <div class="extra content">
+          <span>
+              <i class="user icon"></i>
+            {{b.likeNumber}} wishlisted
+          </span>
           <span class="right floated">
-              <!--<i class="thumbs outline up icon"></i>-->
-            <!--{{b.likeNumber}} Likes-->
+            <book-status book="b"></book-status>
           </span>
         </div>
         <div ng-click="reverseLike(b)" ng-class="{'green':b.isLiked}" class="ui bottom attached button">
@@ -71,7 +74,8 @@
     </div>
 </div>
 
-<modal ng-model="showBookModal" source-object="bookInstance" controller="ModalBookController" template="modal-book.html">
+<modal ng-model="showBookModal" source-object="bookInstance" controller="ModalBookController"
+       template="modal-book.html">
 </modal>
 <modal ng-model="showWishlistRemoveModal" source-object="wishlistRemoveConfig" template="modal-confirmation.html">
 </modal>

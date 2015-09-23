@@ -4,6 +4,7 @@ var Promise = require("bluebird");
 var mongoose = require("mongoose");
 var common = require("../common");
 var users = require("./users.js");
+var bookStatusEnum = require("../enums").bookStatus;
 
 /**
  * Get a number of documents, sorted by _id field descending (populated). *
@@ -17,9 +18,11 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
     page = (parseInt(page, 10) && page > 0) ? page : 1;
     perPage = (parseInt(perPage, 10) && perPage > 0) ? perPage : 10;
 
+    // default: sort by id descending
     var sortObj = [["_id", -1]];
     if (sortByLikes) {
-        sortObj.unshift(["likeNumber", -1]);
+        //sort by id ascending and then by likeNumber descending
+        sortObj = [["likeNumber", -1], ["_id", 1]];
     }
     if (userId) {
         users.getById(userId)
@@ -41,7 +44,7 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
             .sort(sortObj)
             .limit(perPage)
             .skip(perPage * (page - 1))
-            .populate("user")
+            .populate("likes")
             .exec(done);
     }
 };
@@ -63,7 +66,7 @@ exports.getAllCount = function (done) {
  * @returns {Promise<R>}
  */
 exports.getById = function (id, done) {
-    return Promise.cast(models.Book.findOne({_id: id}).populate("user").exec())
+    return Promise.cast(models.Book.findOne({_id: id}).populate("likes").exec())
         .then(function (book) {
             if (!book)
                 return Promise.reject(new common.errors.NotFoundError("Book not found"));
@@ -240,11 +243,13 @@ exports.reverseLike = function (bookId, userId, done) {
  * @param {Function} done
  * @returns {Promise<R>}
  */
-exports.insert = function (book, done) {
+exports.insert = function (book, userId, done) {
     book._id = new mongoose.Types.ObjectId();
     book.likes = [];
     return new Promise(function (resolve, reject) {
-        if (book.user === undefined)
+        //if (book.user === undefined)
+        //    reject("No user provided");
+        if (userId === undefined)
             reject("No user provided");
         else {
             book.likes.push(book.user);
@@ -253,7 +258,8 @@ exports.insert = function (book, done) {
         }
     })
         .then(function () {
-            return Promise.cast(models.User.findOne({_id: book.user}).exec())
+            //return Promise.cast(models.User.findOne({_id: book.user}).exec());
+            return Promise.cast(models.User.findOne({_id: userId}).exec());
         })
         .then(function (user) {
             if (!user)
@@ -264,14 +270,28 @@ exports.insert = function (book, done) {
             }
         })
         .then(function (user) {
-            return Promise.cast(models.Book.create(book));
+            //return Promise.cast(models.Book.create(book));
+            return Promise.cast(models.Book.create({
+                _id: book._id,
+                title: book.title,
+                author: book.author,
+                description: book.description,
+                pages: book.pages,
+                isbn10: book.isbn10,
+                isbn13: book.isbn13,
+                pageUrl: book.pageUrl,
+                imageUrl: book.imageUrl,
+                user: userId,
+                likes: book.likes,
+                likeNumber: book.likeNumber
+            }));
         })
         .nodeify(done);
 };
 
 /**
  * Update a document by id. Affects: title, author,
- * description, pages, isbn10, isbn13, amazonUrl and imageUrl fields.
+ * description, pages, isbn10, isbn13, pageUrl and imageUrl fields.
  * @param {string|number} id Document id
  * @param {Object} book Document to update
  * @param {Function} done
@@ -286,7 +306,7 @@ exports.update = function (id, book, done) {
             pages: book.pages,
             isbn10: book.isbn10,
             isbn13: book.isbn13,
-            amazonUrl: book.amazonUrl,
+            pageUrl: book.pageUrl,
             imageUrl: book.imageUrl
         }
     }, {"new": true}, function (err, updatedBook) {
@@ -306,8 +326,8 @@ exports.update = function (id, book, done) {
  * @returns {Promise<R>}
  */
 exports.delete = function (id, done) {
+    // TODO: find user by rentedTo.user and delete from his current reading book
     var _user, _book;
-    //models.Book.findByIdAndRemove(id).exec(done);
     return Promise.cast(models.Book.findOne({_id: id}).exec())
         .then(function (book) {
             if (!book)
@@ -329,6 +349,36 @@ exports.delete = function (id, done) {
         .then(function (likedBooks) {
             _user.likedBooks = likedBooks;
             return Promise.cast(_user.save());
+        })
+        .nodeify(done);
+};
+
+/**
+ * Update the status of a book. Can not be used to rent a book.
+ * @param id
+ * @param status
+ * @param done
+ * @returns {Promise<R>}
+ */
+exports.updateStatus = function (id, status, done) {
+    //TODO: fix validation, it's not checking for some reason
+    return Promise.cast(models.Book.findOne({_id: id}).exec())
+        .then(function (book) {
+            if (!book)
+                return Promise.reject(new common.errors.NotFoundError("Book not found"));
+            else {
+                return book;
+            }
+        })
+        .then(function (book) {
+            var cond1 = book.status == bookStatusEnum.Wishlisted || book.status == bookStatusEnum.Ordered,
+                cond2 = status == bookStatusEnum.Wishlisted || status == bookStatusEnum.Ordered || status == bookStatusEnum.Available;
+            if (cond1 && cond2) {
+                book.status = status;
+                return Promise.cast(book.save());
+            } else {
+                return Promise.reject(new common.errors.ForbiddenError("Forbidden."));
+            }
         })
         .nodeify(done);
 };

@@ -17,11 +17,11 @@
             </div>
             <div class="seven wide field">
                 <label>ISBN-10</label>
-                <input ng-model="book.isbn10" type="text" name="card[cvc]" maxlength="13">
+                <input ng-model="book.isbn10" type="text" name="card[cvc]" minlength="10" maxlength="13">
             </div>
             <div class="seven wide field">
                 <label>ISBN-13</label>
-                <input ng-model="book.isbn13" type="text" name="card[cvc]" maxlength="17">
+                <input ng-model="book.isbn13" type="text" name="card[cvc]" minlength="13" maxlength="17">
             </div>
         </div>
         <div class="field">
@@ -29,27 +29,27 @@
             <textarea ng-model="book.description" rows="4"></textarea>
         </div>
         <div class="field">
-            <label>Amazon Link</label>
-            <input ng-model="book.amazonUrl" type="text" name="shipping[first-name]">
+            <label>Book Page URL</label>
+            <input ng-model="book.pageUrl" type="text" name="shipping[first-name]">
         </div>
         <div class="field">
-            <label>Amazon Image URL</label>
+            <label>Book Image URL</label>
             <input ng-model="book.imageUrl" type="text" name="shipping[first-name]">
         </div>
         <div class="field">
             <label>Image preview:</label>
             <img src={{book.imageUrl}} class="ui small image"
-                 alt="Please fill the 'Amazon Image URL' field with a valid URL.">
+                 alt="Please fill the 'Book Image URL' field with a valid URL.">
         </div>
 
-
+        <div ui-sref="root.home()" class="ui button red" tabindex="0">
+            <i class="left chevron icon"></i>
+            Back
+        </div>
         <div ng-click="submit(book)" class="ui button teal" tabindex="0">
             <i class="checkmark icon"></i>
             Submit
         </div>
-        <div ui-sref="root.home()" class="ui button red" tabindex="0">
-            <i class="remove icon"></i>
-            Cancel
-        </div>
+
     </form>
 </div>

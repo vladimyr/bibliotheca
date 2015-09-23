@@ -4,7 +4,6 @@ var deps = ["$scope", "dataService", "authService", "$state"];
 
 function ctrl($scope, dataService, authService, $state) {
     //
-
     var isUser = $state.current.data.isUser;
     $scope.user = authService.getUser();
     $scope.currentPage = 1;
@@ -58,7 +57,8 @@ function ctrl($scope, dataService, authService, $state) {
 
     function openWishlistRemoveModal(book) {
         $scope.wishlistRemoveConfig = {
-            message:"Are you sure you want to remove this book from your wishlist?" +
+            title: "Confirm wishlist remove",
+            message: "Are you sure you want to remove this book from your wishlist?" +
             " If you change your mind, you will be added to the end of waiting queue!",
             ok: function () {
                 dataService.books.reverseLike(book._id);

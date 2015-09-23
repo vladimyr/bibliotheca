@@ -1,12 +1,15 @@
 "use strict"
 
-var deps = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
-function cfg($stateProvider, $urlRouterProvider, $httpProvider) {
+var deps = ["$stateProvider", "$urlRouterProvider", "$httpProvider", "toastrConfig"];
+function cfg($stateProvider, $urlRouterProvider, $httpProvider, toastrConfig) {
 
     $httpProvider.interceptors.push("authInterceptor");
 
+    angular.extend(toastrConfig, {timeOut: 2000});
+
     var viewsRoot = "./views/";
     $urlRouterProvider.otherwise("/home");
+
     $stateProvider
         .state("login", {
             url: "/login",

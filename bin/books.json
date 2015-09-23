@@ -6,7 +6,7 @@
     "pages": 123,
     "isbn10": "1-234-56789-8",
     "isbn13": "1-234-56789-1234",
-    "amazonUrl": "http://www.amazon.com/The-Programming-Language-3rd-Edition/dp/0201889544",
+    "pageUrl": "http://www.amazon.com/The-Programming-Language-3rd-Edition/dp/0201889544",
     "imageUrl": "http://ecx.images-amazon.com/images/I/51E-UF9BzDL._SX395_BO1,204,203,200_.jpg",
     "verified":true
   },
@@ -17,7 +17,7 @@
     "pages": 123,
     "isbn10": "1-234-56789-8",
     "isbn13": "1-234-56789-1234",
-    "amazonUrl": "http://www.amazon.com/Learning-Operating-System-Fifth-Edition/dp/0596002610/ref=pd_sim_14_8?ie=UTF8&refRID=09M9TDFHKG101GZEAKV9",
+    "pageUrl": "http://www.amazon.com/Learning-Operating-System-Fifth-Edition/dp/0596002610/ref=pd_sim_14_8?ie=UTF8&refRID=09M9TDFHKG101GZEAKV9",
     "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg",
     "verified":true
   },
@@ -28,7 +28,7 @@
     "pages": 123,
     "isbn10": "1-234-56789-8",
     "isbn13": "1-234-56789-1234",
-    "amazonUrl": "http://www.amazon.com/The-Programming-Language-3rd-Edition/dp/0201889544",
+    "pageUrl": "http://www.amazon.com/The-Programming-Language-3rd-Edition/dp/0201889544",
     "imageUrl": "http://ecx.images-amazon.com/images/I/51E-UF9BzDL._SX395_BO1,204,203,200_.jpg",
     "verified":true
   },
@@ -39,7 +39,7 @@
     "pages": 123,
     "isbn10": "1-234-56789-8",
     "isbn13": "1-234-56789-1234",
-    "amazonUrl": "http://www.amazon.com/Learning-Operating-System-Fifth-Edition/dp/0596002610/ref=pd_sim_14_8?ie=UTF8&refRID=09M9TDFHKG101GZEAKV9",
+    "pageUrl": "http://www.amazon.com/Learning-Operating-System-Fifth-Edition/dp/0596002610/ref=pd_sim_14_8?ie=UTF8&refRID=09M9TDFHKG101GZEAKV9",
     "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
   },
   {
@@ -49,7 +49,7 @@
     "pages": 123,
     "isbn10": "1-234-56789-8",
     "isbn13": "1-234-56789-1234",
-    "amazonUrl": "http://www.amazon.com/The-Programming-Language-3rd-Edition/dp/0201889544",
+    "pageUrl": "http://www.amazon.com/The-Programming-Language-3rd-Edition/dp/0201889544",
     "imageUrl": "http://ecx.images-amazon.com/images/I/51E-UF9BzDL._SX395_BO1,204,203,200_.jpg"
   },
   {
@@ -59,7 +59,7 @@
     "pages": 123,
     "isbn10": "1-234-56789-8",
     "isbn13": "1-234-56789-1234",
-    "amazonUrl": "http://www.amazon.com/Learning-Operating-System-Fifth-Edition/dp/0596002610/ref=pd_sim_14_8?ie=UTF8&refRID=09M9TDFHKG101GZEAKV9",
+    "pageUrl": "http://www.amazon.com/Learning-Operating-System-Fifth-Edition/dp/0596002610/ref=pd_sim_14_8?ie=UTF8&refRID=09M9TDFHKG101GZEAKV9",
     "imageUrl": "http://ecx.images-amazon.com/images/I/51lh6UV20wL._SX331_BO1,204,203,200_.jpg"
   }
 ]

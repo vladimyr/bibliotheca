@@ -23,7 +23,7 @@ exports.init = function (router) {
             repository.books.getAll(req.query.page, req.query.perPage, req.query.sortByLikes,req.query.user, generateCallback(res));
     });
 
-    //TODO: books/wishList and books/readingList
+    //TODO: books/wishList
 
     router.get("/api/books/:id", noSessionBearerAuth, function (req, res) {
         repository.books.getById(req.params.id, generateCallback(res));
@@ -31,12 +31,16 @@ exports.init = function (router) {
 
     //TODO: Strip tags from desc when scraping, check noscript on page source
     router.post("/api/books", noSessionBearerAuth, function (req, res) {
-        req.body.user = req.user.id;
-        repository.books.insert(req.body, generateCallback(res));
+        //req.body.user = req.user.id;
+        repository.books.insert(req.body,req.user.id, generateCallback(res));
     });
 
     router.put("/api/books/:id", noSessionBearerAuth, function (req, res) {
         repository.books.update(req.params.id, req.body, generateCallback(res));
+    });
+
+    router.put("/api/books/:id/status", noSessionBearerAuth, function (req, res) {
+        repository.books.updateStatus(req.params.id, req.body.status, generateCallback(res));
     });
 
     router.delete("/api/books/:id", noSessionBearerAuth, function (req, res) {

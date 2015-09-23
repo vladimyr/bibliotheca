@@ -3,7 +3,9 @@ var mongoose = require("mongoose");
 
 //TODO: Add minimum password limit
 var userSchema = new mongoose.Schema({
+    // TODO: add regexp - match:/@extensioneengine\.com$/i
     email: {type: String, required: true},
+    // TODO: minlength: 4
     password: {type: String, required: true},
     isAdmin: Boolean,
     token: String,
