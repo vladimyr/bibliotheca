@@ -49,14 +49,14 @@ function ctrl($scope, $state, dataService) {
             });
     };
 
-    $scope.rentNext = function (book) {
-        openRentNextModal(book);
+    $scope.rentNext = function (book, isUnrent) {
+        openRentNextModal(book, isUnrent);
     };
 
     function openSetAvailableModal(book, newStatus) {
         $scope.setAvailableConfig = {
             title: "Confirm status change",
-            message: "Are you sure you want to set status to 'Available'?"+
+            message: "Are you sure you want to set status to 'Available'?" +
             " After that, you won't be able to revert to 'Not ordered' or 'Ordered'.",
             ok: function () {
                 updateStatusAndSetDropdown(book, newStatus);
@@ -85,19 +85,25 @@ function ctrl($scope, $state, dataService) {
         $scope.showWishlistRemoveModal = true;
     };
 
-    function openRentNextModal(book) {
-        var message = "Are you sure you want to unrent "
-            + book.title + " from " + book.rentedTo.user;
-        if (book.likes.length < 1)
-            message += "?";
-        else
-            message += " and rent it to " + book.likes[0].email + "?";
+    function openRentNextModal(book, isUnrent) {
+        var message = "Are you sure you want to ";
+        var title = "Confirm ";
+
+        if (isUnrent) {
+            title += "unrent";
+            message += "unrent " + book.title + " from " + book.rentedTo.user.email + "?";
+        }
+        else {
+            title += "rent";
+            message += "rent " + book.title + " to " + book.nextUserToRent.email + "?";
+        }
 
         $scope.rentNextConfig = {
-            title: "Confirm rent",
+            title: title,
             message: message,
             ok: function () {
                 $scope.showRentNextModal = false;
+                dataService.books.rentNext(book._id);
             },
             cancel: function () {
                 $scope.showRentNextModal = false;

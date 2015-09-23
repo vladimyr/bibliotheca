@@ -45,6 +45,7 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
             .limit(perPage)
             .skip(perPage * (page - 1))
             .populate("likes")
+            .populate("rentedTo.user")
             .exec(done);
     }
 };
@@ -66,7 +67,7 @@ exports.getAllCount = function (done) {
  * @returns {Promise<R>}
  */
 exports.getById = function (id, done) {
-    return Promise.cast(models.Book.findOne({_id: id}).populate("likes").exec())
+    return Promise.cast(models.Book.findOne({_id: id}).populate("likes").populate("rentedTo.user").exec())
         .then(function (book) {
             if (!book)
                 return Promise.reject(new common.errors.NotFoundError("Book not found"));
@@ -237,6 +238,7 @@ exports.reverseLike = function (bookId, userId, done) {
     }
 };
 
+
 /**
  * Inserts a new document if the User field corresponds to an existing user in the database
  * @param {Object} book Document to insert
@@ -371,8 +373,8 @@ exports.updateStatus = function (id, status, done) {
             }
         })
         .then(function (book) {
-            var cond1 = book.status == bookStatusEnum.Wishlisted || book.status == bookStatusEnum.Ordered,
-                cond2 = status == bookStatusEnum.Wishlisted || status == bookStatusEnum.Ordered || status == bookStatusEnum.Available;
+            var cond1 = book.status === bookStatusEnum.Wishlisted || book.status === bookStatusEnum.Ordered,
+                cond2 = status === bookStatusEnum.Wishlisted || status === bookStatusEnum.Ordered || status === bookStatusEnum.Available;
             if (cond1 && cond2) {
                 book.status = status;
                 return Promise.cast(book.save());
@@ -381,4 +383,53 @@ exports.updateStatus = function (id, status, done) {
             }
         })
         .nodeify(done);
+};
+
+exports.rentNext = function (bookId, done) {
+    var _date = new Date(Date.now());
+    var userId = {};
+    var notRented = false;
+    return Promise.cast(models.Book.findOne({_id: bookId}).exec())
+        .then(function (book) {
+            if (!book)
+                return Promise.reject(new common.errors.NotFoundError("Book not found"));
+            else {
+                return book;
+            }
+        })
+        .tap(function (book) {
+            if (book.status === bookStatusEnum.Available && book.likes.length > 0) {
+                userId = book.likes[0];
+                book.status = bookStatusEnum.Rented;
+                book.rentedTo = {
+                    user: userId,
+                    date: _date
+                };
+            } else if (book.status === bookStatusEnum.Rented) {
+                if (book.likes.length == 0) {
+                    notRented = true;
+                    book.status = bookStatusEnum.Available;
+                } else {
+                    userId = book.likes[0];
+                    book.rentedTo = {
+                        user: userId,
+                        date: _date
+                    };
+                }
+            } else {
+                return Promise.reject(new common.errors.ForbiddenError("Forbidden."));
+            }
+        })
+        .then(function (book) {
+            return Promise.cast(book.save());
+        })
+        .then(function (book) {
+            if (notRented)
+                done(null, book);
+            else
+                return exports.reverseLike(bookId, userId.toString(), done);
+        })
+        .catch(function (err) {
+            done(err);
+        });
 };

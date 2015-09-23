@@ -30,6 +30,7 @@ function serv($http, Pool, Book) {
     function getById(id) {
         return $http.get(apiUrl + id)
             .then(function (res) {
+                isLiked(id);
                 return _pool.updateInstance(res.data._id, res.data);
             });
     }
@@ -76,7 +77,14 @@ function serv($http, Pool, Book) {
                 //    book.likeNumber--;
                 //else
                 //    book.likeNumber++;
-                book.isLiked = !book.isLiked;
+                //book.isLiked = !book.isLiked;
+                return getById(id);
+            });
+    }
+
+    function rentNext(id) {
+        return $http.put(apiUrl + id + "/rent")
+            .then(function (res) {
                 return getById(id);
             });
     }
@@ -91,6 +99,7 @@ function serv($http, Pool, Book) {
         this.remove = remove;
         this.isLiked = isLiked;
         this.reverseLike = reverseLike;
+        this.rentNext = rentNext;
     };
 
 }

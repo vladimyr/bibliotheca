@@ -28,14 +28,14 @@ var seed = function () {
         })
         .then(function (res) {
             users = res;
-            return mapUserBooks(users[0], [books[0], books[1]]);
+            return mapUserBooks(users[0], [books[0], books[1], books[2]]);
         })
         .then(function (res) {
-            return mapUserBooks(users[0], [books[2], books[3]]);
+            return mapUserBooks(users[1], [books[3], books[4], books[5]]);
         })
-        .then(function (res) {
-            return mapUserBooks(users[0], [books[4], books[5]]);
-        })
+        //.then(function (res) {
+        //    return mapUserBooks(users[0], [books[4], books[5]]);
+        //})
         .then(function (res) {
             logger.info("Successfully updated references");
         })

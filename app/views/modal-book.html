@@ -30,9 +30,13 @@
             <!--</div>-->
         </div>
     </div>
-    <div ng-if="sourceObject.status==3" class="content">
-        <div>Rented to {{sourceObject.rentedTo.user}} since {{sourceObject.rentedTo.date}}</div>
-        <div>Next in queue: {{sourceObject.nextUserToRent.email}}</div>
+    <div ng-if="sourceObject.status==bookStatusEnum.Rented || sourceObject.status==bookStatusEnum.Available" class="content">
+        <div ng-hide="sourceObject.status==bookStatusEnum.Available">Rented to
+            <b>{{sourceObject.rentedTo.user.email}}</b> since <b>{{sourceObject.rentedTo.date}}</b>
+        </div>
+        <div>
+            Next in queue: <b>{{sourceObject.nextUserToRent.email || "No one, queue empty."}}</b>
+        </div>
     </div>
     <div class="actions">
         <button ng-click="remove(sourceObject)" class="ui red button">
@@ -43,7 +47,8 @@
             <i class="edit icon"></i>
             Edit
         </button>
-        <span ng-hide="sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented" class="actions">
+        <span ng-hide="sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented"
+              class="actions">
             <span style="margin-left: 0.75em;">Status:</span>
         <!--<select class="ui dropdown"-->
                 <!--ng-model="sourceObject.status"-->
@@ -57,11 +62,17 @@
             Change status
         </button>
         </span>
-        <button ng-show="sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented" ng-click="rentNext(sourceObject)"
+        <button ng-show="sourceObject.status==bookStatusEnum.Rented && sourceObject.likes.length==0"
+                ng-click="rentNext(sourceObject,true)"
                 class="ui teal button">
             <i class="calendar icon"></i>
-            <span ng-if="sourceObject.likes.length>0">Rent to next</span>
-            <span ng-if="sourceObject.likes.length==0">Unrent</span>
+            Unrent
+        </button>
+        <button ng-show="(sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented) && sourceObject.likes.length>0"
+                ng-click="rentNext(sourceObject)"
+                class="ui teal button">
+            <i class="calendar icon"></i>
+            Rent to next
         </button>
     </div>
     <div class="actions">

@@ -43,6 +43,10 @@ exports.init = function (router) {
         repository.books.updateStatus(req.params.id, req.body.status, generateCallback(res));
     });
 
+    router.put("/api/books/:id/rent", noSessionBearerAuth, function (req, res) {
+        repository.books.rentNext(req.params.id, generateCallback(res));
+    });
+
     router.delete("/api/books/:id", noSessionBearerAuth, function (req, res) {
         repository.books.delete(req.params.id, generateCallback(res, 200));
     });
