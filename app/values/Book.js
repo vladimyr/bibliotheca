@@ -39,6 +39,13 @@ Object.defineProperties(Ctor.prototype, {
             else
                 return "";
         }
+    },
+    "formattedDate": {
+        get: function () {
+            var d = new Date(this.rentedTo.date);
+            return d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear() + ".," +
+                " "+ d.getHours()+":"+ d.getMinutes();
+        }
     }
 });
 

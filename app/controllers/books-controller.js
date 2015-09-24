@@ -69,7 +69,9 @@ function ctrl($scope, dataService, authService, $state) {
             }
         };
         $scope.showWishlistRemoveModal = true;
-    };
+    }
+
+
     //
 }
 ctrl.$inject = deps;

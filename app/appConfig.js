@@ -90,6 +90,11 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider, toastrConfig) {
                 }]
             }
         })
+        .state("root.verifyBooks", {
+            url: "/verifyBooks",
+            template: require(viewsRoot + "verify-books.html"),
+            controller: "VerifyBooksController"
+        })
     ;
 };
 cfg.$inject = deps;

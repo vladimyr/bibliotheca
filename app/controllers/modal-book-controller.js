@@ -27,11 +27,12 @@ function ctrl($scope, $state, dataService) {
     };
 
     $scope.remove = function (book) {
-        $scope.close();
-        dataService.books.remove(book._id)
-            .then(function () {
-                $state.reload();
-            });
+        //$scope.close();
+        //dataService.books.remove(book._id)
+        //    .then(function () {
+        //        $state.reload();
+        //    });
+        openDeleteModal(book);
     };
 
     $scope.changeStatus = function (book, newStatus) {
@@ -52,6 +53,24 @@ function ctrl($scope, $state, dataService) {
     $scope.rentNext = function (book, isUnrent) {
         openRentNextModal(book, isUnrent);
     };
+
+    function openDeleteModal(book) {
+        $scope.deleteConfig = {
+            title: "Confirm delete",
+            message: "Are you sure you want delete this book?",
+            ok: function () {
+                dataService.books.remove(book._id)
+                    .then(function(){
+                        $state.reload();
+                    });
+                $scope.showDeleteModal = false;
+            },
+            cancel: function () {
+                $scope.showDeleteModal = false;
+            }
+        };
+        $scope.showDeleteModal = true;
+    }
 
     function openSetAvailableModal(book, newStatus) {
         $scope.setAvailableConfig = {
@@ -83,7 +102,7 @@ function ctrl($scope, $state, dataService) {
             }
         };
         $scope.showWishlistRemoveModal = true;
-    };
+    }
 
     function openRentNextModal(book, isUnrent) {
         var message = "Are you sure you want to ";
@@ -110,7 +129,7 @@ function ctrl($scope, $state, dataService) {
             }
         };
         $scope.showRentNextModal = true;
-    };
+    }
     //
 }
 ctrl.$inject = deps;

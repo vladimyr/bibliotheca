@@ -1,0 +1,35 @@
+<div class="ui main container">
+    <div class="ui basic segment">
+        <h1 class="ui header">Unverified Books</h1>
+
+        <div class="ui cards">
+
+            <div ng-repeat="b in books" class="card">
+                <div class="content">
+                    <img class="right floated mini ui image" src={{b.imageUrl}}>
+                    <div class="header">
+                        {{b.title}}
+                    </div>
+                    <div class="meta">
+                        By {{b.author}}
+                    </div>
+                    <div class="description">
+                        {{b.user.email}} requested permission to add this book.
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <div ng-click="approve(b)" class="ui basic green button">Approve</div>
+                        <div ng-click="decline(b)" class="ui basic red button">Decline</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<modal ng-model="showDeleteModal" source-object="deleteConfig" template="modal-confirmation.html">
+</modal>
+<modal ng-model="showVerifyModal" source-object="verifyConfig" template="modal-confirmation.html">
+</modal>

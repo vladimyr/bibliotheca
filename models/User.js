@@ -7,7 +7,7 @@ var userSchema = new mongoose.Schema({
     email: {type: String, required: true},
     // TODO: minlength: 4
     password: {type: String, required: true},
-    isAdmin: Boolean,
+    isAdmin: {type: Boolean, required: true, default: false},
     token: String,
     likedBooks: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}],
     rentedBooks: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}],

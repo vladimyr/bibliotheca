@@ -20,6 +20,17 @@ function serv($http, Pool, Book) {
             });
     }
 
+    function getAllUnverified() {
+        return $http.get(apiUrl + "unverified")
+            .then(function (res) {
+                var models = [];
+                res.data.forEach(function (val) {
+                    models.push(_pool.updateInstance(val._id, val));
+                });
+                return models;
+            });
+    }
+
     function getCount(userId) {
         return $http.get(apiUrl, {params: {count: true, user: userId}})
             .then(function (res) {
@@ -52,7 +63,8 @@ function serv($http, Pool, Book) {
     function updateStatus(id, status) {
         return $http.put(apiUrl + id + "/status", {status: status})
             .then(function (res) {
-                return _pool.updateInstance(res.data._id, res.data);
+                //return _pool.updateInstance(res.data._id, res.data);
+                return getById(id);
             });
     }
 
@@ -82,6 +94,13 @@ function serv($http, Pool, Book) {
             });
     }
 
+    function verify(id) {
+        return $http.get(apiUrl + id + "/verify")
+            .then(function (res) {
+                return res.data;
+            });
+    }
+
     function rentNext(id) {
         return $http.put(apiUrl + id + "/rent")
             .then(function (res) {
@@ -91,6 +110,7 @@ function serv($http, Pool, Book) {
 
     return function Ctor() {
         this.getAll = getAll;
+        this.getAllUnverified = getAllUnverified;
         this.getCount = getCount;
         this.getById = getById;
         this.insert = insert;
@@ -99,6 +119,7 @@ function serv($http, Pool, Book) {
         this.remove = remove;
         this.isLiked = isLiked;
         this.reverseLike = reverseLike;
+        this.verify = verify;
         this.rentNext = rentNext;
     };
 

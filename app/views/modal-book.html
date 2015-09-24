@@ -32,7 +32,7 @@
     </div>
     <div ng-if="sourceObject.status==bookStatusEnum.Rented || sourceObject.status==bookStatusEnum.Available" class="content">
         <div ng-hide="sourceObject.status==bookStatusEnum.Available">Rented to
-            <b>{{sourceObject.rentedTo.user.email}}</b> since <b>{{sourceObject.rentedTo.date}}</b>
+            <b>{{sourceObject.rentedTo.user.email}}</b> since <b>{{sourceObject.formattedDate}}</b>
         </div>
         <div>
             Next in queue: <b>{{sourceObject.nextUserToRent.email || "No one, queue empty."}}</b>
@@ -91,5 +91,7 @@
     <modal ng-model="showRentNextModal" source-object="rentNextConfig" template="modal-confirmation.html">
     </modal>
     <modal ng-model="showSetAvailableModal" source-object="setAvailableConfig" template="modal-confirmation.html">
+    </modal>
+    <modal ng-model="showDeleteModal" source-object="deleteConfig" template="modal-confirmation.html">
     </modal>
 </div>

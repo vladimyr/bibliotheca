@@ -7,7 +7,7 @@ var users = require("./users.js");
 var bookStatusEnum = require("../enums").bookStatus;
 
 /**
- * Get a number of documents, sorted by _id field descending (populated). *
+ * Get a number of verified books, sorted by _id field descending (populated). *
  * @param {String|Number} page - Page number. Default is 1.
  * @param {String|Number} perPage - Number of items per page. Default is 10.
  * @param {Boolean} sortByLikes - If true, sorts by likes instead of _id.
@@ -18,6 +18,7 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
     page = (parseInt(page, 10) && page > 0) ? page : 1;
     perPage = (parseInt(perPage, 10) && perPage > 0) ? perPage : 10;
 
+    var findObj = {verified: true};
     // default: sort by id descending
     var sortObj = [["_id", -1]];
     if (sortByLikes) {
@@ -27,37 +28,84 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
     if (userId) {
         users.getById(userId)
             .then(function (user) {
-                return {_id: {$in: user.likedBooks}};
+                findObj._id = {$in: user.likedBooks};
+                return findObj;
             })
             .then(function (findObj) {
-                findBooks(findObj);
-            })
-            .catch(function (e) {
-                done(e);
+                return findBooks(findObj, done);
             });
+        //.catch(function (e) {
+        //    done(e);
+        //})
+
     } else {
-        findBooks({});
+        return findBooks(findObj, done);
     }
 
-    function findBooks(findObj) {
-        models.Book.find(findObj)
+    function findBooks(findObj, done) {
+        return Promise.cast(models.Book.find(findObj)
             .sort(sortObj)
             .limit(perPage)
             .skip(perPage * (page - 1))
             .populate("likes")
             .populate("rentedTo.user")
-            .exec(done);
+            .exec())
+            .nodeify(done);
     }
 };
 
 /**
- * Get a count of all books in the database.
+ * Get all unverified books, sorted by _id field descending.
+ * @param done
+ * @returns {*}
+ */
+exports.getAllUnverified = function (done) {
+    var sortObj = [["_id", -1]],
+        findObj = {verified: false};
+
+    return Promise.cast(models.Book.find(findObj)
+        .sort(sortObj)
+        .populate("user")
+        .exec())
+        .nodeify(done);
+};
+
+/**
+ * Get a count of verified books in the database.
+ * @param userId
  * @param done
  */
-exports.getAllCount = function (done) {
-    models.Book.find({}).count(function (err, count) {
-        done(err, count.toString());
-    });
+exports.getCount = function (userId, done) {
+    var findObj = {verified: true};
+    if (userId) {
+        users.getById(userId)
+            .then(function (user) {
+                findObj._id = {$in: user.likedBooks};
+                return findObj;
+            })
+            .then(function (findObj) {
+                return getBookCount(findObj, done);
+            });
+        //.catch(function (e) {
+        //    done(e);
+        //})
+    } else {
+        return getBookCount(findObj, done);
+    }
+
+    function getBookCount(findObj, done) {
+        //models.Book.find(findObj)
+        //    .count(function (err, count) {
+        //        done(err, count.toString());
+        //    });
+        return Promise.cast(models.Book.find(findObj)
+            .count()
+            .exec())
+            .then(function (count) {
+                return count.toString();
+            })
+            .nodeify(done);
+    }
 };
 
 /**
@@ -272,7 +320,6 @@ exports.insert = function (book, userId, done) {
             }
         })
         .then(function (user) {
-            //return Promise.cast(models.Book.create(book));
             return Promise.cast(models.Book.create({
                 _id: book._id,
                 title: book.title,
@@ -328,7 +375,7 @@ exports.update = function (id, book, done) {
  * @returns {Promise<R>}
  */
 exports.delete = function (id, done) {
-    // TODO: find user by rentedTo.user and delete from his current reading book
+    // TODO: (maybe) find user by rentedTo.user and delete from his current reading book
     var _user, _book;
     return Promise.cast(models.Book.findOne({_id: id}).exec())
         .then(function (book) {
@@ -356,7 +403,7 @@ exports.delete = function (id, done) {
 };
 
 /**
- * Update the status of a book. Can not be used to rent a book.
+ * Update the status of a verified book. Can not be used to rent a book.
  * @param id
  * @param status
  * @param done
@@ -364,7 +411,7 @@ exports.delete = function (id, done) {
  */
 exports.updateStatus = function (id, status, done) {
     //TODO: fix validation, it's not checking for some reason
-    return Promise.cast(models.Book.findOne({_id: id}).exec())
+    return Promise.cast(models.Book.findOne({_id: id, verified: true}).exec())
         .then(function (book) {
             if (!book)
                 return Promise.reject(new common.errors.NotFoundError("Book not found"));
@@ -385,11 +432,18 @@ exports.updateStatus = function (id, status, done) {
         .nodeify(done);
 };
 
+/**
+ * Rents verified book to the next user in the "likes" array, and sets status to "Rented". If
+ * the array is empty, sets status to "Available".
+ * @param bookId
+ * @param done
+ * @returns {*}
+ */
 exports.rentNext = function (bookId, done) {
     var _date = new Date(Date.now());
     var userId = {};
     var notRented = false;
-    return Promise.cast(models.Book.findOne({_id: bookId}).exec())
+    return Promise.cast(models.Book.findOne({_id: bookId, verified: true}).exec())
         .then(function (book) {
             if (!book)
                 return Promise.reject(new common.errors.NotFoundError("Book not found"));
@@ -432,4 +486,25 @@ exports.rentNext = function (bookId, done) {
         .catch(function (err) {
             done(err);
         });
+};
+
+/**
+ * Verify the book. Return ForbiddenError if the book is already verified.
+ * @param id
+ * @param done
+ * @returns {Promise<R>}
+ */
+exports.verify = function (id, done) {
+    return Promise.cast(models.Book.findOne({_id: id}).exec())
+        .then(function (book) {
+            if (!book)
+                return Promise.reject(new common.errors.NotFoundError("No such book"));
+            else if (book.verified)
+                return Promise.reject(new common.errors.ForbiddenError("Book already verified"));
+            else {
+                book.verified = true;
+                return Promise.cast(book.save());
+            }
+        })
+        .nodeify(done);
 };

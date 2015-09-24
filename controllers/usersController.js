@@ -15,12 +15,13 @@ exports.init = function (router) {
         repository.users.getById(req.params.id, generateCallback(res));
     });
 
+    router.get("/api/users/:id/reverseAdmin", noSessionBearerAuth, function (req, res) {
+        repository.users.reverseIsAdmin(req.params.id, generateCallback(res));
+    });
+
     router.put("/api/users/:id/changePass", noSessionBearerAuth, function (req, res) {
         //TODO: Compare oldPass with req.user.password from passport
         repository.users.changePassword(req.params.id, req.body.oldPass, req.body.newPass, generateCallback(res, 200));
     });
 
-    router.get("/api/users/:id/reverseAdmin", noSessionBearerAuth, function (req, res) {
-        repository.users.reverseIsAdmin(req.params.id, generateCallback(res));
-    });
 };
