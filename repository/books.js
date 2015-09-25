@@ -5,6 +5,7 @@ var mongoose = require("mongoose");
 var common = require("../common");
 var users = require("./users.js");
 var bookStatusEnum = require("../enums").bookStatus;
+var logger = require("../logger");
 
 /**
  * Get a number of verified books, sorted by _id field descending (populated). *
@@ -60,7 +61,7 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
  * @returns {*}
  */
 exports.getAllUnverified = function (done) {
-    var sortObj = [["_id", -1]],
+    var sortObj = [["_id", 1]],
         findObj = {verified: false};
 
     return Promise.cast(models.Book.find(findObj)
@@ -165,10 +166,10 @@ exports.reverseLike = function (bookId, userId, done) {
         .then(findDocById(userId, models.User))
         .then(getUserLikedBooks)
         .filter(filterRemoveLikedBookFromUser)
-        .then(likeFromUserAndSave)
+        .then(likeFromUserAndSet)
         .then(getBookLikes)
         .filter(filterRemoveUserLikeFromBook)
-        .then(likeFromBookAndSave)
+        .then(likeFromBookAndSet)
         .then(saveUser)
         .then(changeLikeNumber)
         .then(saveBook)
@@ -230,7 +231,7 @@ exports.reverseLike = function (bookId, userId, done) {
      * true, push this.book._id into this.user.likedBooks.
      * @param likedBooks
      */
-    function likeFromUserAndSave(likedBooks) {
+    function likeFromUserAndSet(likedBooks) {
         this.user.likedBooks = likedBooks;
         if (!this.unlike)
             this.user.likedBooks.push(this.book._id);
@@ -252,7 +253,7 @@ exports.reverseLike = function (bookId, userId, done) {
      * true, push this.user._id into this.user.likes.
      * @param likes
      */
-    function likeFromBookAndSave(likes) {
+    function likeFromBookAndSet(likes) {
         this.book.likes = likes;
         if (!this.unlike)
             this.book.likes.push(this.user._id);
@@ -296,25 +297,14 @@ exports.reverseLike = function (bookId, userId, done) {
 exports.insert = function (book, userId, done) {
     book._id = new mongoose.Types.ObjectId();
     book.likes = [];
-    return new Promise(function (resolve, reject) {
-        //if (book.user === undefined)
-        //    reject("No user provided");
-        if (userId === undefined)
-            reject("No user provided");
-        else {
-            book.likes.push(book.user);
-            book.likeNumber = book.likes.length;
-            resolve();
-        }
-    })
-        .then(function () {
-            //return Promise.cast(models.User.findOne({_id: book.user}).exec());
-            return Promise.cast(models.User.findOne({_id: userId}).exec());
-        })
+
+    return Promise.cast(models.User.findOne({_id: userId}).exec())
         .then(function (user) {
             if (!user)
                 return Promise.reject(new common.errors.NotFoundError("User not found"));
             else {
+                book.likes.push(user._id);
+                book.likeNumber = book.likes.length;
                 user.likedBooks.push(book._id);
                 return Promise.cast(user.save());
             }
@@ -369,35 +359,58 @@ exports.update = function (id, book, done) {
 };
 
 /**
- * Delete a document by id
+ * Delete a book by id. Look into its likes array and remove it
+ * from every user's likedBooks and rentedBooks
  * @param {string|number} id Document id
  * @param {Function} done
  * @returns {Promise<R>}
  */
 exports.delete = function (id, done) {
     // TODO: (maybe) find user by rentedTo.user and delete from his current reading book
-    var _user, _book;
+    var _book;
     return Promise.cast(models.Book.findOne({_id: id}).exec())
         .then(function (book) {
             if (!book)
                 return Promise.reject(new common.errors.NotFoundError("Book not found"));
             else
                 return Promise.cast(book.remove());
-        })
+        })//
         .then(function (book) {
             _book = book;
-            return Promise.cast(models.User.findOne({_id: book.user}).exec());
+            return book.likes;
         })
-        .then(function (user) {
-            _user = user;
-            return Promise.filter(user.likedBooks, function (val) {
-                if (_book.id != val)
-                    return true;
-            });
-        })
-        .then(function (likedBooks) {
-            _user.likedBooks = likedBooks;
-            return Promise.cast(_user.save());
+        .each(function (userId) {
+            return Promise.bind({user: null})
+                .then(function () {
+                    return Promise.cast(models.User.findOne({_id: userId}).exec())
+                })
+                .then(function (user) {
+                    if (!user)
+                        return Promise.reject(new common.errors.NotFoundError("User not found"));
+                    else {
+                        this.user = user;
+                        return user.likedBooks;
+                    }
+                })
+                .filter(function (val) {
+                    if (_book.id != val)
+                        return true;
+                })
+                .then(function (likedBooks) {
+                    this.user.likedBooks = likedBooks;
+                    return this.user.rentedBooks;
+                })
+                .filter(function (val) {
+                    if (_book.id != val)
+                        return true;
+                })
+                .then(function (rentedBooks) {
+                    this.user.rentedBooks = rentedBooks;
+                    return Promise.cast(this.user.save());
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                })
         })
         .nodeify(done);
 };
@@ -442,30 +455,50 @@ exports.updateStatus = function (id, status, done) {
 exports.rentNext = function (bookId, done) {
     var _date = new Date(Date.now());
     var userId = {};
+    var userOldId = {};
     var notRented = false;
-    return Promise.cast(models.Book.findOne({_id: bookId, verified: true}).exec())
-        .then(function (book) {
-            if (!book)
-                return Promise.reject(new common.errors.NotFoundError("Book not found"));
-            else {
-                return book;
-            }
+    return Promise.bind({book: null, user: null})
+        .then(findDocById(bookId, models.Book))
+        .then(function () {
+            if (this.book.status == bookStatusEnum.Rented) {
+                userOldId = this.book.rentedTo.user;
+                return true;
+            } else
+                return false;
         })
-        .tap(function (book) {
-            if (book.status === bookStatusEnum.Available && book.likes.length > 0) {
-                userId = book.likes[0];
-                book.status = bookStatusEnum.Rented;
-                book.rentedTo = {
+        .then(function (shouldRemoveFromOldUser) {
+            if (shouldRemoveFromOldUser)
+                return Promise.bind(this)
+                    .then(findDocById(userOldId, models.User))
+                    .then(function getUserRentedBooks() {
+                        return this.user.rentedBooks;
+                    })
+                    .filter(function filterRemoveRentedBookFromUser(bookId) {
+                        if (bookId != this.book.id)
+                            return true;
+                    })
+                    .then(function setUserRentedBooks(rentedBooks) {
+                        this.user.rentedBooks = rentedBooks;
+                    })
+                    .then(function saveUser() {
+                        return Promise.cast(this.user.save());
+                    });
+        })
+        .then(function () {
+            if (this.book.status === bookStatusEnum.Available && this.book.likes.length > 0) {
+                userId = this.book.likes[0];
+                this.book.status = bookStatusEnum.Rented;
+                this.book.rentedTo = {
                     user: userId,
                     date: _date
                 };
-            } else if (book.status === bookStatusEnum.Rented) {
-                if (book.likes.length == 0) {
+            } else if (this.book.status === bookStatusEnum.Rented) {
+                if (this.book.likes.length == 0) {
                     notRented = true;
-                    book.status = bookStatusEnum.Available;
+                    this.book.status = bookStatusEnum.Available;
                 } else {
-                    userId = book.likes[0];
-                    book.rentedTo = {
+                    userId = this.book.likes[0];
+                    this.book.rentedTo = {
                         user: userId,
                         date: _date
                     };
@@ -474,8 +507,19 @@ exports.rentNext = function (bookId, done) {
                 return Promise.reject(new common.errors.ForbiddenError("Forbidden."));
             }
         })
-        .then(function (book) {
-            return Promise.cast(book.save());
+        .then(function rentToNewUser() {
+            if (!notRented)
+                return Promise.bind(this)
+                    .then(findDocById(this.book.rentedTo.user, models.User))
+                    .then(function rentFromUserAndSet() {
+                        this.user.rentedBooks.push(this.book._id);
+                    })
+                    .then(function () {
+                        return Promise.cast(this.user.save());
+                    });
+        })
+        .then(function () {
+            return Promise.cast(this.book.save());
         })
         .then(function (book) {
             if (notRented)
@@ -486,6 +530,27 @@ exports.rentNext = function (bookId, done) {
         .catch(function (err) {
             done(err);
         });
+
+    /**
+     * Finds a document, returns it, and sets this[modelName] to it.
+     * @param id
+     * @param model
+     * @returns {Function}
+     */
+    function findDocById(id, model) {
+        return function query() {
+            var _self = this,
+                name = model.modelName.toLowerCase();
+
+            return Promise.cast(model.findOne({_id: id}).exec())
+                .then(function (doc) {
+                    if (!doc)
+                        return Promise.reject(new common.errors.NotFoundError(name + " not found"));
+                    _self[name] = doc;
+                    return doc;
+                });
+        };
+    }
 };
 
 /**

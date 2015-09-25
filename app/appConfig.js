@@ -5,7 +5,7 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider, toastrConfig) {
 
     $httpProvider.interceptors.push("authInterceptor");
 
-    angular.extend(toastrConfig, {timeOut: 2000});
+    angular.extend(toastrConfig, {timeOut: 3000});
 
     var viewsRoot = "./views/";
     $urlRouterProvider.otherwise("/home");
