@@ -27,11 +27,6 @@ function ctrl($scope, $state, dataService) {
     };
 
     $scope.remove = function (book) {
-        //$scope.close();
-        //dataService.books.remove(book._id)
-        //    .then(function () {
-        //        $state.reload();
-        //    });
         openDeleteModal(book);
     };
 

@@ -75,6 +75,7 @@ exports.getAllUnverified = function (done) {
  * Get a count of verified books in the database.
  * @param userId
  * @param done
+ * @returns {Promise<R>}
  */
 exports.getCount = function (userId, done) {
     var findObj = {verified: true};
@@ -87,18 +88,11 @@ exports.getCount = function (userId, done) {
             .then(function (findObj) {
                 return getBookCount(findObj, done);
             });
-        //.catch(function (e) {
-        //    done(e);
-        //})
     } else {
         return getBookCount(findObj, done);
     }
 
     function getBookCount(findObj, done) {
-        //models.Book.find(findObj)
-        //    .count(function (err, count) {
-        //        done(err, count.toString());
-        //    });
         return Promise.cast(models.Book.find(findObj)
             .count()
             .exec())

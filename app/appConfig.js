@@ -60,14 +60,14 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider, toastrConfig) {
                 isUser: false
             }
         })
-        .state("root.user", {
-            url: "/user",
+        .state("root.wishlist", {
+            url: "/wishlist",
             views: {
                 "": {
-                    template: require(viewsRoot + "user.html"),
-                    controller: "UserController"
+                    template: require(viewsRoot + "wishlist.html"),
+                    controller: "WishlistController"
                 },
-                "books@root.user": {
+                "books@root.wishlist": {
                     template: require(viewsRoot + "books.html"),
                     controller: "BooksController"
                 }
@@ -94,6 +94,11 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider, toastrConfig) {
             url: "/verifyBooks",
             template: require(viewsRoot + "verify-books.html"),
             controller: "VerifyBooksController"
+        })
+        .state("root.users", {
+            url: "/users",
+            template: require(viewsRoot + "users.html"),
+            controller: "UsersController"
         })
     ;
 };

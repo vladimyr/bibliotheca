@@ -8,12 +8,42 @@ var jwt = require("jwt-simple");
 var config = require("../config");
 
 /**
- * Get all documents (populated).
+ * Get all users, ordered by email ascending (populated).
  * @param {Function} done
  * @returns {Object}
  */
-exports.getAll = function (done) {
-    models.User.find({}).populate("likedBooks").exec(done);
+exports.getAll = function (page, perPage, done) {
+    page = (parseInt(page, 10) && page > 0) ? page : 1;
+    perPage = (parseInt(perPage, 10) && perPage > 0) ? perPage : 10;
+
+    //TODO: var findObj={verified:true};
+    var findObj = {};
+    var sortObj=[["email",1]];
+    //models.User.find({}).populate("likedBooks").exec(done);
+    return Promise.cast(models.User.find(findObj)
+        .sort(sortObj)
+        .limit(perPage)
+        .skip(perPage * (page - 1))
+        .populate("rentedBooks")
+        .exec())
+        .nodeify(done);
+};
+
+/**
+ * Get a count of verified users in the database.
+ * @param done
+ * @returns {Promise<R>}
+ */
+exports.getCount = function (done) {
+    //TODO: var findObj={verified:true};
+    var findObj = {};
+    return Promise.cast(models.User.find(findObj)
+        .count()
+        .exec())
+        .then(function (count) {
+            return count.toString();
+        })
+        .nodeify(done);
 };
 
 /**

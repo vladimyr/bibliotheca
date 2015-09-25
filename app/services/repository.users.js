@@ -7,16 +7,23 @@ function serv($http) {
     var config = require("../config.js");
     var apiUrl = config.apiUrl + "/users/";
 
-    function getAll() {
-        return $http.get(apiUrl)
-            .then(function(res){
+    function getAll(page, perPage) {
+        return $http.get(apiUrl, {params: {page: page, perPage: perPage}})
+            .then(function (res) {
+                return res.data;
+            });
+    }
+
+    function getCount() {
+        return $http.get(apiUrl, {params: {count: true}})
+            .then(function (res) {
                 return res.data;
             });
     }
 
     function getById(id) {
         return $http.get(apiUrl + id)
-            .then(function(res){
+            .then(function (res) {
                 return res.data;
             });
     }
@@ -31,6 +38,7 @@ function serv($http) {
 
     return function Ctor() {
         this.getAll = getAll;
+        this.getCount = getCount;
         this.getById = getById;
         this.changePass = changePass;
         this.reverseAdmin = reverseAdmin;

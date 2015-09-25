@@ -8,7 +8,12 @@ var noSessionBearerAuth = passport.authenticate("bearer", {session: false});
 exports.init = function (router) {
 
     router.get("/api/users", noSessionBearerAuth, function (req, res) {
-        repository.users.getAll(generateCallback(res));
+        //repository.users.getAll(generateCallback(res));
+        if (req.query.count) {
+            repository.users.getCount(generateCallback(res));
+        }
+        else//TODO: create config object
+            repository.users.getAll(req.query.page, req.query.perPage, generateCallback(res));
     });
 
     router.get("/api/users/:id", noSessionBearerAuth, function (req, res) {
