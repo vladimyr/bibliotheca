@@ -31,6 +31,9 @@ common.initExtensions();
 var controllers = require("./controllers");
 controllers.init(router);
 
+var tasks = require("./tasks");
+tasks.init();
+
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
