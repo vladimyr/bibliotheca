@@ -2,6 +2,8 @@
     <div class="ui basic segment">
         <h1 class="ui header">Unverified Books</h1>
 
+        <h4 class="ui header basic segment centered" ng-if="!books.length">No books.</h4>
+
         <div class="ui cards">
 
             <div ng-repeat="b in books" class="card">

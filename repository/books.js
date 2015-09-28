@@ -77,8 +77,9 @@ exports.getAllUnverified = function (done) {
  * @param done
  * @returns {Promise<R>}
  */
-exports.getCount = function (userId, done) {
-    var findObj = {verified: true};
+exports.getCount = function (userId, verified, done) {
+    var findObj = {verified: verified};
+
     if (userId) {
         users.getById(userId)
             .then(function (user) {

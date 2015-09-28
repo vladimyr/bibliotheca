@@ -6,7 +6,7 @@ function ctrl($scope, dataService) {
     //
     $scope.currentPage = 1;
     $scope.userCount = 0;
-    var perPage = 4;
+    var perPage = 10;
 
     $scope.getUsers = function (page) {
         dataService.users.getCount()
@@ -36,6 +36,33 @@ function ctrl($scope, dataService) {
                 $scope.showBookModal = true;
             });
     };
+    $scope.reverseAdmin = function (user) {
+        openReverseAdminModal(user);
+    };
+
+
+    function openReverseAdminModal(user) {
+        var message = "Are you sure you want to ";
+        if (user.isAdmin)
+            message += "give admin rights to " + user.email + "?";
+        else
+            message += "remove admin rights from " + user.email + "?";
+
+        $scope.reverseAdminConfig = {
+            title: "Confirm admin rights change",
+            message: message,
+            ok: function () {
+                dataService.users.reverseAdmin(user._id);
+                $scope.showReverseAdminModal = false;
+            },
+            cancel: function () {
+                user.isAdmin = !user.isAdmin;
+                $scope.showReverseAdminModal = false;
+            }
+        };
+        $scope.showReverseAdminModal = true;
+    }
+
     //
 }
 ctrl.$inject = deps;

@@ -25,12 +25,13 @@
                 <td>
                     <div ng-repeat="b in u.rentedBooks"
                          ng-click="openBookModal(b)"
-                         class="ui button" style="float:left">
+                            style="cursor:pointer;">
                         {{b.title}}{{$last ? "":", "}}
                     </div>
                 </td>
                 <td class="right aligned">
-                    <div class="ui toggle fitted checkbox">
+                    <div class="ui toggle fitted checkbox"
+                            ng-click="reverseAdmin(u)">
                         <input type="checkbox" ng-model="u.isAdmin">
                         <label></label>
                     </div>
@@ -39,11 +40,29 @@
             </tbody>
         </table>
 
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <div class="ui pagination menu">
+                    <a ng-click="currentPage==1 || getUsers(currentPage-1)" class="icon item"
+                       ng-class="{'disabled':currentPage==1}">
+                        <i class="angle left icon"></i>
+                    </a>
+                    <a class="item disabled active">
+                        {{currentPage}}
+                    </a>
+                    <a ng-click="currentPage==maxPage || getUsers(currentPage+1)" class="icon item"
+                       ng-class="{'disabled':currentPage==maxPage}">
+                        <i class="angle right icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <modal ng-model="showBookModal" source-object="bookInstance" controller="ModalBookController"
        template="modal-book.html">
 </modal>
-<modal ng-model="showWishlistRemoveModal" source-object="wishlistRemoveConfig" template="modal-confirmation.html">
+<modal ng-model="showReverseAdminModal" source-object="reverseAdminConfig" template="modal-confirmation.html">
 </modal>

@@ -8,7 +8,7 @@ function ctrl($scope, dataService, authService, $state) {
     $scope.user = authService.getUser();
     $scope.currentPage = 1;
     $scope.bookCount = 0;
-    var perPage = 4;
+    var perPage = 8;
 
     $scope.getBooks = function (page) {
         var userId;
@@ -35,9 +35,9 @@ function ctrl($scope, dataService, authService, $state) {
             })
             .then(function (books) {
                 $scope.books = books;
-                $scope.books.forEach(function (val) {
-                    dataService.books.isLiked(val._id);
-                });
+                //$scope.books.forEach(function (val) {
+                //    dataService.books.isLiked(val._id);
+                //});
 
             });
     };

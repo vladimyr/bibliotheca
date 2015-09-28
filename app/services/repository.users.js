@@ -1,16 +1,22 @@
 "use strict";
 
-var deps = ["$http"];
+var deps = ["$http", "Pool", "User"];
 
-function serv($http) {
+function serv($http, Pool, User) {
 
     var config = require("../config.js");
     var apiUrl = config.apiUrl + "/users/";
 
+    var _pool = new Pool(User);
+
     function getAll(page, perPage) {
         return $http.get(apiUrl, {params: {page: page, perPage: perPage}})
             .then(function (res) {
-                return res.data;
+                var models=[];
+                res.data.forEach(function(val){
+                    models.push(_pool.updateInstance(val._id,val));
+                });
+                return models;
             });
     }
 
@@ -24,7 +30,7 @@ function serv($http) {
     function getById(id) {
         return $http.get(apiUrl + id)
             .then(function (res) {
-                return res.data;
+                return _pool.updateInstance(res.data._id, res.data);
             });
     }
 
@@ -33,7 +39,10 @@ function serv($http) {
     }
 
     function reverseAdmin(id) {
-        return $http.get(apiUrl + id + "/reverseAdmin");
+        return $http.get(apiUrl + id + "/reverseAdmin")
+            .then(function(res){
+                getById(id);
+            });
     }
 
     return function Ctor() {

@@ -2,9 +2,9 @@
 
 var $ = require("jquery");
 
-var deps = ["$scope", "authService"];
+var deps = ["$scope", "authService", "dataService"];
 
-function ctrl($scope, authService) {
+function ctrl($scope, authService, dataService) {
     //
     $scope.dropdownControl = {};
     $scope.dropdownConfig = {
@@ -12,6 +12,11 @@ function ctrl($scope, authService) {
     };
 
     $scope.user = authService.getUser();
+    $scope.unverifiedCount = 0;
+    dataService.books.getUnverifiedCount()
+        .then(function (data) {
+            $scope.unverifiedCount = data;
+        });
 
 
     $scope.logout = function () {

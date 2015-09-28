@@ -10,14 +10,17 @@ exports.init = function (router) {
     router.get("/api/books", noSessionBearerAuth, function (req, res) {
         //TODO: search
         if (req.query.count) {
-            repository.books.getCount(req.query.user,generateCallback(res));
+            repository.books.getCount(req.query.user, true, generateCallback(res));
         }
         else//TODO: create config object
-            repository.books.getAll(req.query.page, req.query.perPage, req.query.sortByLikes,req.query.user, generateCallback(res));
+            repository.books.getAll(req.query.page, req.query.perPage, req.query.sortByLikes, req.query.user, generateCallback(res));
     });
 
-    router.get("/api/books/unverified",noSessionBearerAuth,function(req,res){
-       repository.books.getAllUnverified(generateCallback(res));
+    router.get("/api/books/unverified", noSessionBearerAuth, function (req, res) {
+        if (req.query.count) {
+            repository.books.getCount(null, false, generateCallback(res));
+        } else
+            repository.books.getAllUnverified(generateCallback(res));
     });
 
     //TODO: books/wishList
@@ -38,7 +41,7 @@ exports.init = function (router) {
     //TODO: Strip tags from desc when scraping, check noscript on page source
     router.post("/api/books", noSessionBearerAuth, function (req, res) {
         //req.body.user = req.user.id;
-        repository.books.insert(req.body,req.user.id, generateCallback(res));
+        repository.books.insert(req.body, req.user.id, generateCallback(res));
     });
 
     router.put("/api/books/:id", noSessionBearerAuth, function (req, res) {

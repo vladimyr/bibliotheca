@@ -18,14 +18,23 @@ exports.getAll = function (page, perPage, done) {
 
     //TODO: var findObj={verified:true};
     var findObj = {};
-    var sortObj=[["email",1]];
-    //models.User.find({}).populate("likedBooks").exec(done);
+    var sortObj = [["email", 1]];
     return Promise.cast(models.User.find(findObj)
         .sort(sortObj)
         .limit(perPage)
         .skip(perPage * (page - 1))
         .populate("rentedBooks")
         .exec())
+        .nodeify(done);
+};
+
+/**
+ * Get all admin users.
+ * @param done
+ */
+exports.getAdmins = function (done) {
+    var findObj = {isAdmin: true};
+    return Promise.cast(models.User.find(findObj).exec())
         .nodeify(done);
 };
 
@@ -53,7 +62,7 @@ exports.getCount = function (done) {
  * @returns {Promise<R>}
  */
 exports.getById = function (id, done) {
-    return Promise.cast(models.User.findOne({_id: id}).populate("likedBooks").exec())
+    return Promise.cast(models.User.findOne({_id: id}).populate("rentedBooks").exec())
         .then(function (user) {
             if (!user)
                 return Promise.reject(new common.errors.NotFoundError("User not found"));

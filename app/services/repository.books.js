@@ -15,6 +15,7 @@ function serv($http, Pool, Book) {
                 var models = [];
                 res.data.forEach(function (val) {
                     models.push(_pool.updateInstance(val._id, val));
+                    isLiked(val._id);
                 });
                 return models;
             });
@@ -33,6 +34,13 @@ function serv($http, Pool, Book) {
 
     function getCount(userId) {
         return $http.get(apiUrl, {params: {count: true, user: userId}})
+            .then(function (res) {
+                return res.data;
+            });
+    }
+
+    function getUnverifiedCount() {
+        return $http.get(apiUrl + "unverified", {params: {count: true}})
             .then(function (res) {
                 return res.data;
             });
@@ -63,7 +71,6 @@ function serv($http, Pool, Book) {
     function updateStatus(id, status) {
         return $http.put(apiUrl + id + "/status", {status: status})
             .then(function (res) {
-                //return _pool.updateInstance(res.data._id, res.data);
                 return getById(id);
             });
     }
@@ -85,11 +92,6 @@ function serv($http, Pool, Book) {
         var book = _pool.getInstance(id);
         return $http.put(apiUrl + id + "/like")
             .then(function (res) {
-                //if (book.isLiked)
-                //    book.likeNumber--;
-                //else
-                //    book.likeNumber++;
-                //book.isLiked = !book.isLiked;
                 return getById(id);
             });
     }
@@ -112,6 +114,7 @@ function serv($http, Pool, Book) {
         this.getAll = getAll;
         this.getAllUnverified = getAllUnverified;
         this.getCount = getCount;
+        this.getUnverifiedCount = getUnverifiedCount;
         this.getById = getById;
         this.insert = insert;
         this.update = update;
