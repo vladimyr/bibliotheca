@@ -8,17 +8,32 @@ var noSessionBearerAuth = passport.authenticate("bearer", {session: false});
 exports.init = function (router) {
 
     router.get("/api/books", noSessionBearerAuth, function (req, res) {
-        //TODO: search
+        var config = {
+            page: req.query.page,
+            perPage: req.query.perPage,
+            sortByLikes: req.query.sortByLikes,
+            search: req.query.search,
+            userId: req.query.user
+        };
         if (req.query.count) {
-            repository.books.getCount(req.query.user, true, generateCallback(res));
+
+            repository.books.getCount(config, true, generateCallback(res));
         }
-        else//TODO: create config object
-            repository.books.getAll(req.query.page, req.query.perPage, req.query.sortByLikes, req.query.user, generateCallback(res));
+        else {
+            repository.books.getAll(config, generateCallback(res));
+        }
     });
 
     router.get("/api/books/unverified", noSessionBearerAuth, function (req, res) {
+        var config = {
+            page: req.query.page,
+            perPage: req.query.perPage,
+            sortByLikes: req.query.sortByLikes,
+            search: req.query.search,
+            userId: req.query.user
+        };
         if (req.query.count) {
-            repository.books.getCount(null, false, generateCallback(res));
+            repository.books.getCount(config, false, generateCallback(res));
         } else
             repository.books.getAllUnverified(generateCallback(res));
     });
@@ -40,7 +55,6 @@ exports.init = function (router) {
 
     //TODO: Strip tags from desc when scraping, check noscript on page source
     router.post("/api/books", noSessionBearerAuth, function (req, res) {
-        //req.body.user = req.user.id;
         repository.books.insert(req.body, req.user.id, generateCallback(res));
     });
 

@@ -15,19 +15,22 @@ var logger = require("../logger");
  * @param {String} userId - If set, gets only books of a specific user.
  * @param done
  */
-exports.getAll = function (page, perPage, sortByLikes, userId, done) {
-    page = (parseInt(page, 10) && page > 0) ? page : 1;
-    perPage = (parseInt(perPage, 10) && perPage > 0) ? perPage : 10;
+exports.getAll = function (config, done) {
+    var page = (parseInt(config.page, 10) && config.page > 0) ? config.page : 1;
+    var perPage = (parseInt(config.perPage, 10) && config.perPage > 0) ? config.perPage : 10;
 
     var findObj = {verified: true};
+    
+    if (config.search)
+        extendFindObjForSearch(findObj, config.search);
     // default: sort by id descending
     var sortObj = [["_id", -1]];
-    if (sortByLikes) {
+    if (config.sortByLikes) {
         //sort by id ascending and then by likeNumber descending
         sortObj = [["likeNumber", -1], ["_id", 1]];
     }
-    if (userId) {
-        users.getById(userId)
+    if (config.userId) {
+        users.getById(config.userId)
             .then(function (user) {
                 findObj._id = {$in: user.likedBooks};
                 return findObj;
@@ -56,6 +59,19 @@ exports.getAll = function (page, perPage, sortByLikes, userId, done) {
 };
 
 /**
+ * Extends findObj for search by title and author.
+ * @param findObj
+ * @param searchQuery
+ */
+function extendFindObjForSearch(findObj, searchQuery) {
+    var caseInsensitiveExpr = {$regex: new RegExp(searchQuery, "i")};
+    findObj.$or = [
+        {"title": caseInsensitiveExpr},
+        {"author": caseInsensitiveExpr}
+    ];
+}
+
+/**
  * Get all unverified books, sorted by _id field descending.
  * @param done
  * @returns {*}
@@ -72,16 +88,19 @@ exports.getAllUnverified = function (done) {
 };
 
 /**
- * Get a count of verified books in the database.
+ * Get a count of books in the database.
  * @param userId
  * @param done
  * @returns {Promise<R>}
  */
-exports.getCount = function (userId, verified, done) {
+exports.getCount = function (config, verified, done) {
     var findObj = {verified: verified};
 
-    if (userId) {
-        users.getById(userId)
+    if (config.search)
+        extendFindObjForSearch(findObj, config.search);
+
+    if (config.userId) {
+        users.getById(config.userId)
             .then(function (user) {
                 findObj._id = {$in: user.likedBooks};
                 return findObj;

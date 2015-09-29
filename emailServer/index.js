@@ -16,7 +16,10 @@ server.sendVerificationMail = function (to, token) {
         subject: "Verification for ExtensionEngine Books",
         text: "Please verify your account by clicking on this link: " + url
     }, function (err, message) {
-        logger.info(err || message);
+        if (err)
+            logger.error(err);
+        else
+            logger.info(message);
     });
 };
 
@@ -30,7 +33,10 @@ server.sendUnverifiedBooksMail = function (to) {
         text: "With great power comes great responsibility! " +
         "There are new books waiting for you to verify them at " + url
     }, function (err, message) {
-        logger.info(err || message);
+        if (err)
+            logger.error(err);
+        else
+            logger.info(message);
     });
 };
 

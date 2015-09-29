@@ -6,12 +6,9 @@ var deps = ["$scope", "dataService"];
 function ctrl($scope, dataService) {
     //
 
-    dataService.books.getAll(1, 5, null, true)
+    dataService.books.getAll(1, 5, null, null, true)
         .then(function (data) {
             $scope.books = data;
-            //$scope.books.forEach(function (val) {
-            //    dataService.books.isLiked(val._id);
-            //});
         });
 
     $scope.stickyConfig = {

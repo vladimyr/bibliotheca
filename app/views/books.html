@@ -1,4 +1,11 @@
 <h4 class="ui header basic segment centered" ng-if="!books.length">No books.</h4>
+
+<div class="ui fluid icon input">
+    <input ng-model="searchQuery"
+            style="margin-bottom: 10px" type="text" placeholder="Search by title/author...">
+    <i ng-click="search()" class="inverted circular search link icon"></i>
+</div>
+
 <div class="ui cards">
     <div ng-repeat="b in books" class="card" style="width: 262px">
         <a class="image">
@@ -6,11 +13,6 @@
         </a>
 
         <div class="content">
-            <!--<span class="right floated">-->
-            <!--<i class="checkmark box icon"></i>-->
-            <!--{{b.likeNumber}}-->
-            <!--</span>-->
-
             <div class="header">
                 {{b.title}}
             </div>
@@ -37,7 +39,6 @@
           </span>
         </div>
         <div ng-click="reverseLike(b)" ng-class="{'green':b.isLiked}" class="ui bottom attached button">
-            <!--<i class="thumbs up icon"></i>-->
             <i ng-show="b.isLiked" class="checkmark box icon"></i>
             <i ng-hide="b.isLiked" class="add circle icon"></i>
             Wishlist<span ng-show="b.isLiked">ed</span>

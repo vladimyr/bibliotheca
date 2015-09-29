@@ -9,8 +9,16 @@ function serv($http, Pool, Book) {
 
     var _pool = new Pool(Book);
 
-    function getAll(page, perPage, userId, sortByLikes) {
-        return $http.get(apiUrl, {params: {page: page, perPage: perPage, sortByLikes: sortByLikes, user: userId}})
+    function getAll(page, perPage, userId, search, sortByLikes) {
+        return $http.get(apiUrl, {
+            params: {
+                page: page,
+                perPage: perPage,
+                search: search,
+                sortByLikes: sortByLikes,
+                user: userId
+            }
+        })
             .then(function (res) {
                 var models = [];
                 res.data.forEach(function (val) {
@@ -32,8 +40,8 @@ function serv($http, Pool, Book) {
             });
     }
 
-    function getCount(userId) {
-        return $http.get(apiUrl, {params: {count: true, user: userId}})
+    function getCount(userId, search) {
+        return $http.get(apiUrl, {params: {count: true, user: userId, search: search}})
             .then(function (res) {
                 return res.data;
             });
