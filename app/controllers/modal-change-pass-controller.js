@@ -7,6 +7,10 @@ function ctrl($scope, $state, authService, dataService, toastr) {
 
     $scope.user = authService.getUser();
     $scope.submit = function (oldPass, newPass) {
+        if ($scope.changePassForm.$invalid) {
+            $scope.submitted = true;
+            return;
+        }
         dataService.users.changePass($scope.user._id, oldPass, newPass)
             .then(function (data) {
                 toastr.success("Changed password");
@@ -20,6 +24,7 @@ function ctrl($scope, $state, authService, dataService, toastr) {
     };
     function cleanFields() {
         $scope.newPass = $scope.oldPass = "";
+        $scope.submitted = false;
     }
 
     //

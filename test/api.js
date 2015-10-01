@@ -164,7 +164,7 @@ describe("/api", function () {
         });
         describe("/changePass", function () {
             describe("Put", function () {
-                it("Wrong password provided, should return UnauthorizedError", function (done) {
+                it("Wrong password provided, should return ForbiddenError", function (done) {
                     request(url)
                         .put(userUrl + _user._id + "/changePass")
                         .set("Authorization", "bearer " + _token)

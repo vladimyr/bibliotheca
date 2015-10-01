@@ -5,7 +5,7 @@ var deps = ["$rootScope", "$state", "$location", "authService"];
 function run($rootScope, $state, $location, authService) {
     //
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-        if ((toState.name === "login" || toState.name === "register") && authService.getUser()) {
+        if ((toState.name === "login" || toState.name === "register" || toState.name === "forgotPass") && authService.getUser()) {
             event.preventDefault();
             $state.go("root.home");
         }
@@ -13,7 +13,7 @@ function run($rootScope, $state, $location, authService) {
         if (toState.name === "login")
             return;
 
-        if (!authService.getUser() && toState.name !== "register") {
+        if (!authService.getUser() && toState.name !== "register" && toState.name !== "forgotPass") {
             event.preventDefault();
             $state.go("login");
         }

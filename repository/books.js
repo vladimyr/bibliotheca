@@ -309,7 +309,6 @@ exports.reverseLike = function (bookId, userId, done) {
  * @returns {Promise<R>}
  */
 exports.insert = function (book, userId, done) {
-    //TODO: /@extensioneengine\.com$/i
     book._id = new mongoose.Types.ObjectId();
     book.likes = [];
 
@@ -381,7 +380,6 @@ exports.update = function (id, book, done) {
  * @returns {Promise<R>}
  */
 exports.delete = function (id, done) {
-    // TODO: (maybe) find user by rentedTo.user and delete from his current reading book
     var _book;
     return Promise.cast(models.Book.findOne({_id: id}).exec())
         .then(function (book) {
@@ -438,7 +436,6 @@ exports.delete = function (id, done) {
  * @returns {Promise<R>}
  */
 exports.updateStatus = function (id, status, done) {
-    //TODO: fix validation, it's not checking for some reason
     return Promise.cast(models.Book.findOne({_id: id, verified: true}).exec())
         .then(function (book) {
             if (!book)

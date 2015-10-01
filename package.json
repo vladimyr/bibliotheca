@@ -55,6 +55,7 @@
     "passport": "^0.2.2",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
+    "randomstring": "^1.1.0",
     "require-dot-file": "^0.4.0",
     "semantic-ui": "^2.0.8",
     "winston": "^1.0.1",

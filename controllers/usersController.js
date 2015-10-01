@@ -17,16 +17,20 @@ exports.init = function (router) {
             repository.users.getAll(req.query.page, req.query.perPage, generateCallback(res));
     });
 
-    //router.get("/api/users/:id", noSessionBearerAuth, function (req, res) {
-    //    repository.users.getById(req.params.id, generateCallback(res));
-    //});
+    router.get("/api/users/:id", noSessionBearerAuth, auth.requiresAdmin, function (req, res) {
+        repository.users.getById(req.params.id, generateCallback(res));
+    });
 
     router.get("/api/users/:id/reverseAdmin", noSessionBearerAuth, auth.requiresAdmin, function (req, res) {
         repository.users.reverseIsAdmin(req.params.id, generateCallback(res));
     });
 
+    //TODO: don't return it, instead send mail
+    router.get("/api/users/:email/changePass", function (req, res) {
+        repository.users.changeForgotPassword(req.params.email, generateCallback(res));
+    });
+
     router.put("/api/users/:id/changePass", noSessionBearerAuth, function (req, res) {
-        //TODO: Compare oldPass with req.user.password from passport
         repository.users.changePassword(req.params.id, req.body.oldPass, req.body.newPass, generateCallback(res, 200));
     });
 

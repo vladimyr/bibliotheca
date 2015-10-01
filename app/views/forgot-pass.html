@@ -1,0 +1,42 @@
+<div class="ui middle aligned center aligned grid">
+    <div class="column" style="max-width: 450px;">
+        <h2 class="ui teal image header">
+            <img src="../images/EELogo.png" class="image">
+
+            <div class="content">
+                Generate New Password
+            </div>
+        </h2>
+        <form name="forgotPassForm" class="ui large form">
+            <div class="ui stacked segment">
+                <div class="field" ng-class="{'error':forgotPassForm.email.$invalid && submitted}">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input ng-model="email"
+                               ng-pattern="/.@extensionengine\.com$/i"
+                               ng-required="true"
+                               type="text" name="email" placeholder="E-mail address">
+                    </div>
+                </div>
+
+                <div ng-click="submit()" class="ui fluid large teal submit button">
+                    Send new password to my email
+                </div>
+
+            </div>
+        </form>
+
+        <div ng-if="hasGottenNew">Verification mail has been sent to your address. Please verify your
+            mail and then login <a ui-sref="login()">here</a>.
+        </div>
+
+        <div ng-if="!hasGottenNew && msg!=''" class="ui error message">
+            {{msg}}
+        </div>
+        <div ng-if="submitted && forgotPassForm.email.$invalid" class="ui error message">
+            Email must be from extensionengine domain.
+        </div>
+
+    </div>
+</div>
+

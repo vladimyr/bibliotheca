@@ -12,9 +12,9 @@ function serv($http, Pool, User) {
     function getAll(page, perPage) {
         return $http.get(apiUrl, {params: {page: page, perPage: perPage}})
             .then(function (res) {
-                var models=[];
-                res.data.forEach(function(val){
-                    models.push(_pool.updateInstance(val._id,val));
+                var models = [];
+                res.data.forEach(function (val) {
+                    models.push(_pool.updateInstance(val._id, val));
                 });
                 return models;
             });
@@ -34,13 +34,17 @@ function serv($http, Pool, User) {
             });
     }
 
+    function getNewPass(email) {
+        return $http.get(apiUrl + email + "/changePass");
+    }
+
     function changePass(id, oldPass, newPass) {
         return $http.put(apiUrl + id + "/changePass", {oldPass: oldPass, newPass: newPass});
     }
 
     function reverseAdmin(id) {
         return $http.get(apiUrl + id + "/reverseAdmin")
-            .then(function(res){
+            .then(function (res) {
                 getById(id);
             });
     }
@@ -49,6 +53,7 @@ function serv($http, Pool, User) {
         this.getAll = getAll;
         this.getCount = getCount;
         this.getById = getById;
+        this.getNewPass = getNewPass;
         this.changePass = changePass;
         this.reverseAdmin = reverseAdmin;
     };

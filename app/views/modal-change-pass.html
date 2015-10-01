@@ -4,18 +4,26 @@
     <div class="header">
         Change Password
     </div>
-    <form ng-show="!hasRegistered" class="ui large form">
+    <form name="changePassForm" class="ui large form">
         <div class="ui stacked segment">
-            <div class="field">
+            <div class="field" ng-class="{'error':changePassForm.oldPass.$invalid && submitted}">
                 <div class="ui left icon input">
                     <i class="lock icon"></i>
-                    <input ng-model="oldPass" type="password" name="oldPass" placeholder="Old password">
+                    <input ng-model="oldPass"
+                           ng-minlength="4"
+                           ng-maxlength="30"
+                           ng-required="true"
+                           type="password" name="oldPass" placeholder="Old password">
                 </div>
             </div>
-            <div class="field">
+            <div class="field" ng-class="{'error':changePassForm.newPass.$invalid && submitted}">
                 <div class="ui left icon input">
                     <i class="lock icon"></i>
-                    <input ng-model="newPass" type="password" name="newPass" placeholder="New password">
+                    <input ng-model="newPass"
+                           ng-minlength="4"
+                           ng-maxlength="30"
+                           ng-required="true"
+                           type="password" name="newPass" placeholder="New password">
                 </div>
             </div>
             <div ng-click="submit(oldPass,newPass)" class="ui fluid large teal submit button">
@@ -23,4 +31,7 @@
             </div>
         </div>
     </form>
+    <div ng-if="submitted && (changePassForm.newPass.$invalid || changePassForm.oldPass.$invalid)" class="ui error message">
+        Password must be from 4 to 30 characters long.
+    </div>
 </div>

@@ -6,6 +6,7 @@ Promise.promisifyAll(hasher);
 var common = require("../common");
 var jwt = require("jwt-simple");
 var config = require("../config");
+var randomstring = require("randomstring");
 
 /**
  * Get all users, ordered by email ascending (populated).
@@ -72,23 +73,18 @@ exports.getById = function (id, done) {
 };
 
 /**
- * Get one document by token. Throws NotFoundError if now found
+ * Get one document by token. Null if not found.
  * @param {string} token
  * @param {Function} done
  * @returns {Promise<R>}
  */
 exports.getByToken = function (token, done) {
     return Promise.cast(models.User.findOne({token: token}).exec())
-        //.then(function (user) {
-        //    if (!user)
-        //        return Promise.reject(new common.errors.NotFoundError("User not found"));
-        //    return user;
-        //})
         .nodeify(done);
 };
 
 /**
- * Get one document by email. Returns null if no document.
+ * Get one document by email. Null if not found.
  * @param {string} email Document email property
  * @param {Function} done
  * @returns {Promise<R>}
@@ -139,16 +135,46 @@ exports.changePassword = function (id, oldPass, newPass, done) {
             if (!user)
                 return Promise.reject(new common.errors.NotFoundError("No such user"));
             _user = user;
-            return hasher.compareAsync(oldPass, user.password);
+            if (newPass.length < 4 || newPass.length > 30)
+                return Promise.reject(new common.errors.ForbiddenError("Forbidden password length"));
+            else
+                return hasher.compareAsync(oldPass, user.password);
         })
         .then(function (result) {
-            if (result === false)
+            if (!result)
                 return Promise.reject(new common.errors.ForbiddenError("Old password wrong."));
             return hasher.getHashAsync(newPass);
         })
         .then(function (hashedPass) {
             _user.password = hashedPass;
             return Promise.cast(_user.save());
+        })
+        .nodeify(done);
+};
+
+/**
+ * Changes password without checking the old one.
+ * @param email
+ * @param done
+ * @returns {*}
+ */
+exports.changeForgotPassword = function (email, done) {
+    var newPass = randomstring.generate(8);
+    var _user;
+    return Promise.cast(models.User.findOne({email: email}).exec())
+        .then(function (user) {
+            if (!user)
+                return Promise.reject(new common.errors.NotFoundError("No such user"));
+            else {
+                _user = user;
+                return hasher.getHashAsync(newPass);
+            }
+        })
+        .then(function (hashedPass) {
+            _user.password = hashedPass;
+            return Promise.cast(_user.save());
+        }).then(function (user) {
+            return newPass;
         })
         .nodeify(done);
 };

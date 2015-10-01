@@ -27,6 +27,11 @@ function cfg($stateProvider, $urlRouterProvider, $httpProvider, toastrConfig) {
                 isLogin: false
             }
         })
+        .state("forgotPass", {
+            url: "/forgotPass",
+            template: require(viewsRoot + "forgot-pass.html"),
+            controller: "ForgotPassController"
+        })
         .state("root", {
             abstract: true,
             views: {

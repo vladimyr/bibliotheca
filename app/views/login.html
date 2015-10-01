@@ -68,6 +68,9 @@
         <div ng-if="submitted && loginForm.password.$invalid" class="ui error message">
             Password must be from 4 to 30 characters long.
         </div>
+        <div ng-if="submitted" class="ui message">
+            <a ui-sref="forgotPass()">Forgot your password?</a>
+        </div>
 
     </div>
 </div>
