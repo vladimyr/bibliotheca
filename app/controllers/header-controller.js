@@ -12,11 +12,14 @@ function ctrl($scope, authService, dataService) {
     };
 
     $scope.user = authService.getUser();
-    $scope.unverifiedCount = 0;
-    dataService.books.getUnverifiedCount()
-        .then(function (data) {
-            $scope.unverifiedCount = data;
-        });
+    //$scope.unverifiedCount = 0;
+
+    //if ($scope.user.isAdmin) {
+    //    dataService.books.getUnverifiedCount()
+    //        .then(function (data) {
+    //            $scope.unverifiedCount = data;
+    //        });
+    //}
 
 
     $scope.logout = function () {

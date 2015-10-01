@@ -38,7 +38,7 @@
             Next in queue: <b>{{sourceObject.nextUserToRent.email || "No one, queue empty."}}</b>
         </div>
     </div>
-    <div class="actions">
+    <div class="actions" ng-if="user.isAdmin">
         <button ng-click="remove(sourceObject)" class="ui red button">
             <i class="remove icon"></i>
             Delete

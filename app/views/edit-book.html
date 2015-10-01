@@ -1,40 +1,91 @@
 <div class="ui main container">
-    <form class="ui form">
+    <form class="ui form" name="bookForm">
         <h4 class="ui dividing header">Book Information</h4>
 
-        <div class="field">
+        <div class="field" ng-class="{'error':bookForm.title.$invalid && submitted}">
             <label>Title</label>
-            <input ng-model="book.title" type="text" name="shipping[first-name]">
+            <input ng-model="book.title"
+                   ng-required="true"
+                   type="text" name="title">
+            <span style="color:#9f3a38"
+                  ng-if="bookForm.title.$invalid && submitted">
+                <ul>
+                    <li>Required.</li>
+                </ul>
+            </span>
         </div>
-        <div class="field">
+        <div class="field" ng-class="{'error':bookForm.author.$invalid && submitted}">
             <label>Author(s)</label>
-            <input ng-model="book.author" type="text" name="shipping[last-name]">
+            <input ng-model="book.author"
+                   ng-required="true"
+                   type="text" name="author">
+            <span style="color:#9f3a38"
+                  ng-if="bookForm.author.$invalid && submitted">
+                <ul>
+                    <li>Required.</li>
+                </ul>
+            </span>
         </div>
+
         <div class="fields">
-            <div class="two wide field">
+            <div class="two wide field" ng-class="{'error':bookForm.pages.$invalid && submitted}">
                 <label>Pages</label>
-                <input ng-model="book.pages" type="text" name="card[number]" maxlength="5">
+                <input ng-model="book.pages"
+                       ng-required="true"
+                       ng-pattern="/^[1-9][0-9]{0,4}$/"
+                       type="text" name="pages" maxlength="5">
+                <span style="color:#9f3a38"
+                      ng-if="bookForm.pages.$invalid && submitted">
+                    <ul>
+                        <li>Required.</li>
+                        <li>Max value is 99999.</li>
+                    </ul>
+                </span>
             </div>
-            <div class="seven wide field">
+            <div class="seven wide field" ng-class="{'error':bookForm.isbn10.$invalid && submitted}">
                 <label>ISBN-10</label>
-                <input ng-model="book.isbn10" type="text" name="card[cvc]" minlength="10" maxlength="13">
+                <input ng-model="book.isbn10"
+                       ng-required="true"
+                       ng-pattern="/^[0-9-]{10,13}$/"
+                       type="text" name="isbn10">
+                <span style="color:#9f3a38"
+                      ng-if="bookForm.isbn10.$invalid && submitted">
+                    <ul>
+                        <li>Required.</li>
+                        <li>Can only contain numbers and dashes.</li>
+                        <li>Minimum length 10.</li>
+                        <li>Maximum length 13.</li>
+                    </ul>
+                </span>
             </div>
-            <div class="seven wide field">
+            <div class="seven wide field" ng-class="{'error':bookForm.isbn13.$invalid && submitted}">
                 <label>ISBN-13</label>
-                <input ng-model="book.isbn13" type="text" name="card[cvc]" minlength="13" maxlength="17">
+                <input ng-model="book.isbn13"
+                       ng-required="true"
+                       ng-pattern="/^[0-9-]{13,17}$/"
+                       type="text" name="isbn13">
+                <span style="color:#9f3a38"
+                      ng-if="bookForm.isbn13.$invalid && submitted">
+                    <ul>
+                        <li>Required.</li>
+                        <li>Can only contain numbers and dashes.</li>
+                        <li>Minimum length 13.</li>
+                        <li>Maximum length 17.</li>
+                    </ul>
+                </span>
             </div>
         </div>
         <div class="field">
             <label>Description</label>
-            <textarea ng-model="book.description" rows="4"></textarea>
+            <textarea ng-model="book.description" name="description" rows="4"></textarea>
         </div>
         <div class="field">
             <label>Book Page URL</label>
-            <input ng-model="book.pageUrl" type="text" name="shipping[first-name]">
+            <input ng-model="book.pageUrl" type="text" name="pageUrl">
         </div>
         <div class="field">
             <label>Book Image URL</label>
-            <input ng-model="book.imageUrl" type="text" name="shipping[first-name]">
+            <input ng-model="book.imageUrl" type="text" name="imageUrl">
         </div>
         <div class="field">
             <label>Image preview:</label>

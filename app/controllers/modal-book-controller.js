@@ -2,10 +2,12 @@
 
 var bookStatusEnum = require("../../enums").bookStatus;
 
-var deps = ["$scope", "$state", "dataService"];
+var deps = ["$scope", "$state", "dataService", "authService"];
 
-function ctrl($scope, $state, dataService) {
+function ctrl($scope, $state, dataService, authService) {
     //
+    $scope.user = authService.getUser();
+    //TODO: check if you should change it sometime other than login
     $scope.bookStatusEnum = bookStatusEnum;
     $scope.statuses = [
         {name: "Not ordered", value: bookStatusEnum.Wishlisted},
@@ -55,7 +57,7 @@ function ctrl($scope, $state, dataService) {
             message: "Are you sure you want delete this book?",
             ok: function () {
                 dataService.books.remove(book._id)
-                    .then(function(){
+                    .then(function () {
                         $state.reload();
                     });
                 $scope.showDeleteModal = false;
@@ -125,6 +127,7 @@ function ctrl($scope, $state, dataService) {
         };
         $scope.showRentNextModal = true;
     }
+
     //
 }
 ctrl.$inject = deps;

@@ -20,7 +20,7 @@ exports.getAll = function (config, done) {
     var perPage = (parseInt(config.perPage, 10) && config.perPage > 0) ? config.perPage : 10;
 
     var findObj = {verified: true};
-    
+
     if (config.search)
         extendFindObjForSearch(findObj, config.search);
     // default: sort by id descending
@@ -309,6 +309,7 @@ exports.reverseLike = function (bookId, userId, done) {
  * @returns {Promise<R>}
  */
 exports.insert = function (book, userId, done) {
+    //TODO: /@extensioneengine\.com$/i
     book._id = new mongoose.Types.ObjectId();
     book.likes = [];
 

@@ -28,18 +28,18 @@ describe("/api", function () {
                         done();
                     });
             });
-            it("Existing user email provided, should return 204 No Response", function (done) {
-                request(url)
-                    .post(registerUrl)
-                    .send(userData)
-                    .expect(204)
-                    .end(function (err, res) {
-                        if (err)
-                            throw err;
-                        res.body.should.be.empty();
-                        done();
-                    });
-            });
+            //it("Existing user email provided, should return 204 No Response", function (done) {
+            //    request(url)
+            //        .post(registerUrl)
+            //        .send(userData)
+            //        .expect(204)
+            //        .end(function (err, res) {
+            //            if (err)
+            //                throw err;
+            //            res.body.should.be.empty();
+            //            done();
+            //        });
+            //});
         });
     });
     describe("/login", function () {

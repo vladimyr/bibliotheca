@@ -29,6 +29,8 @@ exports.init = function (app) {
             .then(function (user) {
                 if (!user) {
                     return Promise.reject(new common.errors.NotFoundError());
+                } else if (!user.verified) {
+                    return Promise.reject(new common.errors.ForbiddenError("User not verified."));
                 } else {
                     this.user = user;
                     return hasher.compareAsync(password, user.password);
@@ -51,7 +53,8 @@ exports.init = function (app) {
                 return {
                     _id: user._id,
                     email: user.email,
-                    token: this.token
+                    token: this.token,
+                    isAdmin: user.isAdmin
                 };
             })
             .nodeify(next);
@@ -71,7 +74,7 @@ exports.init = function (app) {
         repository.users.getByToken(token, function (err, user) {
             if (err)
                 return next(err);
-            if (!user)
+            if (!user || !user.verified)
                 return next(null, false);
             return next(null, user);
         });

@@ -3,9 +3,7 @@ var mongoose = require("mongoose");
 
 //TODO: Add minimum password limit
 var userSchema = new mongoose.Schema({
-    // TODO: add regexp - match:/@extensioneengine\.com$/i
-    email: {type: String, required: true},
-    // TODO: minlength: 4
+    email: {type: String, required: true, match: /.@extensionengine\.com$/i},
     password: {type: String, required: true},
     isAdmin: {type: Boolean, required: true, default: false},
     token: String,
@@ -14,7 +12,7 @@ var userSchema = new mongoose.Schema({
     verifyToken: String,
     verified: {type: Boolean, default: false}
 });
-//TODO: Remove hash from JSON
+
 userSchema.set("toJSON", {
     transform: function (doc, ret, options) {
         delete ret.password;

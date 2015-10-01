@@ -17,10 +17,10 @@
                 <div class="header">Account</div>
                 <div class="item" ng-click="changePass()">Change Password</div>
                 <div class="item" ng-click="logout()">Logout</div>
-                <div class="ui divider"></div>
-                <div class="header">Admin</div>
-                <div class="item" ui-sref="root.verifyBooks()">Verify Books <b ng-if="unverifiedCount>0">({{unverifiedCount}})</b></div>
-                <div class="item" ui-sref="root.users()">Manage Users</div>
+                <div ng-if="user.isAdmin" class="ui divider"></div>
+                <div ng-if="user.isAdmin" class="header">Admin</div>
+                <div ng-if="user.isAdmin" class="item" ui-sref="root.verifyBooks()">Verify Books <!--<b ng-if="unverifiedCount>0">({{unverifiedCount}})</b>--></div>
+                <div ng-if="user.isAdmin" class="item" ui-sref="root.users()">Manage Users</div>
             </div>
         </div>
     </div>

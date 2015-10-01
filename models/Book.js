@@ -6,11 +6,9 @@ var bookSchema = new mongoose.Schema({
     title: {type: String, required: true},
     author: {type: String, required: true},
     description: {type: String, default: ""},
-    pages: Number,
-    // TODO: minlength:10,maxlength:13
-    isbn10: String,
-    // TODO: minlength:13,maxlength:17
-    isbn13: String,
+    pages: {type: Number, min: 1, max: 99999, required: true},
+    isbn10: {type: String, minlength: 10, maxlength: 13},
+    isbn13: {type: String, minlength: 13, maxlength: 17},
     pageUrl: String,
     imageUrl: String,
     // user that added the book
@@ -28,14 +26,11 @@ var bookSchema = new mongoose.Schema({
         date: Date
     }
 });
-//bookSchema.virtual("likeNumber")
-//    .get(function () {
-//        return this.likes.length;
-//    });
+
 // TODO: Add pre Hook for population
 bookSchema.virtual("nextUserToRent")
-    .get(function(){
-       return this.likes[0] || null;
+    .get(function () {
+        return this.likes[0] || null;
     });
 //TODO: Rremove likes from JSON
 bookSchema.set("toJSON", {

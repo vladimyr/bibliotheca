@@ -15,6 +15,10 @@ function ctrl($scope, dataService, getBookResolver, toastr, $state) {
     }
 
     $scope.submit = function (book) {
+        if ($scope.bookForm.$invalid) {
+            $scope.submitted = true;
+            return;
+        }
         var action;
 
         if (book._id)

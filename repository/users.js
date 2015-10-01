@@ -99,7 +99,7 @@ exports.getByEmail = function (email, done) {
 };
 
 /**
- * Inserts a new document, and returns it.
+ * Inserts a new user, and returns it.
  * @param {Object} user Document to insert
  * @param {Function} done
  * @returns {Promise<R>}
@@ -107,7 +107,10 @@ exports.getByEmail = function (email, done) {
 exports.insert = function (user, done) {
     return hasher.getHashAsync(user.password)
         .then(function (hashedPass) {
-            return Promise.cast(models.User.create({email: user.email, password: hashedPass}));
+            if (user.password.length < 4 || user.password.length > 30)
+                return Promise.reject(new common.errors.ForbiddenError("Forbidden password length"));
+            else
+                return Promise.cast(models.User.create({email: user.email, password: hashedPass}));
         })
         .then(function (user) {
             var verifyToken = jwt.encode({

@@ -73,4 +73,4 @@ function handleUserExists(res, oldUser, newUser, done) {
         return res.sendStatus(204);
 }
 
-// /@extensioneengine\.com$/i
+// /.@extensionengine\.com$/i
