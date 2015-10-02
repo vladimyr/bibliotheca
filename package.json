@@ -82,6 +82,7 @@
     "start": "webpack && node app.js",
     "lint": "xo",
     "test": "mocha",
+    "adminize": "node bin/adminize.js",
     "seed": "node bin/seedData.js",
     "genspec": "raml2html apiSpec/apiSpec.raml > apiSpec/apiSpec.html",
     "wds": "webpack-dev-server --progress --content-base public"

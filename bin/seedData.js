@@ -40,7 +40,7 @@ var seed = function () {
             logger.info("Successfully updated references");
         })
         .catch(function (e) {
-            logger.info("Global catch: " + e.message, e);//why isn't this logged to file? Why is e copying previous param?
+            logger.info("Global catch: " + e.message, e);
         });
 };
 
