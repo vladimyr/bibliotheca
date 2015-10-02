@@ -8,7 +8,7 @@ var server = email.server.connect({
 
 //TODO: PRODUCTION: change 'to'
 server.sendVerificationMail = function (to, token) {
-    var url = config.apiUrl + "/register/" + token;
+    var url = config.webUrl + "/api/register/" + token;
     server.send({
         from: "noreply@extensionengine.com",
         to: to,
