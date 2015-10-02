@@ -7,7 +7,6 @@ var deps = ["$scope", "$state", "dataService", "authService"];
 function ctrl($scope, $state, dataService, authService) {
     //
     $scope.user = authService.getUser();
-    //TODO: check if you should change it sometime other than login
     $scope.bookStatusEnum = bookStatusEnum;
     $scope.statuses = [
         {name: "Not ordered", value: bookStatusEnum.Wishlisted},

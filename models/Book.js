@@ -32,10 +32,11 @@ bookSchema.virtual("nextUserToRent")
     .get(function () {
         return this.likes[0] || null;
     });
-//TODO: Rremove likes from JSON
+
 bookSchema.set("toJSON", {
     virtuals: true,
     transform: function (doc, ret, options) {
+        delete ret.likes;
         delete ret.__v;
         return ret;
     }

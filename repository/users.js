@@ -9,16 +9,18 @@ var config = require("../config");
 var randomstring = require("randomstring");
 
 /**
- * Get all users, ordered by email ascending (populated).
+ * Get all users, ordered by email ascending (populated), with paging.
+ * @param {Number} page - Page number. Default is 1.
+ * @param {Number} perPage - Number of items per page. Default is 10.
  * @param {Function} done
- * @returns {Object}
+ * @returns {Promise<Array>} - Array of users
  */
 exports.getAll = function (page, perPage, done) {
     page = (parseInt(page, 10) && page > 0) ? page : 1;
     perPage = (parseInt(perPage, 10) && perPage > 0) ? perPage : 10;
 
-    //TODO: var findObj={verified:true};
-    var findObj = {};
+    var findObj = {verified: true};
+    //var findObj = {};
     var sortObj = [["email", 1]];
     return Promise.cast(models.User.find(findObj)
         .sort(sortObj)
@@ -32,6 +34,7 @@ exports.getAll = function (page, perPage, done) {
 /**
  * Get all admin users.
  * @param done
+ * @returns {Promise<Array>} - Array of admin users
  */
 exports.getAdmins = function (done) {
     var findObj = {isAdmin: true};
@@ -42,11 +45,11 @@ exports.getAdmins = function (done) {
 /**
  * Get a count of verified users in the database.
  * @param done
- * @returns {Promise<R>}
+ * @returns {Promise<Number>} - Number of verified users.
  */
 exports.getCount = function (done) {
-    //TODO: var findObj={verified:true};
-    var findObj = {};
+    var findObj = {verified: true};
+    //var findObj = {};
     return Promise.cast(models.User.find(findObj)
         .count()
         .exec())
@@ -57,10 +60,10 @@ exports.getCount = function (done) {
 };
 
 /**
- * Get one document by id (populated). Throws NotFoundError if not found.
+ * Get one document by id (populated).
  * @param {string|number} id Document id
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - User
  */
 exports.getById = function (id, done) {
     return Promise.cast(models.User.findOne({_id: id}).populate("rentedBooks").exec())
@@ -74,9 +77,9 @@ exports.getById = function (id, done) {
 
 /**
  * Get one document by token. Null if not found.
- * @param {string} token
+ * @param {string} token - Authorization token
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - User
  */
 exports.getByToken = function (token, done) {
     return Promise.cast(models.User.findOne({token: token}).exec())
@@ -85,9 +88,9 @@ exports.getByToken = function (token, done) {
 
 /**
  * Get one document by email. Null if not found.
- * @param {string} email Document email property
+ * @param {string} email - Document email property
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - User
  */
 exports.getByEmail = function (email, done) {
     return Promise.cast(models.User.findOne({email: email}).exec())
@@ -96,9 +99,9 @@ exports.getByEmail = function (email, done) {
 
 /**
  * Inserts a new user, and returns it.
- * @param {Object} user Document to insert
+ * @param {Object} user - Document to insert
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Inserted user
  */
 exports.insert = function (user, done) {
     return hasher.getHashAsync(user.password)
@@ -123,10 +126,10 @@ exports.insert = function (user, done) {
 /**
  * Changes the password to the new value if the old value is correct. Throws NotFoundError if not found.
  * @param {string|number} id User id
- * @param {string} oldPass Old password
- * @param {string} newPass New password
+ * @param {string} oldPass - Old password
+ * @param {string} newPass - New password
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Changed user
  */
 exports.changePassword = function (id, oldPass, newPass, done) {
     var _user;
@@ -156,7 +159,7 @@ exports.changePassword = function (id, oldPass, newPass, done) {
  * Changes password without checking the old one.
  * @param email
  * @param done
- * @returns {*}
+ * @returns {Promise<Object>} - Object containing new password and user email
  */
 exports.changeForgotPassword = function (email, done) {
     var newPass = randomstring.generate(8);
@@ -174,7 +177,10 @@ exports.changeForgotPassword = function (email, done) {
             _user.password = hashedPass;
             return Promise.cast(_user.save());
         }).then(function (user) {
-            return newPass;
+            return {
+                password: newPass,
+                email: user.email
+            }
         })
         .nodeify(done);
 };
@@ -207,7 +213,7 @@ exports.reverseIsAdmin = function (id, done) {
  * Verify the user. Return ForbiddenError if the user is already verified.
  * @param {string|number} id User id
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Saved user
  */
 exports.verify = function (id, done) {
     return Promise.cast(models.User.findOne({_id: id}).exec())
@@ -228,7 +234,7 @@ exports.verify = function (id, done) {
  * Remove the user from the collection.
  * @param {string|number} id User id
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Removed user
  */
 exports.remove = function (id, done) {
     return Promise.cast(models.User.findOne({_id: id}).exec())

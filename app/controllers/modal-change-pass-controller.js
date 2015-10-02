@@ -15,7 +15,6 @@ function ctrl($scope, $state, authService, dataService, toastr) {
             .then(function (data) {
                 toastr.success("Changed password");
                 $scope.close();
-                console.log($scope);
             }, function (data) {
                 $scope.hasError = true;
                 toastr.error("Problem changing password.");

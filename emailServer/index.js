@@ -6,13 +6,13 @@ var server = email.server.connect({
     host: "mail.vip.hr"
 });
 
-//TODO: change 'to' in production
+//TODO: PRODUCTION: change 'to'
 server.sendVerificationMail = function (to, token) {
     var url = config.apiUrl + "/register/" + token;
     server.send({
         from: "noreply@extensionengine.com",
-        //to: to,
-        to: "dbettini@extensionengine.com",
+        to: to,
+        //to: "dbettini@extensionengine.com",
         subject: "Verification for ExtensionEngine Books",
         text: "Please verify your account by clicking on this link: " + url
     }, function (err, message) {
@@ -23,12 +23,13 @@ server.sendVerificationMail = function (to, token) {
     });
 };
 
+//TODO: PRODUCTION: change 'to'
 server.sendUnverifiedBooksMail = function (to) {
     var url = config.webUrl;
     server.send({
         from: "noreply@extensionengine.com",
-        //to: to,
-        to: "dbettini@extensionengine.com",
+        to: to,
+        //to: "dbettini@extensionengine.com",
         subject: "Notification for EE Books admin",
         text: "With great power comes great responsibility! " +
         "There are new books waiting for you to verify them at " + url
@@ -39,5 +40,21 @@ server.sendUnverifiedBooksMail = function (to) {
             logger.info(message);
     });
 };
+
+//TODO: PRODUCTION: change 'to'
+server.sendNewPassMail = function (to, newPass) {
+    server.send({
+        from: "noreply@extensionengine.com",
+        to: to,
+        //to: "dbettini@extensionengine.com",
+        subject: "New password for EE Books",
+        text: "This is your new password: " + newPass
+    }, function (err, message) {
+        if (err)
+            logger.error(err);
+        else
+            logger.info(message);
+    });
+}
 
 module.exports = server;

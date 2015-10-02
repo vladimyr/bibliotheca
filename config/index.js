@@ -1,5 +1,5 @@
 ﻿"use strict";
-//TODO: HanSON loader
+
 module.exports = {
     mongoUrl: "mongodb://localhost:27017/books",
     //port : process.env.port || 1337
@@ -9,6 +9,7 @@ module.exports = {
     secret: "randomBookSecret",
     tokenMs: 604800000,
     verifyTokenMs: 86400000,
+    //TODO: check this array for allowed domains
     domains: [
         "@extensionengine.com"//generate regexp from this
     ]

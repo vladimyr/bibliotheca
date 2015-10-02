@@ -8,12 +8,14 @@ var bookStatusEnum = require("../enums").bookStatus;
 var logger = require("../logger");
 
 /**
- * Get a number of verified books, sorted by _id field descending (populated). *
- * @param {String|Number} page - Page number. Default is 1.
- * @param {String|Number} perPage - Number of items per page. Default is 10.
- * @param {Boolean} sortByLikes - If true, sorts by likes instead of _id.
- * @param {String} userId - If set, gets only books of a specific user.
+ * Get all books, or specific user's books, sorted by _id field descending (populated), with paging.
+ * @param {Object} config - Object possibly containing these properties:
+ * {Number} page - Page number. Default is 1.
+ * {Number} perPage - Number of items per page. Default is 10.
+ * {Boolean} sortByLikes - If true, sorts by likes instead of _id.
+ * {String} userId - If set, gets only books of a specific user.
  * @param done
+ * @returns {Promise<Array>} - Book array
  */
 exports.getAll = function (config, done) {
     var page = (parseInt(config.page, 10) && config.page > 0) ? config.page : 1;
@@ -60,8 +62,8 @@ exports.getAll = function (config, done) {
 
 /**
  * Extends findObj for search by title and author.
- * @param findObj
- * @param searchQuery
+ * @param {Object} findObj - Object to extend
+ * @param {String} searchQuery - String from which to construct search query
  */
 function extendFindObjForSearch(findObj, searchQuery) {
     var caseInsensitiveExpr = {$regex: new RegExp(searchQuery, "i")};
@@ -74,7 +76,7 @@ function extendFindObjForSearch(findObj, searchQuery) {
 /**
  * Get all unverified books, sorted by _id field descending.
  * @param done
- * @returns {*}
+ * @returns {Promise<Array>} - Array of books
  */
 exports.getAllUnverified = function (done) {
     var sortObj = [["_id", 1]],
@@ -88,10 +90,12 @@ exports.getAllUnverified = function (done) {
 };
 
 /**
- * Get a count of books in the database.
- * @param userId
+ * Get a count of all books or specific user's books
+ * @param {Object} config - Object possibly containing these properties:
+ * {Number|String} userId - Id of a user whose books count is needed
+ * {String} search - String to construct search query from
  * @param done
- * @returns {Promise<R>}
+ * @returns {Promise<Number>} - Number of books
  */
 exports.getCount = function (config, verified, done) {
     var findObj = {verified: verified};
@@ -124,10 +128,10 @@ exports.getCount = function (config, verified, done) {
 };
 
 /**
- * Get one document by id (populated)
+ * Get one book by id (populated)
  * @param {String|Number} id Document id
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Found book
  */
 exports.getById = function (id, done) {
     return Promise.cast(models.Book.findOne({_id: id}).populate("likes").populate("rentedTo.user").exec())
@@ -144,7 +148,7 @@ exports.getById = function (id, done) {
  * @param {String} bookId
  * @param {String} userId
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Boolean>}
  */
 exports.isLiked = function (bookId, userId, done) {
     var _result = false;
@@ -171,7 +175,7 @@ exports.isLiked = function (bookId, userId, done) {
  * @param {String} bookId
  * @param {String} userId
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<<Object>>} - Saved book
  */
 exports.reverseLike = function (bookId, userId, done) {
 
@@ -193,7 +197,7 @@ exports.reverseLike = function (bookId, userId, done) {
      * Finds a document, returns it, and sets this[modelName] to it.
      * @param id
      * @param model
-     * @returns {Function}
+     * @returns {Promise<Object>}
      */
     function findDocById(id, model) {
         return function query() {
@@ -212,7 +216,7 @@ exports.reverseLike = function (bookId, userId, done) {
 
     /**
      * Get all books from this.user's likedBooks array.
-     * @returns {Array|*}
+     * @returns {Array}
      */
     function getUserLikedBooks() {
         return this.user.likedBooks;
@@ -220,7 +224,7 @@ exports.reverseLike = function (bookId, userId, done) {
 
     /**
      * Get all users from this.book's likes array.
-     * @returns {*}
+     * @returns {Array}
      */
     function getBookLikes() {
         return this.book.likes;
@@ -229,7 +233,7 @@ exports.reverseLike = function (bookId, userId, done) {
     /**
      * FILTER FUNCTION. Checks a specified bookId against this.book.id. If a match is found,
      * sets this.unlike to true and doesn't return. Else, returns true.
-     * @param book
+     * @param {Object} book
      * @returns {boolean}
      */
     function filterRemoveLikedBookFromUser(bookId) {
@@ -243,7 +247,7 @@ exports.reverseLike = function (bookId, userId, done) {
     /**
      * Set this.user.likedBooks to specified likedBooks. If this.unlike is not
      * true, push this.book._id into this.user.likedBooks.
-     * @param likedBooks
+     * @param {Array} likedBooks
      */
     function likeFromUserAndSet(likedBooks) {
         this.user.likedBooks = likedBooks;
@@ -254,7 +258,7 @@ exports.reverseLike = function (bookId, userId, done) {
     /**
      * FILTER FUNCTION. Checks a specified userId against this.user.id. If a match is found,
      * doesn't return. Else, returns true.
-     * @param like
+     * @param {String|Number} userId
      * @returns {boolean}
      */
     function filterRemoveUserLikeFromBook(userId) {
@@ -265,7 +269,7 @@ exports.reverseLike = function (bookId, userId, done) {
     /**
      * Set this.book.likesto specified likes. If this.unlike is not
      * true, push this.user._id into this.user.likes.
-     * @param likes
+     * @param {Array} likes
      */
     function likeFromBookAndSet(likes) {
         this.book.likes = likes;
@@ -304,9 +308,9 @@ exports.reverseLike = function (bookId, userId, done) {
 
 /**
  * Inserts a new document if the User field corresponds to an existing user in the database
- * @param {Object} book Document to insert
+ * @param {Object} book - Document to insert
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Created book
  */
 exports.insert = function (book, userId, done) {
     book._id = new mongoose.Types.ObjectId();
@@ -345,10 +349,10 @@ exports.insert = function (book, userId, done) {
 /**
  * Update a document by id. Affects: title, author,
  * description, pages, isbn10, isbn13, pageUrl and imageUrl fields.
- * @param {string|number} id Document id
- * @param {Object} book Document to update
+ * @param {string|number} id - Document id
+ * @param {Object} book - Document to update
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Updated document
  */
 exports.update = function (id, book, done) {
     models.Book.findByIdAndUpdate(id, {
@@ -377,7 +381,7 @@ exports.update = function (id, book, done) {
  * from every user's likedBooks and rentedBooks
  * @param {string|number} id Document id
  * @param {Function} done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>}
  */
 exports.delete = function (id, done) {
     var _book;
@@ -387,7 +391,7 @@ exports.delete = function (id, done) {
                 return Promise.reject(new common.errors.NotFoundError("Book not found"));
             else
                 return Promise.cast(book.remove());
-        })//
+        })
         .then(function (book) {
             _book = book;
             return book.likes;
@@ -430,10 +434,10 @@ exports.delete = function (id, done) {
 
 /**
  * Update the status of a verified book. Can not be used to rent a book.
- * @param id
- * @param status
+ * @param {Number|String} id - The id of a book
+ * @param {Number} status - Number describing status
  * @param done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Updated book
  */
 exports.updateStatus = function (id, status, done) {
     return Promise.cast(models.Book.findOne({_id: id, verified: true}).exec())
@@ -460,9 +464,9 @@ exports.updateStatus = function (id, status, done) {
 /**
  * Rents verified book to the next user in the "likes" array, and sets status to "Rented". If
  * the array is empty, sets status to "Available".
- * @param bookId
+ * @param {Number|String} bookId - The id of a book
  * @param done
- * @returns {*}
+ * @returns {Promise}
  */
 exports.rentNext = function (bookId, done) {
     var _date = new Date(Date.now());
@@ -545,9 +549,9 @@ exports.rentNext = function (bookId, done) {
 
     /**
      * Finds a document, returns it, and sets this[modelName] to it.
-     * @param id
-     * @param model
-     * @returns {Function}
+     * @param {Number|String} id - The id of a document
+     * @param model - Mongoose model
+     * @returns {Promise<Object>} - Returned document
      */
     function findDocById(id, model) {
         return function query() {
@@ -567,9 +571,9 @@ exports.rentNext = function (bookId, done) {
 
 /**
  * Verify the book. Return ForbiddenError if the book is already verified.
- * @param id
+ * @param {Number|String} id - The id of a book
  * @param done
- * @returns {Promise<R>}
+ * @returns {Promise<Object>} - Saved book
  */
 exports.verify = function (id, done) {
     return Promise.cast(models.Book.findOne({_id: id}).exec())

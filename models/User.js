@@ -20,6 +20,7 @@ userSchema.set("toJSON", {
         delete ret.verifyToken;
         delete ret.verified;
         delete ret.__v;
+        delete ret.likedBooks;
         return ret;
     }
 });

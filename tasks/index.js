@@ -17,9 +17,8 @@ exports.init = function () {
             })
             .each(function (admin) {
                 if (_count > 0) {
-                    //TODO: send mail
-                    //emailServer.sendUnverifiedBooksMail(admin.email);
-                    logger.info(admin.email);
+                    //TODO: PRODUCTION: send mail
+                    emailServer.sendUnverifiedBooksMail(admin.email);
                 }
             })
             .catch(function (err) {
