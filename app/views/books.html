@@ -1,9 +1,11 @@
 <h4 class="ui header basic segment centered" ng-if="!books.length">No books.</h4>
 
-<div class="ui fluid icon input">
+<div class="ui fluid action input" style="margin-bottom: 10px" >
     <input ng-model="searchQuery"
-            style="margin-bottom: 10px" type="text" placeholder="Search by title/author...">
-    <i ng-click="search()" class="inverted circular search link icon"></i>
+            type="text" placeholder="Search by title/author...">
+    <!--<i ng-click="search()" class="inverted circular search link icon"></i>-->
+    <button class="ui icon button" ng-show="searchQuery!=''" ng-click="resetSearch()"><i class="remove icon"></i></button>
+    <button class="ui icon button" ng-click="search()"><i class="search icon"></i></button>
 </div>
 
 <div class="ui cards">

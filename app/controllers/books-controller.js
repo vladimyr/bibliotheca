@@ -10,11 +10,20 @@ function ctrl($scope, dataService, authService, $state) {
     $scope.bookCount = 0;
     var perPage = 4;
     $scope.searchQuery = "";
+    //this one is used in getBooks function
     var searchQuery = "";
 
     $scope.search = function () {
         searchQuery = $scope.searchQuery;
         $scope.getBooks(1);
+    };
+
+    $scope.resetSearch = function () {
+        $scope.searchQuery = "";
+        if (searchQuery) {
+            searchQuery = "";
+            $scope.getBooks(1);
+        }
     };
 
     $scope.getBooks = function (page) {
