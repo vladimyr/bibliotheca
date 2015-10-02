@@ -1,11 +1,25 @@
-﻿Get into project root
-1. npm i gulp -g
-2. npm i -production
-3. cd semantic
-4. gulp build
-5. cd ..
-6. npm start
+﻿# Installation 
+1. Get into project root  
+2. ``npm i gulp -g``  
+3. ``npm i`` 
+4. ``cd semantic``  
+5. ``gulp build``  
+6. ``cd ..``  
+7. ``npm start``  
+  
+When in production, install with production flag instead:  
+``npm i -production``  
 
-When you want to give admin rights to a user - example:
-npm run adminize -- dbettini@extensionengine.com
+When in development, you can use configured webpack-dev-server:  
+``npm run wds``  
+And access it on **localhost:8080/webpack-dev-server/**  
+
+For example database seeding use:
+``npm run seed``  
+
+To make a registered user an admin through the console, execute adminize script with user email as parameter.  
+Example:  
+``npm run adminize -- dbettini@extensionengine.com``
+
+
 
