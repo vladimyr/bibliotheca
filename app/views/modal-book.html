@@ -62,13 +62,13 @@
             Change status
         </button>
         </span>
-        <button ng-show="sourceObject.status==bookStatusEnum.Rented && sourceObject.likes.length==0"
+        <button ng-show="sourceObject.status==bookStatusEnum.Rented && sourceObject.likeNumber==0"
                 ng-click="rentNext(sourceObject,true)"
                 class="ui teal button">
             <i class="calendar icon"></i>
             Unrent
         </button>
-        <button ng-show="(sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented) && sourceObject.likes.length>0"
+        <button ng-show="(sourceObject.status==bookStatusEnum.Available || sourceObject.status==bookStatusEnum.Rented) && sourceObject.likeNumber>0"
                 ng-click="rentNext(sourceObject)"
                 class="ui teal button">
             <i class="calendar icon"></i>
