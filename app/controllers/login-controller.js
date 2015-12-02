@@ -9,8 +9,8 @@ function ctrl($scope, authService, $state) {
     $scope.msg = "";
     $scope.remember = false;
     $scope.login = function () {
+        $scope.submitted = true;
         if ($scope.loginForm.$invalid) {
-            $scope.submitted = true;
             return;
         }
         authService.login($scope.email, $scope.password, $scope.remember)
