@@ -52,8 +52,6 @@ server.sendNewPassMail = function (to, newPass) {
     }, function (err, message) {
         if (err)
             logger.error(err);
-        else
-            logger.info(message);
     });
 }
 
