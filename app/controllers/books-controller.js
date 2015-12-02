@@ -8,7 +8,7 @@ function ctrl($scope, dataService, authService, $state) {
     $scope.user = authService.getUser();
     $scope.currentPage = 1;
     $scope.bookCount = 0;
-    var perPage = 4;
+    var perPage = 20;
     $scope.searchQuery = "";
     //this one is used in getBooks function
     var searchQuery = "";
