@@ -5,7 +5,7 @@ require("../semantic/dist/semantic.css");
 require("angular-toastr/dist/angular-toastr.css")
 
 // .js
-require("jquery");
+//require("jquery");
 require("../semantic/dist/semantic.js");
 var angular = require("angular");
 require("angular-ui-router");
