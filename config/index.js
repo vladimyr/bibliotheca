@@ -11,6 +11,10 @@ module.exports = {
     secret: "randomBookSecret",
     tokenMs: 604800000,
     verifyTokenMs: 86400000,
+    email: {
+        user: "books@extensionengine.com",
+        password: "yYEggyT2R!"
+    },
     //TODO: check this array for allowed domains
     domains: [
         "@extensionengine.com"//generate regexp from this
