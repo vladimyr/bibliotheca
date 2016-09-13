@@ -7,6 +7,15 @@
     "name": "Dino",
     "email": ""
   },
+  "scripts": {
+    "start": "webpack && node app.js",
+    "lint": "xo",
+    "test": "mocha",
+    "adminize": "node bin/adminize.js",
+    "seed": "node bin/seedData.js",
+    "genspec": "raml2html apiSpec/apiSpec.raml > apiSpec/apiSpec.html",
+    "wds": "webpack-dev-server --progress --content-base public"
+  },
   "dependencies": {
     "angular": "^1.4.5",
     "angular-animate": "^1.4.5",
@@ -75,15 +84,6 @@
     "url-loader": "^0.5.6",
     "webpack": "^1.12.2",
     "xo": "^0.7.1"
-  },
-  "scripts": {
-    "start": "webpack && node app.js",
-    "lint": "xo",
-    "test": "mocha",
-    "adminize": "node bin/adminize.js",
-    "seed": "node bin/seedData.js",
-    "genspec": "raml2html apiSpec/apiSpec.raml > apiSpec/apiSpec.html",
-    "wds": "webpack-dev-server --progress --content-base public"
   },
   "xo": {
     "envs": [
