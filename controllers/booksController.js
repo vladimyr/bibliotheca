@@ -11,7 +11,7 @@ exports.init = function (router) {
     router.get("/api/books", noSessionBearerAuth, function (req, res) {
         var config = {
             page: req.query.page,
-            perPage: req.query.perPage,
+            perPage: +req.query.perPage,
             sortByLikes: req.query.sortByLikes,
             search: req.query.search,
             userId: req.query.user
@@ -28,7 +28,7 @@ exports.init = function (router) {
     router.get("/api/books/unverified", noSessionBearerAuth, auth.requiresAdmin, function (req, res) {
         var config = {
             page: req.query.page,
-            perPage: req.query.perPage,
+            perPage: +req.query.perPage,
             sortByLikes: req.query.sortByLikes,
             search: req.query.search,
             userId: req.query.user
