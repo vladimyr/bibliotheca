@@ -2,7 +2,8 @@
 
 var path = require("path"),
     ExtractTextPlugin = require("extract-text-webpack-plugin");
-var webpack = require("webpack");
+
+var apiServerPort = require('./config').port;
 
 module.exports = {
     devtool: "source-map",
@@ -26,8 +27,15 @@ module.exports = {
             {test: /semantic(\\|\/)dist(\\|\/).*\.js$/, loader: "imports?jQuery=jquery"}
         ]
     },
+    devServer: {
+        proxy: {
+            '/api': {
+                target: { host: "localhost", port: apiServerPort },
+                secure: false
+            }
+        }
+    },
     plugins: [
-        new ExtractTextPlugin("style.css", {allChunks: true}),
-        new webpack.optimize.UglifyJsPlugin()
+        new ExtractTextPlugin("style.css", {allChunks: true})
     ]
 };

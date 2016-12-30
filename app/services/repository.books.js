@@ -4,13 +4,12 @@ var deps = ["$http", "Pool", "Book"];
 
 function serv($http, Pool, Book) {
 
-    var config = require("../config.js");
-    var apiUrl = config.apiUrl + "/books/";
+    var apiUrl =  "/api/books/";
 
     var _pool = new Pool(Book);
 
     function getAll(page, perPage, userId, search, sortByLikes) {
-        return $http.get(apiUrl, {
+        return $http.get("/api/books", {
             params: {
                 page: page,
                 perPage: perPage,

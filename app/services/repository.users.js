@@ -4,8 +4,7 @@ var deps = ["$http", "Pool", "User"];
 
 function serv($http, Pool, User) {
 
-    var config = require("../config.js");
-    var apiUrl = config.apiUrl + "/users/";
+    var apiUrl = "/api/users/";
 
     var _pool = new Pool(User);
 

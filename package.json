@@ -15,7 +15,7 @@
     "adminize": "node bin/adminize.js",
     "seed": "node bin/seedData.js",
     "genspec": "raml2html apiSpec/apiSpec.raml > apiSpec/apiSpec.html",
-    "wds": "webpack-dev-server --progress --content-base public"
+    "dev-server": "webpack-dev-server --progress --content-base public"
   },
   "dependencies": {
     "angular": "^1.4.5",
@@ -76,14 +76,15 @@
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
     "html-loader": "^0.3.0",
-    "imports-loader": "^0.6.4",
     "imagemin": "^3.2.0",
+    "imports-loader": "^0.6.4",
     "mocha": "^2.2.5",
     "should": "^7.0.4",
-    "supertest": "^1.0.1",
     "style-loader": "^0.12.4",
+    "supertest": "^1.0.1",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.16.2",
     "xo": "^0.7.1"
   },
   "xo": {

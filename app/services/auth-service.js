@@ -3,10 +3,6 @@
 var deps = ["$rootScope", "$http", "$q", "$state"];
 
 function serv($rootScope, $http, $q, $state) {
-    //
-    var config = require("../config.js");
-    var apiUrl = config.apiUrl;
-
     function broadcastUserChanged() {
         $rootScope.$broadcast("userChanged");
     };
@@ -23,7 +19,7 @@ function serv($rootScope, $http, $q, $state) {
 
     function login(email, password, remember) {
         var deferred = $q.defer();
-        $http.post(apiUrl + "/login", {email: email, password: password})
+        $http.post("api/login", {email: email, password: password})
             .then(function (res) {
                 if (res.data) {
                     if (remember)
@@ -42,7 +38,7 @@ function serv($rootScope, $http, $q, $state) {
 
     function register(email, password) {
         var deferred = $q.defer();
-        $http.post(apiUrl + "/register", {email: email, password: password})
+        $http.post("api/register", {email: email, password: password})
             .then(function (res) {
                 deferred.resolve(res);
             }, function (res) {
