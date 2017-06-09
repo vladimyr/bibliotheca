@@ -1,7 +1,20 @@
-﻿"use strict";
+"use strict";
+
+require('dotenv').load();
+const mongodbUri = require('mongodb-uri');
+
+const mongoUrl = mongodbUri.format({
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    hosts: [{
+        host: process.env.DB_HOST || '127.0.0.1',
+        port: process.env.DB_PORT || 27017
+    }],
+});
 
 module.exports = {
-    mongoUrl: "mongodb://localhost:27017/books",
+    mongoUrl,
     //port : process.env.port || 1337
     port: 1337,
     //used globally
