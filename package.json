@@ -1,16 +1,19 @@
 {
   "name": "books",
   "version": "0.0.0",
-  "description": "books",
+  "description": "Web application for managing internal library",
   "main": "app.js",
   "author": {
     "name": "Dino",
     "email": ""
   },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:dbettini/books.git"
+  },
   "scripts": {
     "start": "node app.js",
     "webpack": "webpack",
-    "lint": "xo",
     "test": "mocha",
     "adminize": "node bin/adminize.js",
     "seed": "node bin/seedData.js",
@@ -51,6 +54,8 @@
   "devDependencies": {
     "buble-loader": "^0.4.0",
     "css-loader": "^0.19.0",
+    "eslint": "^3.19.0",
+    "eslint-config-xo-space": "^0.16.0",
     "expose-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
@@ -85,27 +90,6 @@
     "supertest": "^1.0.1",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.2",
-    "webpack-dev-server": "^1.16.2",
-    "xo": "^0.7.1"
-  },
-  "xo": {
-    "envs": [
-      "node",
-      "browser",
-      "mocha"
-    ],
-    "space": 4,
-    "rules": {
-      "no-irregular-whitespace": 0,
-      "quotes": [
-        1,
-        "double"
-      ],
-      "curly": [
-        1,
-        "multi-or-nest"
-      ],
-      "no-inline-comments": 0
-    }
+    "webpack-dev-server": "^1.16.2"
   }
 }
