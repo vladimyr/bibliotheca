@@ -14,6 +14,9 @@ module.exports = {
         filename: "bundle.js"
     },
     module: {
+        preLoaders: [
+            { test: /\.js$/, loader: "buble"  }
+        ],
         loaders: [
             {test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
             {test: /\.(eot|woff|woff2|ttf|svg|jpg)$/, loader: "file-loader"},
