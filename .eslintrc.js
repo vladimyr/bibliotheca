@@ -14,6 +14,7 @@ module.exports = {
         "no-warning-comments": 0,
         "quotes": ["error","double"],
         "curly": ["error","multi-or-nest"],
+        "object-curly-spacing": ["error", "always"],
         "spaced-comment": ["error", "always",
             { "markers": ["TODO:", "NOTE:", "FIXME:"] }]
     }
